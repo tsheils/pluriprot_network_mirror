@@ -1,28 +1,24 @@
 import * as d3 from 'd3';
 
+const COLOR = d3.scaleSequential(
+  d3.interpolateBrBG
+).domain([-10, 10]);
 
-/**
- * configuration parameters to change the color of a node,
- * n is used to adjust both node and text size (text doesn't really change)
- * todo: currently not used
- * @type {{N: number; SPECTRUM: string[]}}
- */
-const APP_CONFIG = {
-  N : 50,
-  SPECTRUM: [
 
-    //  "rgb(222,237,250)"
-    'rgb(176,212,243)',
-    'rgb(128,186,236)',
-    'rgb(77,158,228)',
-    'rgb(38,137,223)',
-    'rgb(0,116,217)',
-    'rgb(0,106,197)'
-    //  "rgb(0,94,176)"
-    //  "rgb(0,82,154)"
-    //  "rgb(0,60,113)"
-  ]
-};
+/*const COLOR = d3.scaleOrdinal(
+ // d3.interpolateRainbow
+  ["#379982",
+  "#914dd1",
+  "#799e27",
+  "#b34c95",
+  "#4f8b44",
+  "#6a71ba",
+  "#d56721",
+  "#bc4b62",
+  "#917136",
+  "#c24e3a"]
+).domain([-100, 100]);*/
+
 
 /**
  * node object for d3 graph
@@ -72,10 +68,6 @@ export class Node implements d3.SimulationNodeDatum {
    */
   labels?: string[];
   /**
-   * knowledge graph id
-   */
-  kgraph: string;
-  /**
    * node name
    */
   name: string;
@@ -111,7 +103,7 @@ export class Node implements d3.SimulationNodeDatum {
    * @return {number}
    */
   normal = () => {
-    return Math.sqrt(this.linkCount / APP_CONFIG.N);
+    return Math.sqrt(this.linkCount / 50);
   }
 
   /**
@@ -130,52 +122,24 @@ export class Node implements d3.SimulationNodeDatum {
   get fontSize() {
     return (30 * this.normal() + 10) + 'px';
   }
-
-  /**
-   * return a color based on node diameter
-   * //todo this can probably be done better using d3
-   * @return {string | string | string | string | string | string}
-   */
-  get color() {
-    const index = Math.floor(APP_CONFIG.SPECTRUM.length * this.normal());
-    return APP_CONFIG.SPECTRUM[index];
-  }
 }
 
 /**
  * protein that extends node ovject
  */
 export class Protein extends Node {
-  /**
-   * uniprot id
-   */
-  accession: string;
-  /**
-   * description paragraph of the protein
-   */
-  description: string;
-  /**
-   * list of protein synonyms
-   */
-  synonyms: string[];
-  /**
-   * protein family
-   */
-  family: string;
-  /**
-   * protein dark level
-   */
-  tdl: string;
-  /**
-   * pharos link of protein
-   * currently to a different pharos instance
-   * todo: sync with current database
-   */
-  uri: string;
-  /**
-   * gene name
-   */
+
+
+  degree: number;
   gene: string;
+ // canonicalName: string;
+  hESC_NSC_Fold_Change: number;
+  hESC_NSC_Ratio: number;
+  id: string;
+  color: string;
+//  name: string;
+/*  selected: boolean;
+  shared_name:string;*/
   /**
    * new protein
    * @param {string} uuid
@@ -183,134 +147,11 @@ export class Protein extends Node {
    */
   constructor(uuid: string, data: any) {
     super(uuid, data);
-    this.accession = data.properties.accession;
-    this.description = data.properties.description;
-    this.family = data.properties.idgFamily;
-    this.tdl = data.properties.idgTDL;
-    this.gene = data.properties.gene;
+    this.degree = data.properties.Degree;
+    this.labels = data.properties.cytoscape_alias_list;
+    this.hESC_NSC_Fold_Change = data.properties.hESC_NSC_Fold_Change;
+    this.hESC_NSC_Ratio = data.properties.hESC_NSC_Ratio;
+    this.gene = data.properties.Gene.trim();
+    this.color = this.hESC_NSC_Fold_Change === -100 ? '#CCCCCC' : COLOR(-this.hESC_NSC_Fold_Change);
   }
 }
-
-/**
- * Article class node type
- */
-export class Article extends Node {
-  /**
-   * article journal
-   */
-  journal: string;
-  /**
-   * year article published
-   */
-  year: number;
-  /**
-   * pubmed id
-   */
-  pmid: string;
-
-  /**
-   * new article
-   * @param {string} uuid
-   * @param data
-   */
-  constructor(uuid: string, data: any) {
-    super(uuid, data);
-    this.journal = data.properties.journal;
-    this.year = data.properties.year.low;
-  }
-}
-
-/**
- * base query of knowlege graph
- */
-export class Query extends Node {
-  /**
-   * knowledge graph search term
-   */
-  term: string;
-
-  /**
-   * new query
-   * @param {string} uuid
-   * @param data
-   */
-  constructor(uuid: string, data: any) {
-    super(uuid, data);
-    this.term = data.properties.term;
-  }
-}
-
-/**
- * Mesh terms associated with results
- */
-export class Mesh extends Node {
-  /**
-   * comma separated list of trees
-   */
-  treeNumbers: string;
-  /**
-   * todo: ask trung what this is
-   */
-  ui: string;
-
-  /**
-   * new mesh
-   * @param {string} uuid
-   * @param data
-   */
-  constructor(uuid: string, data: any) {
-    super(uuid, data);
-    this.ui = data.properties.ui;
-    this.treeNumbers = data.treeNumbers;
-  }
-}
-
-/**
- * drug object will correspond to pharos ligand
- */
-export class Drug extends Node {
-  /**
-   * list of drug synonyms
-   */
-  synonyms: string[];
-
-  /**
-   * new drug
-   * @param {string} uuid
-   * @param data
-   */
-  constructor(uuid: string, data: any) {
-    super(uuid, data);
-    this.name = data.properties.properties.filter(prop => prop.label === 'IDG Ligand')[0].term;
-    // this.synonyms = data.properties.synonyms.split(',');
-
-  }
-}
-
-/**
- * disease object
- */
-export class Disease extends Node {
-  /**
-   * list of disease synonyms
-   */
-  synonyms: string[];
-
-  /**
-   * new disease
-   * @param {string} uuid
-   * @param data
-   */
-  constructor(uuid: string, data: any) {
-    super(uuid, data);
-    this.name = data.properties.name;
-    this.type = 'disease';
-  //  this.synonyms = data.properties.synonyms.split(',');
-
-  }
-}
-
-
-
-
-

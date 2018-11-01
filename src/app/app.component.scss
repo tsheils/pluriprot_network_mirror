@@ -5,3 +5,12 @@
   width: 80vw;
   height: 80vh;
 }
+
+.info-panel {
+  height: 30vh;
+  width: 15vw;
+  background-color: rgba(255, 255, 255, .6);
+  border: #f1f1f1 1px solid;
+  position: fixed;
+  right: 10vw;
+}

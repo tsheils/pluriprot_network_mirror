@@ -2,7 +2,7 @@
  * Created by sheilstk on 6/16/17.
  */
 import {Injectable} from '@angular/core';
-import {Article, Disease, Drug, Mesh, Node, Protein, Query} from '../../models/node';
+import { Node, Protein } from '../../models/node';
 import {Subject} from 'rxjs';
 
 /**
@@ -76,6 +76,7 @@ export class NodeService {
    * @param {Node[]} node
    */
   hoveredNode(node: Node[]): void {
+    console.log(node);
     if (this.hoveredNodeList.length > 0) {
       this.hoveredNodeList = [];
     }
@@ -148,27 +149,9 @@ export class NodeService {
   makeNode(id: string, data: any): Node {
     let n: Node = this.masterNodeMap.get(id.toString());
     if (!n) {
-      if (data.properties.kind) {
-      switch (data.properties.kind) {
-        case 'ix.idg.models.Target': {
+      if (data.properties.Gene) {
           n = new Protein(id, data);
-          n.type = 'target';
-          break;
-        }
-        case 'ix.idg.models.Disease': {
-          n = new Disease(id, data);
-          n.type = 'disease';
-          break;
-        }
-        case 'ix.idg.models.Ligand': {
-          n = new Drug(id, data);
-          n.type = 'ligand';
-          break;
-        }
-        default:
-          n = new Node(id, data);
-      }
-    } else {
+      } else {
         n = new Node(id, data);
       }
     }

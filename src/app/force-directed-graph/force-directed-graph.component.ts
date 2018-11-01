@@ -49,7 +49,7 @@ export class ForceDirectedGraphComponent implements OnInit, AfterViewInit {
    * @type {{width: number; height: number}}
    * @private
    */
-  _options: {width, height} = {width: 800, height: 600};
+  _options: {width, height} = {width: 1200, height: 1000};
 
   /**
    * rescales the graph on window resize
@@ -114,9 +114,8 @@ export class ForceDirectedGraphComponent implements OnInit, AfterViewInit {
    * resize graph with updated container size
    */
   ngAfterViewInit() {
-    console.log("after init");
-    console.log(this.options);
     this.graph.initSimulation(this.options);
+    this.resetZoom();
   }
 
 resetZoom() {
@@ -139,7 +138,7 @@ resetZoom() {
         height: this.el.nativeElement.parentElement.offsetHeight
       };
     } else {
-      return this._options = {width: 800, height: 600};
+      return this._options = {width: 1200, height: 1000};
     }
   }
 }

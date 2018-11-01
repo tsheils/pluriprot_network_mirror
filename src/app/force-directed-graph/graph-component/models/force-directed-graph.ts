@@ -58,6 +58,8 @@ export class ForceDirectedGraph {
    */
   constructor(
     nodes, links, options: any) {
+    console.log("making graph model");
+    console.log(options);
     this.nodes = nodes;
     this.links = links;
     this.initSimulation(options);
@@ -114,6 +116,9 @@ export class ForceDirectedGraph {
         ticker.emit(this.simulation)
       });
 
+      this.simulation.on('end', () => {
+          console.log("done");
+      });
     }
 
 

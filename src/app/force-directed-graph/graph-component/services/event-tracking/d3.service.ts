@@ -15,21 +15,43 @@ export class D3Service {
   constructor(
     private nodeService: NodeService,
     private linkService: LinkService,
-  ) {  }
+  ) {
+    console.log("making d3 services")
+  }
 
   /** A method to bind a pan and zoom behaviour to an svg element */
   applyZoomableBehaviour(svgElement, containerElement) {
 
     let svg, container, zoomed, zoom;
-
     svg = d3.select(svgElement);
     container = svg.select('#root');
-    container.attr('transform', 'translate(' + svg.node().getBoundingClientRect().width  + ',0)');
+
+/*    const bounds = container.node().getBBox();
+    const parent = container.node().parentElement;
+    console.log(bounds);
+    console.log(parent);
+    const fullWidth = parent.clientWidth || parent.parentNode.clientWidth,
+      fullHeight = parent.clientHeight;
+    console.log(fullHeight);
+    console.log(fullWidth);
+    const width = bounds.width,
+      height = bounds.height;
+    const midX = bounds.x + width / 2,
+      midY = bounds.y + height / 2;
+    if (width == 0 || height == 0) return; // nothing to fit
+    const scale = (0.75) / Math.max(width / fullWidth, height / fullHeight);
+    const translate = [fullWidth / 2 - scale * midX, fullHeight / 2 - scale * midY];
+    console.log(scale);
+    console.log(translate);*/
+
+
+
+    // container.attr('transform', 'translate(' + translate[0] +','+ translate[1] + ')scale('+ scale +')');
 
     zoomed = () => {
-      console.log(d3.event);
+     // console.log(d3.event);
       const transform = d3.event.transform;
-      container.attr('transform', 'translate(' + transform.x + ',' + transform.y + ') scale(' + transform.k + ')');
+      container.attr('transform', 'translate(' + transform.x + ',' + transform.y + ')scale(' + transform.k + ')');
     };
 
     zoom = d3.zoom()
