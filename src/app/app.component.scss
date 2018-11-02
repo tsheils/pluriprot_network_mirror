@@ -1,8 +1,8 @@
 
 .fdg {
-  margin-top: 10vh;
-  margin-left: 10vw;
-  width: 80vw;
+/*  margin-top: 10vh;
+  margin-left: 10vw;*/
+  width: 100vw;
   height: 80vh;
 }
 
@@ -13,4 +13,22 @@
   border: #f1f1f1 1px solid;
   position: fixed;
   right: 10vw;
+  top: 5vh;
+}
+
+.menu-drawer {
+  width: 25vw;
+}
+
+.close-button {
+  position: absolute;
+  right: 69vw;
+  top: 8px;
+  background-color: white;
+}
+
+.open-button {
+  position: absolute;
+  top: 8px;
+  background-color: white;
 }

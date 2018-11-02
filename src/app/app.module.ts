@@ -22,6 +22,7 @@ import {NodeService} from "./force-directed-graph/graph-component/services/event
 import {LinkService} from "./force-directed-graph/graph-component/services/event-tracking/link.service";
 import {NodeMenuControllerService} from "./force-directed-graph/graph-component/services/event-tracking/node-menu-controller.service";
 import { NodeDetailsBoxComponent } from './force-directed-graph/graph-component/shared-components/node-details-box/node-details-box.component';
+import { GraphMenuComponent } from './force-directed-graph/graph-component/shared-components/graph-menu/graph-menu.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { NodeDetailsBoxComponent } from './force-directed-graph/graph-component/
     ClickableLinkDirective,
     NodeMenuComponent,
     ForceDirectedGraphComponent,
-    NodeDetailsBoxComponent
+    NodeDetailsBoxComponent,
+    GraphMenuComponent
   ],
   imports: [
     BrowserModule,
