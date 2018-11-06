@@ -1,13 +1,40 @@
-
-
-<mat-slider min="1" max="5" step="0.5" value="1.5"></mat-slider>
+<div class = "menu-div">
+<h3>hESC/hNSC NSAF SpC ratio:</h3>
+  <range-slider [color]="'primary'"
+                min="1"
+                max="100"
+                step = ".1"
+                (change)="sliderChange($event)"
+                [value]="[0, 50]"
+                [thumbLabel]= true
+                class="full-width"
+                aria-label="Primary color range slider"></range-slider>
 <br>
-
-<mat-slider min="1" max="5" step="0.5" value="1.5"></mat-slider>
-<br>
+<h3>hESC/hNSC ln fold change:</h3>
+  <range-slider [color]="'primary'"
+                min="1"
+                max="100"
+                step = ".1"
+                (change)="sliderChange($event)"
+                [value]="[0, 50]"
+                [thumbLabel]= true
+                class="full-width"
+                aria-label="Primary color range slider"></range-slider>
+  <br>
 <mat-checkbox>Check me!</mat-checkbox>
 <br>
 <mat-checkbox>Check me!</mat-checkbox><br>
 <mat-checkbox>Check me!</mat-checkbox><br>
 <mat-checkbox>Check me!</mat-checkbox><br>
+</div>
 
+
+
+
+<mat-slider
+  min="1"
+  max="5"
+  step="0.5"
+  value="1.5"
+  [thumbLabel]= true
+  class="hidden"></mat-slider>
