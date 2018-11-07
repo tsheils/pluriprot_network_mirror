@@ -27,8 +27,6 @@ export class GraphDataService {
   nodes: any  = [];
 
   constructor(
-  //  private dataConnectionService: DataConnectionService,
-  //  private messageService: MessageService,
     private nodeService: NodeService,
     private linkService: LinkService
   ) {
@@ -36,7 +34,7 @@ export class GraphDataService {
   }
 
   setGraph(graph: any) {
-      this.nodeList = graph.nodes;
+    this.nodeList = graph.nodes;
     this.linkList = graph.links;
     this.countLinks();
     this.graph = graph;
@@ -50,7 +48,6 @@ export class GraphDataService {
   getLinks(): Link[] {
     return Array.from(this.linkService.getLinks().values());
   }
-
 
   /**
    * updates graph with new nodes and links. filters out existing ones so as to not constantly create the same node

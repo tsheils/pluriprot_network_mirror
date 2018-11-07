@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MatSliderChange} from "@angular/material";
 
 @Component({
@@ -8,13 +8,21 @@ import {MatSliderChange} from "@angular/material";
 })
 export class GraphMenuComponent implements OnInit {
 
+  _settings: any = {};
+
+  @Output()
+  readonly optionsChange: EventEmitter<any> = new EventEmitter<any>();
+
+
   constructor() { }
 
   ngOnInit() {
   }
 
-  sliderChange(change: MatSliderChange) {
+  sliderChange(change: MatSliderChange, field: string) {
     console.log(change);
+    this._settings[field] = change.value;
+    this.optionsChange.emit(this._settings);
 
   }
 

@@ -75,9 +75,7 @@ export class AppComponent {
       })
     })*/
 
-    console.log(this);
     this._http.get<any>('./assets/nscs.json').subscribe(res=> {
-      console.log(res);
       const nodeObs = of(res.elements.nodes.map(node => {
         const n: Protein = this.nodeService.makeNode(node.data.id, {properties: node.data}) as Protein;
         if(node.position) {
@@ -89,7 +87,6 @@ export class AppComponent {
       }));
 
       const linkObs = of(res.elements.edges.map(edge => {
-        const linkArr = [];
         const source = this.nodeService.getById(edge.data.source);
         const target = this.nodeService.getById(edge.data.target);
         const l = this.linkService.makeLink(edge.data.id, source, target, {properties: edge.data});
@@ -101,15 +98,42 @@ export class AppComponent {
       const zipped: Observable<any> = from([nodeObs, linkObs]).pipe(zipAll());
 
       zipped.subscribe(res => {
-        // this.nodes = res[0];
-        // this.links = res[1];
         this.graphDataService.setGraph({
           nodes: this.graphDataService.getNodes(),
           links: this.graphDataService.getLinks()
         });
         this.loaded = true;
-
       })
     })
+  }
+
+  filterGraph(event: Event) {
+    const nodes = this._filterNodes(event);
+    const edges = this._filterEdges(event, nodes);
+   this.graphDataService.setGraph({
+     nodes: nodes,
+     links: edges
+   });
+  }
+
+  _filterNodes(params: Event): Protein[]{
+    let nodes: Protein[] = this.graphDataService.getNodes() as Protein[];
+    Object.keys(params).forEach(param => {
+      if(Array.isArray(params[param])) {
+       nodes = nodes.filter(node => node[param] >= params[param][0] && node[param] <= params[param][1]);
+      }
+    });
+    return nodes;
+  }
+
+  _filterEdges(params: Event, nodes : Protein[]){
+    let links: Link[] = this.graphDataService.getLinks() as Link[];
+    const currentNodes = nodes.map(node => node.uuid);
+    links = links.filter(link => {
+      const source: string = link.getSourceId();
+      const target: string = link.getTargetId();
+      return currentNodes.includes(source) && currentNodes.includes(target) || (source===target);
+    });
+    return links;
   }
 }

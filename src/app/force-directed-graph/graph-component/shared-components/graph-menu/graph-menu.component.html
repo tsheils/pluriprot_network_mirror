@@ -1,22 +1,20 @@
 <div class = "menu-div">
 <h3>hESC/hNSC NSAF SpC ratio:</h3>
-  <range-slider [color]="'primary'"
-                min="1"
-                max="100"
+  <range-slider min="-100"
+                max="0"
                 step = ".1"
-                (change)="sliderChange($event)"
-                [value]="[0, 50]"
+                (change)="sliderChange($event, 'hESC_NSC_Fold_Change')"
+                [value]="[-100, 0]"
                 [thumbLabel]= true
                 class="full-width"
                 aria-label="Primary color range slider"></range-slider>
 <br>
 <h3>hESC/hNSC ln fold change:</h3>
-  <range-slider [color]="'primary'"
-                min="1"
-                max="100"
-                step = ".1"
-                (change)="sliderChange($event)"
-                [value]="[0, 50]"
+  <range-slider min="0"
+                max=".5"
+                step = ".01"
+                (change)="sliderChange($event, 'hESC_NSC_Ratio')"
+                [value]="[0, 10]"
                 [thumbLabel]= true
                 class="full-width"
                 aria-label="Primary color range slider"></range-slider>

@@ -57,4 +57,12 @@ export class Link implements d3.SimulationLinkDatum<Node> {
       this.qualifier = data.properties ? data.properties.qualifier : '';
     }
   }
+
+  getSourceId(): string {
+    return this.source.uuid ? this.source.uuid : this.source;
+  }
+
+  getTargetId(){
+    return this.target.uuid ? this.target.uuid : this.target;
+  }
 }
