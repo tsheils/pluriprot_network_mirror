@@ -1,6 +1,10 @@
 <div *ngIf="node" class = "details-pane">
 <h1>{{node?.name}}</h1>
 
-<h3>hESC/hNSC NSAF SpC ratio:</h3> {{node?.hESC_NSC_Fold_Change}}
-<h3>hESC/hNSC ln fold change:</h3> {{node?.hESC_NSC_Ratio}}
+<h3>hESC/hNSC NSAF SpC ratio:</h3> {{getLabel(node?.hESC_NSC_Fold_Change)}}
+<h3>hESC/hNSC ln fold change:</h3> {{getLabel(node?.hESC_NSC_Ratio)}}
+</div>
+
+<div *ngIf="link" class = "details-pane">
+<h2>{{link?.properties.name}}</h2>
 </div>

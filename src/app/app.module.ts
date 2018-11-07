@@ -24,6 +24,7 @@ import {NodeMenuControllerService} from "./force-directed-graph/graph-component/
 import { NodeDetailsBoxComponent } from './force-directed-graph/graph-component/shared-components/node-details-box/node-details-box.component';
 import { GraphMenuComponent } from './force-directed-graph/graph-component/shared-components/graph-menu/graph-menu.component';
 import { RangeSliderComponent } from './tools/range-slider/range-slider.component';
+import { D3ColorLegendComponent } from './tools/d3-color-legend/d3-color-legend.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { RangeSliderComponent } from './tools/range-slider/range-slider.componen
     ForceDirectedGraphComponent,
     NodeDetailsBoxComponent,
     GraphMenuComponent,
-    RangeSliderComponent
+    RangeSliderComponent,
+    D3ColorLegendComponent
   ],
   imports: [
     BrowserModule,

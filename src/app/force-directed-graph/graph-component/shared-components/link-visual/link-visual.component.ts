@@ -32,6 +32,7 @@ export class LinkVisualComponent implements OnInit {
    * subscribe to settings change
    */
   ngOnInit() {
+   //   console.log(this.link.source.x);
 
   }
 

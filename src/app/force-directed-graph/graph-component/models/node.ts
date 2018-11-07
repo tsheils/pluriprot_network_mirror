@@ -1,8 +1,8 @@
 import * as d3 from 'd3';
 
 const COLOR = d3.scaleSequential(
-  d3.interpolateBrBG
-).domain([-10, 10]);
+  d3.interpolateGnBu
+).domain([-10, 11]);
 
 
 /*const COLOR = d3.scaleOrdinal(
@@ -137,6 +137,7 @@ export class Protein extends Node {
   hESC_NSC_Ratio: number;
   id: string;
   color: string;
+  tempcolor: string;
 //  name: string;
 /*  selected: boolean;
   shared_name:string;*/
@@ -152,6 +153,6 @@ export class Protein extends Node {
     this.hESC_NSC_Fold_Change = data.properties.hESC_NSC_Fold_Change;
     this.hESC_NSC_Ratio = data.properties.hESC_NSC_Ratio;
     this.gene = data.properties.Gene.trim();
-    this.color = this.hESC_NSC_Fold_Change === -100 ? '#CCCCCC' : COLOR(-this.hESC_NSC_Fold_Change);
+    this.color = this.hESC_NSC_Fold_Change === -100 ? '#CCCCCC' : COLOR(-this.hESC_NSC_Fold_Change * .4);
   }
 }

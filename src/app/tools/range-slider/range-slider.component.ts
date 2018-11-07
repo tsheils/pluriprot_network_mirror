@@ -91,7 +91,7 @@ export const _RangeSliderComponentMixinBase:
   CanColorCtor &
   CanDisableCtor &
   typeof RangeSliderComponentBase =
-  mixinTabIndex(mixinColor(mixinDisabled(RangeSliderComponentBase), 'primary'));
+  mixinTabIndex(mixinColor(mixinDisabled(RangeSliderComponentBase), 'accent'));
 
 /**
  * Allows users to select from a range of values by moving the slider thumb. It is similar in

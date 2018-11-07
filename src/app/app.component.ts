@@ -119,8 +119,22 @@ export class AppComponent {
   _filterNodes(params: Event): Protein[]{
     let nodes: Protein[] = this.graphDataService.getNodes() as Protein[];
     Object.keys(params).forEach(param => {
-      if(Array.isArray(params[param])) {
-       nodes = nodes.filter(node => node[param] >= params[param][0] && node[param] <= params[param][1]);
+      // skip iterating from the fade parameter
+      if(param !== 'fade') {
+        if (Array.isArray(params[param])) {
+          if (params.fade === true) {
+            nodes = nodes.map(node => {
+              if (node[param] >= params[param][0] && node[param] <= params[param][1]) {
+                node.tempcolor = null;
+              } else {
+                node.tempcolor = '#f6f6f6';
+              }
+              return node;
+            });
+          } else {
+            nodes = nodes.filter(node => node[param] >= params[param][0] && node[param] <= params[param][1]);
+          }
+        }
       }
     });
     return nodes;

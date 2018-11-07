@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {MatSliderChange} from "@angular/material";
+import {MatSliderChange, MatSlideToggleChange} from "@angular/material";
 
 @Component({
   selector: 'app-graph-menu',
@@ -8,7 +8,9 @@ import {MatSliderChange} from "@angular/material";
 })
 export class GraphMenuComponent implements OnInit {
 
-  _settings: any = {};
+  _settings: any = {
+    fade: false
+  };
 
   @Output()
   readonly optionsChange: EventEmitter<any> = new EventEmitter<any>();
@@ -24,6 +26,11 @@ export class GraphMenuComponent implements OnInit {
     this._settings[field] = change.value;
     this.optionsChange.emit(this._settings);
 
+  }
+
+  setFilterType(change: MatSlideToggleChange) {
+    console.log(change);
+    this._settings.fade = change.checked;
   }
 
 }

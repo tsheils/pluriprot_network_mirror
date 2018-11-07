@@ -4,7 +4,8 @@
     [ngClass]="{clicked: nodeClicked}"
     cx="0"
     cy="0"
-    [attr.fill]="node.color"
+    [attr.fill] = "node.tempcolor ? node.tempcolor : node.color"
+    [attr.stroke] = "node.tempcolor ? '#b0b0b0' : ''"
     [attr.r]="node.r">
   </svg:circle>
   <svg:text>{{displayName}}</svg:text>
