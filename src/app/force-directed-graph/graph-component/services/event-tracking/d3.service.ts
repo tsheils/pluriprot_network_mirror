@@ -21,42 +21,40 @@ export class D3Service {
 
   /** A method to bind a pan and zoom behaviour to an svg element */
   applyZoomableBehaviour(svgElement, containerElement) {
-
+  console.log("adding zoomable behavior");
     let svg, container, zoomed, zoom;
+
+//    var transform = d3.zoomIdentity.translate(550, 375).scale(.15);
+
     svg = d3.select(svgElement);
-    container = svg.select('#root');
+    container = d3.select('#root');
 
-/*    const bounds = container.node().getBBox();
-    const parent = container.node().parentElement;
-    console.log(bounds);
-    console.log(parent);
-    const fullWidth = parent.clientWidth || parent.parentNode.clientWidth,
-      fullHeight = parent.clientHeight;
-    console.log(fullHeight);
-    console.log(fullWidth);
-    const width = bounds.width,
-      height = bounds.height;
-    const midX = bounds.x + width / 2,
-      midY = bounds.y + height / 2;
-    if (width == 0 || height == 0) return; // nothing to fit
-    const scale = (0.75) / Math.max(width / fullWidth, height / fullHeight);
-    const translate = [fullWidth / 2 - scale * midX, fullHeight / 2 - scale * midY];
-    console.log(scale);
-    console.log(translate);*/
+   // container.attr("transform", transform);    // Applies initial transform
 
-
-
-    // container.attr('transform', 'translate(' + translate[0] +','+ translate[1] + ')scale('+ scale +')');
-
+  /*  var zoomable = svg
+      .append("g")
+      .attr("class", "zoomable")
+      .attr("transform", transform);    // Applies initial transform
+*/
+  /*  container
+    .attr("transform","translate(550,375)scale(.15)");
+*/
     zoomed = () => {
-     // console.log(d3.event);
+      console.log(d3.event);
       const transform = d3.event.transform;
       container.attr('transform', 'translate(' + transform.x + ',' + transform.y + ')scale(' + transform.k + ')');
     };
+    zoom = d3.zoom().on("zoom", zoomed);
 
-    zoom = d3.zoom()
-      .on('zoom', zoomed);
-    svg.call(zoom);
+
+    /* zoom = d3.zoom()
+       .on('zoom', zoomed);
+ */
+    //zoom.transform(svg, d3.zoomIdentity);
+
+    svg
+    //  .call(zoom.transform, transform) // Calls/inits handleZoom
+      .call(zoom);
   }
 
   /** A method to bind a draggable behaviour to an svg element */
@@ -230,12 +228,14 @@ export class D3Service {
    * This method does not interact with the document, purely physical calculations with d3
    */
   getForceDirectedGraph(nodes: Node[], links: Link[], options: {width, height}) {
+    console.log(options);
     return new ForceDirectedGraph(nodes, links, options);
   }
 
-  zoomFit(paddingPercent, transitionDuration) {
+  zoomFit(paddingPercent?, transitionDuration?) {
+    const root = d3.select('#root');
 
-    var zoom = d3
+    const zoom = d3
       .zoom()
       .scaleExtent([0, 10])
       .on('zoom.zoom', function () {
@@ -246,17 +246,24 @@ export class D3Service {
           +   'scale(' + d3.event.transform.k     + ')');
       });
 
-    const root = d3.select('svg').select('#root');
     const bounds = root.node().getBBox();
     const parent = root.node().parentElement;
     const fullWidth = parent.clientWidth || parent.parentNode.clientWidth,
       fullHeight = parent.clientHeight;
-    const width = bounds.width,
+    let width = bounds.width,
       height = bounds.height;
+    if(width === 0){
+      width = 1200
+    }
+    if(height === 0){
+      height = 1200
+    }
     const midX = bounds.x + width / 2,
       midY = bounds.y + height / 2;
+    console.log(width);
+    console.log(height);
     if (width == 0 || height == 0) return; // nothing to fit
-    const scale = (paddingPercent || 0.75) / Math.max(width / fullWidth, height / fullHeight);
+    const scale = Math.max(width / fullWidth, height / fullHeight);
     const translate = [fullWidth / 2 - scale * midX, fullHeight / 2 - scale * midY];
     console.log("zoomFit", translate, scale);
     var transform = d3.zoomIdentity

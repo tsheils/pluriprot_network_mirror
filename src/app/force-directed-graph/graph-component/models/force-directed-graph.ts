@@ -96,6 +96,7 @@ export class ForceDirectedGraph {
     /** Creating the simulation */
     if (!this.simulation) {
       const ticker = this.ticker;
+      console.log(options);
       this.simulation = d3.forceSimulation()
         .force('link', d3.forceLink(this.links).id(d => d['uuid'])
           .distance(this.links.length * 150))

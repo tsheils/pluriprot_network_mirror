@@ -78,6 +78,7 @@ export class ForceDirectedGraphComponent implements OnInit, AfterViewInit {
    * set up graph data subscription
    */
   ngOnInit() {
+    console.log(this);
     this.graphDataService.graphhistory$.subscribe(res => {
       this.nodes = res.nodes;
       this.links = res.links;
@@ -89,7 +90,7 @@ export class ForceDirectedGraphComponent implements OnInit, AfterViewInit {
      * Receiving an initialized simulated graph from our custom d3 service
      * @type {ForceDirectedGraph}
      */
-    this.graph = this.d3Service.getForceDirectedGraph(this.nodes, this.links, this._options);
+    this.graph = new ForceDirectedGraph(this.nodes, this.links, this._options);
 
     /**
      * Binding change detection check on each tick
@@ -98,12 +99,6 @@ export class ForceDirectedGraphComponent implements OnInit, AfterViewInit {
      * Also, it makes sense to avoid unnecessary checks when we are dealing only with simulations data binding.
      */
     this.graph.ticker.subscribe((d) => {
-  /*    console.log(d3.event);
-      if(d3.event && d3.event.sourceEvent.type !='wheel' || !d3.event){
-        console.log("sdfsdf");
-        this.resetZoom();
-        this.graph.simulation.stop()
-      }*/
       this.ref.markForCheck();
     });
   }
@@ -113,7 +108,6 @@ export class ForceDirectedGraphComponent implements OnInit, AfterViewInit {
    */
   ngAfterViewInit() {
     this.graph.initSimulation(this.options);
-    this.resetZoom();
   }
 
 resetZoom() {

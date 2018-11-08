@@ -82,27 +82,43 @@ export class AppComponent {
           n.x = node.position.x;
           n.y = node.position.y;
         }
+        if(node.data.id === '6685'){
+          console.error(node);
+          console.error(n);
+          n.color = 'red';
+        }
         this.nodeService.setNode(n);
         return n;
       }));
 
+      const circles = [];
       const linkObs = of(res.elements.edges.map(edge => {
         const source = this.nodeService.getById(edge.data.source);
         const target = this.nodeService.getById(edge.data.target);
-        const l = this.linkService.makeLink(edge.data.id, source, target, {properties: edge.data});
-        this.linkService.setLink(l);
-        return l;
+        if(source.uuid !== target.uuid) {
+          const l = this.linkService.makeLink(edge.data.id, source, target, {properties: edge.data});
+          this.linkService.setLink(l);
+          return l;
+        } else {
+          circles.push(edge);
+          if(edge.id ==='30189'){
+            console.error(edge);
+          }
+          const l = this.linkService.makeLink(edge.data.id, source, target, {properties: edge.data});
+          this.linkService.setLink(l);
+          return l;
+        }
       }));
 
 
       const zipped: Observable<any> = from([nodeObs, linkObs]).pipe(zipAll());
-
       zipped.subscribe(res => {
+        console.log(circles);
+        this.loaded = true;
         this.graphDataService.setGraph({
           nodes: this.graphDataService.getNodes(),
           links: this.graphDataService.getLinks()
         });
-        this.loaded = true;
       })
     })
   }
@@ -122,7 +138,7 @@ export class AppComponent {
       // skip iterating from the fade parameter
       if(param !== 'fade') {
         if (Array.isArray(params[param])) {
-          if (params.fade === true) {
+          if (params['fade'] === true) {
             nodes = nodes.map(node => {
               if (node[param] >= params[param][0] && node[param] <= params[param][1]) {
                 node.tempcolor = null;
@@ -146,7 +162,7 @@ export class AppComponent {
     links = links.filter(link => {
       const source: string = link.getSourceId();
       const target: string = link.getTargetId();
-      return currentNodes.includes(source) && currentNodes.includes(target) || (source===target);
+      return currentNodes.includes(source) && currentNodes.includes(target);
     });
     return links;
   }
