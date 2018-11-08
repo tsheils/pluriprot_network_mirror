@@ -1,7 +1,6 @@
 <div *ngIf="loading" class="loadingIcon" fxLayoutAlign="center center">
   <mat-spinner></mat-spinner>
 </div>
-<button (click)="resetZoom()">Reset Zoom</button>
 
 <svg #svg
      [attr.width]="_options.width"
@@ -29,5 +28,3 @@
     </marker>
   </defs>
 </svg>
-
-<button (click)="resetZoom()">Reset Zoom</button>

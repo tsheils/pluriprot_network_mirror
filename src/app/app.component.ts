@@ -7,6 +7,7 @@ import {Node, Protein} from "./force-directed-graph/graph-component/models/node"
 import {NodeService} from "./force-directed-graph/graph-component/services/event-tracking/node.service";
 import {LinkService} from "./force-directed-graph/graph-component/services/event-tracking/link.service";
 import {GraphDataService} from "./force-directed-graph/graph-component/services/graph-data.service";
+import {DataParserService} from "./services/data-parser.service";
 
 @Component({
   selector: 'app-root',
@@ -26,11 +27,14 @@ export class AppComponent {
    */
   public links: Link[] = [];
 
+  dataMap: Map<string, any> = new Map<string, any>();
+
 
   public loaded = false;
 
   constructor(
     private _http: HttpClient,
+    private dataParserService: DataParserService,
     private nodeService: NodeService,
     private linkService: LinkService,
     private graphDataService: GraphDataService
@@ -38,51 +42,20 @@ export class AppComponent {
 
   ngOnInit() {
     console.log(this);
-/*    this._http.get<any>('./assets/nscs.json').subscribe(res=> {
-      console.log(res);
-      const nodeObs = of(res.elements.nodes.map(node => {
-        console.log(node);
-        const n = this.nodeService.makeNode(node.data.id, {properties: node.data});
-        if(node.position) {
-          n.x = node.position.x;
-          n.y = node.position.y;
-        }
-        this.nodeService.setNode(n);
-        return n;
-      }));
-
-      const linkObs = of(res.elements.edges.map(edge => {
-        const linkArr = [];
-        const source = this.nodeService.getById(edge.data.source);
-        const target = this.nodeService.getById(edge.data.target);
-        const l = this.linkService.makeLink(edge.data.id, source, target, {properties: edge.data});
-        this.linkService.setLink(l);
-        return l;
-      }));
-
-
-      const zipped: Observable<any> = from([nodeObs, linkObs]).pipe(zipAll());
-
-      zipped.subscribe(res => {
-       // this.nodes = res[0];
-       // this.links = res[1];
-        this.graphDataService.setGraph({
-          nodes: this.graphDataService.getNodes(),
-          links: this.graphDataService.getLinks()
-        });
-        this.loaded = true;
-
-      })
-    })*/
-
-    this._http.get<any>('./assets/nscs.json').subscribe(res=> {
+     this.dataParserService.LoadData().subscribe(res => {
+       this.dataMap = this.dataParserService.getDataMap();
+       this.graphDataService.setGraph(this.dataMap.get('nscs'))
+     });
+     //console.log(data);
+    }
+   /* this._http.get<any>('./assets/nscs.json').subscribe(res => {
       const nodeObs = of(res.elements.nodes.map(node => {
         const n: Protein = this.nodeService.makeNode(node.data.id, {properties: node.data}) as Protein;
-        if(node.position) {
+        if (node.position) {
           n.x = node.position.x;
           n.y = node.position.y;
         }
-        if(node.data.id === '6685'){
+        if (node.data.id === '6685') {
           console.error(node);
           console.error(n);
           n.color = 'red';
@@ -95,18 +68,20 @@ export class AppComponent {
       const linkObs = of(res.elements.edges.map(edge => {
         const source = this.nodeService.getById(edge.data.source);
         const target = this.nodeService.getById(edge.data.target);
-        if(source.uuid !== target.uuid) {
+        if (source.uuid !== target.uuid) {
+          if(edge.data.interaction === 'genetic'){
+            source.color = 'red';
+            target.color = 'red';
+          }
           const l = this.linkService.makeLink(edge.data.id, source, target, {properties: edge.data});
           this.linkService.setLink(l);
           return l;
         } else {
           circles.push(edge);
-          if(edge.id ==='30189'){
+          if (edge.id === '30189') {
             console.error(edge);
           }
-          const l = this.linkService.makeLink(edge.data.id, source, target, {properties: edge.data});
-          this.linkService.setLink(l);
-          return l;
+          return null;
         }
       }));
 
@@ -121,7 +96,7 @@ export class AppComponent {
         });
       })
     })
-  }
+  }*/
 
   filterGraph(event: Event) {
     const nodes = this._filterNodes(event);
@@ -133,7 +108,7 @@ export class AppComponent {
   }
 
   _filterNodes(params: Event): Protein[]{
-    let nodes: Protein[] = this.graphDataService.getNodes() as Protein[];
+    let nodes: Protein[] = this.dataMap.get(params['data']).nodes as Protein[];
     Object.keys(params).forEach(param => {
       // skip iterating from the fade parameter
       if(param !== 'fade') {
@@ -157,7 +132,7 @@ export class AppComponent {
   }
 
   _filterEdges(params: Event, nodes : Protein[]){
-    let links: Link[] = this.graphDataService.getLinks() as Link[];
+    let links: Link[] = this.dataMap.get(params['data']).links as Link[];
     const currentNodes = nodes.map(node => node.uuid);
     links = links.filter(link => {
       const source: string = link.getSourceId();

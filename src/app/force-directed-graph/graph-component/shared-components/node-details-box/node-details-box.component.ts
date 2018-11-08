@@ -25,7 +25,7 @@ export class NodeDetailsBoxComponent implements OnInit {
   }
 
   getLabel(value: number): string {
-    if(value === -100){
+    if(!value || value === -100){
       return 'no data'
     } else {
       return value.toExponential(2);

@@ -1,5 +1,7 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {MatSliderChange, MatSlideToggleChange} from "@angular/material";
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {MatFormField, MatFormFieldControl, MatSidenav, MatSliderChange, MatSlideToggleChange} from "@angular/material";
+import {RangeSliderComponentChange} from "../../../../tools/range-slider/range-slider.component";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-graph-menu',
@@ -12,25 +14,36 @@ export class GraphMenuComponent implements OnInit {
     fade: false
   };
 
+  graphTypeCtrl: FormControl = new FormControl();
+
   @Output()
   readonly optionsChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() readonly close: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 
   constructor() { }
 
   ngOnInit() {
+  this.graphTypeCtrl.valueChanges.subscribe(val => {
+    console.log(val)
+    this._settings.data = val;
+    this.optionsChange.emit(this._settings);
+  })
   }
 
+
+
   sliderChange(change: MatSliderChange, field: string) {
-    console.log(change);
     this._settings[field] = change.value;
     this.optionsChange.emit(this._settings);
 
   }
 
   setFilterType(change: MatSlideToggleChange) {
-    console.log(change);
     this._settings.fade = change.checked;
   }
 
+  closeMenu(): void {
+    this.close.emit(true);
+  }
 }

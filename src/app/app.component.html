@@ -2,7 +2,10 @@
 <mat-sidenav-container class="sctl-graph-container" [hasBackdrop]="false">
     <mat-sidenav #graphMenu mode="over"
                  class="menu-drawer">
-      <app-graph-menu (optionsChange)="filterGraph($event)"></app-graph-menu>
+      <app-graph-menu
+        (optionsChange)="filterGraph($event)"
+        (close)="graphMenu.close()"
+      ></app-graph-menu>
     </mat-sidenav>
     <mat-sidenav-content>
       <button mat-button (click)="graphMenu.toggle()" class="close-button" *ngIf="graphMenu.opened"><mat-icon>arrow_left</mat-icon> close</button>
@@ -13,5 +16,8 @@
   <app-force-directed-graph cdkDropList></app-force-directed-graph>
     </mat-sidenav-content>
 </mat-sidenav-container>
+</div>
+<div class="table-image">
+  <img class="full-width" src="../assets/table-image.png"/>
 </div>
 

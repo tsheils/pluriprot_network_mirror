@@ -136,6 +136,7 @@ export class NodeService {
    * @param {Node} node
    */
   setNode(node: Node): void {
+    // todo: this was changed to key off on node name
    this.masterNodeMap.set(node.uuid, node);
   }
 
@@ -154,7 +155,10 @@ export class NodeService {
       } else {
         n = new Node(id, data);
       }
-    }
+    }/* else {
+      console.log(n);
+      console.log(data);
+    }*/
     n.uuid = id;
     return n;
   }

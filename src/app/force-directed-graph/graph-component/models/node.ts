@@ -138,6 +138,9 @@ export class Protein extends Node {
   id: string;
   color: string;
   tempcolor: string;
+  origin: string;
+  Phosph_in_ESC_1_NSC_0_: boolean;
+
 //  name: string;
 /*  selected: boolean;
   shared_name:string;*/
@@ -153,6 +156,7 @@ export class Protein extends Node {
     this.hESC_NSC_Fold_Change = data.properties.hESC_NSC_Fold_Change;
     this.hESC_NSC_Ratio = data.properties.hESC_NSC_Ratio;
     this.gene = data.properties.Gene.trim();
+    this.Phosph_in_ESC_1_NSC_0_ = data.properties.Phosph_in_ESC_1_NSC_0_;
     this.color = this.hESC_NSC_Fold_Change === -100 ? '#CCCCCC' : COLOR(-this.hESC_NSC_Fold_Change * .4);
   }
 }

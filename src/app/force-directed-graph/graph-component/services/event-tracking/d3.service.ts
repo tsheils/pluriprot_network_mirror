@@ -16,40 +16,27 @@ export class D3Service {
     private nodeService: NodeService,
     private linkService: LinkService,
   ) {
-    console.log("making d3 services")
   }
 
   /** A method to bind a pan and zoom behaviour to an svg element */
   applyZoomableBehaviour(svgElement, containerElement) {
-  console.log("adding zoomable behavior");
     let svg, container, zoomed, zoom;
 
-//    var transform = d3.zoomIdentity.translate(550, 375).scale(.15);
+    var transform = d3.zoomIdentity.translate(600, 500).scale(.15);
 
     svg = d3.select(svgElement);
     container = d3.select('#root');
 
-   // container.attr("transform", transform);    // Applies initial transform
-
-  /*  var zoomable = svg
-      .append("g")
-      .attr("class", "zoomable")
-      .attr("transform", transform);    // Applies initial transform
-*/
+    container.attr("transform", transform);    // Applies initial transform
   /*  container
     .attr("transform","translate(550,375)scale(.15)");
 */
     zoomed = () => {
-      console.log(d3.event);
       const transform = d3.event.transform;
       container.attr('transform', 'translate(' + transform.x + ',' + transform.y + ')scale(' + transform.k + ')');
     };
     zoom = d3.zoom().on("zoom", zoomed);
 
-
-    /* zoom = d3.zoom()
-       .on('zoom', zoomed);
- */
     //zoom.transform(svg, d3.zoomIdentity);
 
     svg
@@ -78,6 +65,7 @@ export class D3Service {
         if (!d3.event.active) {
           graph.simulation.alphaTarget(0);
         }
+        graph.simulation.stop();
 
         // by not resetting these, the node stays where it is dragged
         /*  node.fx = null;
@@ -228,7 +216,6 @@ export class D3Service {
    * This method does not interact with the document, purely physical calculations with d3
    */
   getForceDirectedGraph(nodes: Node[], links: Link[], options: {width, height}) {
-    console.log(options);
     return new ForceDirectedGraph(nodes, links, options);
   }
 
@@ -253,19 +240,16 @@ export class D3Service {
     let width = bounds.width,
       height = bounds.height;
     if(width === 0){
-      width = 1200
+      width = 400
     }
     if(height === 0){
-      height = 1200
+      height = 300
     }
     const midX = bounds.x + width / 2,
       midY = bounds.y + height / 2;
-    console.log(width);
-    console.log(height);
     if (width == 0 || height == 0) return; // nothing to fit
     const scale = Math.max(width / fullWidth, height / fullHeight);
     const translate = [fullWidth / 2 - scale * midX, fullHeight / 2 - scale * midY];
-    console.log("zoomFit", translate, scale);
     var transform = d3.zoomIdentity
       .translate(
         translate[0],

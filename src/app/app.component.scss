@@ -33,6 +33,16 @@
   background-color: white;
 }
 
+.table-image {
+  margin-top:20vh;
+  width: 100vw;
+}
+
+.full-width {
+  width: 100%;
+  height: auto;
+}
+
 @media only screen and (max-width: 960px) {
   .menu-drawer {
     width: 50vw;

@@ -25,6 +25,7 @@ import { NodeDetailsBoxComponent } from './force-directed-graph/graph-component/
 import { GraphMenuComponent } from './force-directed-graph/graph-component/shared-components/graph-menu/graph-menu.component';
 import { RangeSliderComponent } from './tools/range-slider/range-slider.component';
 import { D3ColorLegendComponent } from './tools/d3-color-legend/d3-color-legend.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -49,6 +50,8 @@ import { D3ColorLegendComponent } from './tools/d3-color-legend/d3-color-legend.
     BrowserAnimationsModule,
     CommonModule,
     HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
     MaterialModule
   ],
   providers: [
