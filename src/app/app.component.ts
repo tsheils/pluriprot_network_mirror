@@ -99,6 +99,7 @@ export class AppComponent {
   }*/
 
   filterGraph(event: Event) {
+    console.log(event);
     const nodes = this._filterNodes(event);
     const edges = this._filterEdges(event, nodes);
    this.graphDataService.setGraph({
@@ -108,7 +109,8 @@ export class AppComponent {
   }
 
   _filterNodes(params: Event): Protein[]{
-    let nodes: Protein[] = this.dataMap.get(params['data']).nodes as Protein[];
+    const data = params['data'] ? params['data'] : 'nscs';
+    let nodes: Protein[] = this.dataMap.get(data).nodes as Protein[];
     Object.keys(params).forEach(param => {
       // skip iterating from the fade parameter
       if(param !== 'fade') {
@@ -132,7 +134,8 @@ export class AppComponent {
   }
 
   _filterEdges(params: Event, nodes : Protein[]){
-    let links: Link[] = this.dataMap.get(params['data']).links as Link[];
+    const data = params['data'] ? params['data'] : 'nscs';
+    let links: Link[] = this.dataMap.get(data).links as Link[];
     const currentNodes = nodes.map(node => node.uuid);
     links = links.filter(link => {
       const source: string = link.getSourceId();

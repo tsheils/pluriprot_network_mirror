@@ -8,8 +8,10 @@
 <div class = "menu-div">
 
   <mat-radio-group [formControl]="graphTypeCtrl">
-    <mat-radio-button value="nsc-only">Gene Expression</mat-radio-button> &nbsp;&nbsp;
-    <mat-radio-button value="nscs" [checked]="true">Phosphoprotein</mat-radio-button>
+    <mat-radio-button value="nsc-only">Phosphoprotein NSC only</mat-radio-button> &nbsp;&nbsp; <br>
+    <mat-radio-button value="nscs" [checked]="true">PGene Expression nscs 2.5xUp</mat-radio-button><br>
+    <mat-radio-button value="esc-only">Phosphoprotein ESC only</mat-radio-button> &nbsp;&nbsp;<br>
+    <mat-radio-button value="escs">Gene Expression escs 2.5xup</mat-radio-button> &nbsp;&nbsp;
   </mat-radio-group>
 
 <h3>hESC/hNSC NSAF SpC ratio:</h3>

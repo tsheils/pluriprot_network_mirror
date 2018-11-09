@@ -150,7 +150,7 @@ export class NodeService {
   makeNode(id: string, data: any): Node {
     let n: Node = this.masterNodeMap.get(id.toString());
     if (!n) {
-      if (data.properties.Gene) {
+      if (data.properties.Gene || data.properties.Gene_Symbol) {
           n = new Protein(id, data);
       } else {
         n = new Node(id, data);

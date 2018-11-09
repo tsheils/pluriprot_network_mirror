@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 
 const COLOR = d3.scaleSequential(
-  d3.interpolateGnBu
+  d3.interpolateYlGnBu
 ).domain([-10, 11]);
 
 
@@ -140,6 +140,7 @@ export class Protein extends Node {
   tempcolor: string;
   origin: string;
   Phosph_in_ESC_1_NSC_0_: boolean;
+  phospho: string;
 
 //  name: string;
 /*  selected: boolean;
@@ -151,12 +152,25 @@ export class Protein extends Node {
    */
   constructor(uuid: string, data: any) {
     super(uuid, data);
+    if(data.properties.Phosph_in_ESC_1_NSC_0_) {
+      console.log(data);
+    }
     this.degree = data.properties.Degree;
     this.labels = data.properties.cytoscape_alias_list;
     this.hESC_NSC_Fold_Change = data.properties.hESC_NSC_Fold_Change;
     this.hESC_NSC_Ratio = data.properties.hESC_NSC_Ratio;
-    this.gene = data.properties.Gene.trim();
+    this.gene = data.properties.Gene ? data.properties.Gene.trim() : data.properties.Gene_Symbol.trim();
     this.Phosph_in_ESC_1_NSC_0_ = data.properties.Phosph_in_ESC_1_NSC_0_;
     this.color = this.hESC_NSC_Fold_Change === -100 ? '#CCCCCC' : COLOR(-this.hESC_NSC_Fold_Change * .4);
+    // this.phospho =  setPhospho(data);
+  }
+
+  private setPhospho(data: any){
+    if(data.properties.NSC === 1) {
+      return 'nsc';
+    }
+    if(data.properties.ESC === 1) {
+      return 'esc';
+    }
   }
 }
