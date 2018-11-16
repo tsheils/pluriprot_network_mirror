@@ -8,6 +8,7 @@ import {NodeService} from "./force-directed-graph/graph-component/services/event
 import {LinkService} from "./force-directed-graph/graph-component/services/event-tracking/link.service";
 import {GraphDataService} from "./force-directed-graph/graph-component/services/graph-data.service";
 import {DataParserService} from "./services/data-parser.service";
+import {environment} from "src/environments/environment.prod";
 
 @Component({
   selector: 'app-root',
@@ -32,6 +33,8 @@ export class AppComponent {
 
   public loaded = false;
 
+  graph: any;
+
   constructor(
     private _http: HttpClient,
     private dataParserService: DataParserService,
@@ -42,61 +45,38 @@ export class AppComponent {
 
   ngOnInit() {
     console.log(this);
-     this.dataParserService.LoadData().subscribe(res => {
-       this.dataMap = this.dataParserService.getDataMap();
-       this.graphDataService.setGraph(this.dataMap.get('nscs'))
-     });
+    this.dataParserService.LoadData().subscribe(res => {
+      console.log(res);
+      this.graphDataService.setGraph({
+        nodes: this.graphDataService.getNodes(),
+        links: this.graphDataService.getLinks()
+      });
+
+
+      // this._http.get<any>(environment.parsedData).subscribe(res => {
+      // console.log(res);
+      //     this.graphDataService.setGraph(res);
+      // this.loaded = true;
+    });
+
+
+
+     /*this.dataParserService.LoadData().subscribe(res => {
+       console.log(res);
+       this.graphDataService.setGraph({
+         nodes: this.graphDataService.getNodes(),
+         links: this.graphDataService.getLinks()
+       });
+
+       this.graph = {
+         nodes: this.graphDataService.getNodes(),
+         links: this.graphDataService.getLinks()
+       }
+      // this.dataMap = this.dataParserService.getDataMap();
+//       this.graphDataService.setGraph(this.dataMap.get('nscs'))
+     });*/
      //console.log(data);
     }
-   /* this._http.get<any>('./assets/nscs.json').subscribe(res => {
-      const nodeObs = of(res.elements.nodes.map(node => {
-        const n: Protein = this.nodeService.makeNode(node.data.id, {properties: node.data}) as Protein;
-        if (node.position) {
-          n.x = node.position.x;
-          n.y = node.position.y;
-        }
-        if (node.data.id === '6685') {
-          console.error(node);
-          console.error(n);
-          n.color = 'red';
-        }
-        this.nodeService.setNode(n);
-        return n;
-      }));
-
-      const circles = [];
-      const linkObs = of(res.elements.edges.map(edge => {
-        const source = this.nodeService.getById(edge.data.source);
-        const target = this.nodeService.getById(edge.data.target);
-        if (source.uuid !== target.uuid) {
-          if(edge.data.interaction === 'genetic'){
-            source.color = 'red';
-            target.color = 'red';
-          }
-          const l = this.linkService.makeLink(edge.data.id, source, target, {properties: edge.data});
-          this.linkService.setLink(l);
-          return l;
-        } else {
-          circles.push(edge);
-          if (edge.id === '30189') {
-            console.error(edge);
-          }
-          return null;
-        }
-      }));
-
-
-      const zipped: Observable<any> = from([nodeObs, linkObs]).pipe(zipAll());
-      zipped.subscribe(res => {
-        console.log(circles);
-        this.loaded = true;
-        this.graphDataService.setGraph({
-          nodes: this.graphDataService.getNodes(),
-          links: this.graphDataService.getLinks()
-        });
-      })
-    })
-  }*/
 
   filterGraph(event: Event) {
     console.log(event);
@@ -110,7 +90,8 @@ export class AppComponent {
 
   _filterNodes(params: Event): Protein[]{
     const data = params['data'] ? params['data'] : 'nscs';
-    let nodes: Protein[] = this.dataMap.get(data).nodes as Protein[];
+    // let nodes: Protein[] = this.dataMap.get(data).nodes as Protein[];
+    let nodes: Protein[] = this.graphDataService.getNodes() as Protein[];
     Object.keys(params).forEach(param => {
       // skip iterating from the fade parameter
       if(param !== 'fade') {
@@ -134,8 +115,9 @@ export class AppComponent {
   }
 
   _filterEdges(params: Event, nodes : Protein[]){
-    const data = params['data'] ? params['data'] : 'nscs';
-    let links: Link[] = this.dataMap.get(data).links as Link[];
+  //  const data = params['data'] ? params['data'] : 'nscs';
+  //  let links: Link[] = this.dataMap.get(data).links as Link[];
+    let links: Link[] = this.graphDataService.getLinks();
     const currentNodes = nodes.map(node => node.uuid);
     links = links.filter(link => {
       const source: string = link.getSourceId();

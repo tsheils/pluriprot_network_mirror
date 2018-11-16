@@ -1,13 +1,27 @@
-<svg:g [attr.transform]="'translate(' + node.x + ',' + node.y + ')'"  *ngIf="label !='structure'" (click)="toggleMenu()">
-  <svg:circle
-    class="node {{node.type}}"
-    [ngClass]="{clicked: nodeClicked}"
-    cx="0"
-    cy="0"
-    [attr.fill] = "node.tempcolor ? node.tempcolor : node.color"
-    [attr.stroke] = "node.tempcolor ? '#b0b0b0' : ''"
-    [attr.r]="node.r">
+<svg:g [attr.transform]="'translate(' + node.x + ',' + node.y + ')'" (click)="toggleMenu()" *ngIf="node">
+
+  <svg:circle *ngIf=!node.shape
+              class="node {{node.type}}"
+              [ngClass]="{clicked: nodeClicked}"
+              cx="0"
+              cy="0"
+              [attr.fill]="node.tempcolor ? node.tempcolor : node.color"
+              [attr.stroke]="node.tempcolor ? '#b0b0b0' : ''"
+              [attr.r]="node.r">
   </svg:circle>
+  <svg:rect *ngIf="node.shape === 'square'"
+            [attr.width]= node.r*2
+            [attr.height]= node.r*2
+            [attr.fill]="node.tempcolor ? node.tempcolor : node.color"
+            [attr.stroke]="node.tempcolor ? '#b0b0b0' : ''"
+  ></svg:rect>
+  <svg:rect *ngIf="node.shape === 'diamond'"
+            [attr.width]= node.r*2
+            [attr.height]= node.r*2
+            [attr.fill]="node.tempcolor ? node.tempcolor : node.color"
+            [attr.stroke]="node.tempcolor ? '#b0b0b0' : ''"
+            [attr.transform]="'rotate(45 ' + node.r +' '+ -node.r+')'"
+  ></svg:rect>
   <svg:text [attr.transform]="'translate(' + node.r / 2 + ',' + -node.r + ')'">{{displayName}}</svg:text>
 </svg:g>
 

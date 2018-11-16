@@ -34,6 +34,7 @@ export class GraphDataService {
   }
 
   setGraph(graph: any) {
+    console.log(graph);
     this.nodeList = graph.nodes;
     this.linkList = graph.links;
     this.countLinks();

@@ -76,7 +76,7 @@ export class NodeService {
    * @param {Node[]} node
    */
   hoveredNode(node: Node[]): void {
-    console.log(node);
+   // console.log(node);
     if (this.hoveredNodeList.length > 0) {
       this.hoveredNodeList = [];
     }
@@ -135,9 +135,9 @@ export class NodeService {
    * set node in map
    * @param {Node} node
    */
-  setNode(node: Node): void {
+  setNode(node: Protein): void {
     // todo: this was changed to key off on node name
-   this.masterNodeMap.set(node.uuid, node);
+   this.masterNodeMap.set(node.gene, node);
   }
 
   /**
@@ -147,19 +147,15 @@ export class NodeService {
    * @param data
    * @return {Node}
    */
-  makeNode(id: string, data: any): Node {
-    let n: Node = this.masterNodeMap.get(id.toString());
+  makeNode(id: string, data: any): Protein {
+    let n: Protein = this.masterNodeMap.get(id.toString()) as Protein;
     if (!n) {
-      if (data.properties.Gene || data.properties.Gene_Symbol) {
-          n = new Protein(id, data);
-      } else {
-        n = new Node(id, data);
-      }
-    }/* else {
-      console.log(n);
-      console.log(data);
-    }*/
-    n.uuid = id;
+        n = new Protein(id, data);
+    } else {
+      const tempNode: Protein = new Protein(id, data);
+      Object.entries((n)).forEach((prop) => tempNode[prop[0]] = prop[1]);
+      n = tempNode;
+    }
     return n;
   }
 

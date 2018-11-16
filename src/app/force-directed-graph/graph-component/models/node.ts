@@ -58,7 +58,7 @@ export class Node implements d3.SimulationNodeDatum {
    * number of links to each node
    * @type {number}
    */
-  linkCount = 0;
+  linkCount = 1;
   /**id string   */
   uuid: string;
   /**id string   */
@@ -110,7 +110,7 @@ export class Node implements d3.SimulationNodeDatum {
    * return node radius size based on link count
    * @return {number}
    */
-  get r() {
+  get r(): number {
     return 50 * this.normal() + 15;
   }
 
@@ -138,9 +138,8 @@ export class Protein extends Node {
   id: string;
   color: string;
   tempcolor: string;
-  origin: string;
   Phosph_in_ESC_1_NSC_0_: boolean;
-  phospho: string;
+  shape: string;
 
 //  name: string;
 /*  selected: boolean;
@@ -152,25 +151,25 @@ export class Protein extends Node {
    */
   constructor(uuid: string, data: any) {
     super(uuid, data);
-    if(data.properties.Phosph_in_ESC_1_NSC_0_) {
-      console.log(data);
-    }
+    this.shape = this._setShape(data);
     this.degree = data.properties.Degree;
     this.labels = data.properties.cytoscape_alias_list;
     this.hESC_NSC_Fold_Change = data.properties.hESC_NSC_Fold_Change;
     this.hESC_NSC_Ratio = data.properties.hESC_NSC_Ratio;
     this.gene = data.properties.Gene ? data.properties.Gene.trim() : data.properties.Gene_Symbol.trim();
-    this.Phosph_in_ESC_1_NSC_0_ = data.properties.Phosph_in_ESC_1_NSC_0_;
-    this.color = this.hESC_NSC_Fold_Change === -100 ? '#CCCCCC' : COLOR(-this.hESC_NSC_Fold_Change * .4);
-    // this.phospho =  setPhospho(data);
+    this.color = !this.hESC_NSC_Fold_Change || this.hESC_NSC_Fold_Change === -100 ?
+      '#CCCCCC' : COLOR(-this.hESC_NSC_Fold_Change * .4);
   }
 
-  private setPhospho(data: any){
+  private _setShape(data: any){
     if(data.properties.NSC === 1) {
-      return 'nsc';
+      return 'square';
     }
     if(data.properties.ESC === 1) {
-      return 'esc';
+      return 'diamond';
     }
+    return null;
   }
+
+
 }
