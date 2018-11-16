@@ -1,6 +1,6 @@
 <div class = "fdg">
 <mat-sidenav-container class="sctl-graph-container" [hasBackdrop]="false">
-    <mat-sidenav #graphMenu mode="over"
+    <mat-sidenav #graphMenu [opened]="true" mode="over"
                  class="menu-drawer">
       <app-graph-menu
         (optionsChange)="filterGraph($event)"

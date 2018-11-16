@@ -73,16 +73,18 @@ export class DataParserService {
 
     const circles = [];
     const linkObs = of(data.data.elements.edges.map(edge => {
-      const source = this.nodeService.getById(edge.data.source);
-      const target = this.nodeService.getById(edge.data.target);
-      if (source.name !== target.name) {
+      if (edge.data.source !== edge.data.target) {
+        const source = this.nodeService.getById(edge.data.source);
+        const target = this.nodeService.getById(edge.data.target);
         const l = this.linkService.makeLink(edge.data.id, source, target, {properties: edge.data});
+        console.log(l);
         this.linkService.setLink(l);
         return l;
       } else {
-        circles.push(edge);
-        const l = this.linkService.makeLink(edge.data.id, source, target, {properties: edge.data});
-        this.linkService.setLink(l);
+        const source = this.nodeService.getById(edge.data.source);
+        const target = this.nodeService.getById(edge.data.target);
+         const l = this.linkService.makeLink(edge.data.id, source, target, {properties: edge.data});
+       // this.linkService.setLink(l);
         return l;
       }
     }));
