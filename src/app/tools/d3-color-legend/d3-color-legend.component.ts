@@ -26,7 +26,7 @@ export class D3ColorLegendComponent implements OnInit {
       .attr('height', '30')
     const defs = svg.append("defs");
 
-    const colorScale = d3.scaleSequential(d3.interpolateYlGnBu).domain([-50, 0])
+    const colorScale = d3.scaleSequential(d3.interpolateYlGnBu).domain([-50, 50])
 
     const linearGradient = defs.append("linearGradient")
       .attr("id", "linear-gradient");

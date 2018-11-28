@@ -65,7 +65,6 @@ export class NodeVisualComponent implements OnInit {
     this.nodeService.clickedNodes(this.node);
     this.nodeMenuController.toggleVisible(this.node.uuid);
   }
-
 }
 
 

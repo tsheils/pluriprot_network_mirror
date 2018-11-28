@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Subject} from 'rxjs';
+import {of, Subject} from 'rxjs';
 import {NodeService} from './event-tracking/node.service';
 import {LinkService} from './event-tracking/link.service';
 import {Link} from '../models/link';
@@ -24,7 +24,6 @@ export class GraphDataService {
   filter = false;
   nodeList: any = [];
   linkList: any = [];
-  nodes: any  = [];
 
   constructor(
     private nodeService: NodeService,
@@ -175,5 +174,9 @@ export class GraphDataService {
    */
   returnGraph(): any {
     return this.graph;
+  }
+
+  searchNodes(q: string) {
+    return of(this.graph.nodes.filter(node => node.name.toLowerCase().includes(q.toLowerCase())));
   }
 }

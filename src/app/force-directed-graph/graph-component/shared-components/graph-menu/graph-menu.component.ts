@@ -1,5 +1,8 @@
 import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
-import {MatFormField, MatFormFieldControl, MatSidenav, MatSliderChange, MatSlideToggleChange} from "@angular/material";
+import {
+  MatCheckboxChange, MatFormField, MatFormFieldControl, MatSidenav, MatSliderChange,
+  MatSlideToggleChange
+} from "@angular/material";
 import {RangeSliderComponentChange} from "../../../../tools/range-slider/range-slider.component";
 import {FormControl, FormGroup} from "@angular/forms";
 
@@ -41,6 +44,12 @@ export class GraphMenuComponent implements OnInit {
 
   setFilterType(change: MatSlideToggleChange) {
     this._settings.fade = change.checked;
+  }
+
+  noData(change: MatCheckboxChange) {
+    console.log(change);
+    this._settings['no_data'] = change.checked;
+    this.optionsChange.emit(this._settings);
   }
 
   closeMenu(): void {

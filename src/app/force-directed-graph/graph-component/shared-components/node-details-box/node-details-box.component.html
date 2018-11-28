@@ -1,10 +1,22 @@
-<div *ngIf="node" class = "details-pane">
-<h1>{{node?.name}}</h1>
+<div class = "details-pane">
+<!--
+  <mat-form-field>
+    <input matInput placeholder="target search" [formControl]="searchFormControl">
+    <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+-->
+<search-component (selected)="foundNode($event)"></search-component>
+  <div *ngIf="node">
+    <div class="row">
+    <span><h1>{{node?.name}}</h1></span>&nbsp;&nbsp;<a href='https://pharos-beta.ncats.io/targets/{{node?.name}}' target="_blank"><mat-icon [color]="'primary'">open_in_new</mat-icon></a>
+    </div>
+    <h3>hESC/hNSC NSAF SpC ratio:</h3> {{getLabel(node?.hESC_NSC_Fold_Change)}}
+    <h3>hESC/hNSC ln fold change:</h3> {{getLabel(node?.hESC_NSC_Ratio)}}
+  </div>
 
-<h3>hESC/hNSC NSAF SpC ratio:</h3> {{getLabel(node?.hESC_NSC_Fold_Change)}}
-<h3>hESC/hNSC ln fold change:</h3> {{getLabel(node?.hESC_NSC_Ratio)}}
-</div>
-
-<div *ngIf="link" class = "details-pane">
-<h2>{{link?.properties.name}}</h2>
+  <div *ngIf="link" class = "details-pane">
+    <h2>{{link?.properties.name}}</h2>
+  </div>
 </div>

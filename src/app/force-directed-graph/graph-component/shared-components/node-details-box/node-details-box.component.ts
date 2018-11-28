@@ -3,6 +3,9 @@ import {Protein} from "../../models/node";
 import {NodeService} from "../../services/event-tracking/node.service";
 import {LinkService} from "../../services/event-tracking/link.service";
 import {Link} from "../../models/link";
+import {FormControl} from "@angular/forms";
+import {debounceTime, distinctUntilChanged, switchMap} from "rxjs/internal/operators";
+import {GraphDataService} from "../../services/graph-data.service";
 
 @Component({
   selector: 'app-node-details-box',
@@ -14,14 +17,29 @@ export class NodeDetailsBoxComponent implements OnInit {
   node: Protein;
   link: Link;
 
+  searchFormControl: FormControl = new FormControl();
+
   constructor(
     private nodeService: NodeService,
-    private linkService: LinkService
+    private linkService: LinkService,
+    private graphDataService: GraphDataService
   ) { }
 
   ngOnInit() {
     this.nodeService.nodeList$.subscribe(res => this.node = res.hovered[0]);
     this.linkService.linkslist$.subscribe(res => this.link = res.hovered[0]);
+/*
+    this.searchFormControl.valueChanges.subscribe(term => this.graphDataService.searchNodes(term))
+*/
+    //  .pipe(
+     /*  // debounceTime(400),
+       // distinctUntilChanged(),
+        switchMap(term => {
+          console.log(term)
+          return this.graphDataService.searchNodes(term)
+          }*/
+      //  )//);
+  //console.log(r);
   }
 
   getLabel(value: number): string {
@@ -32,4 +50,7 @@ export class NodeDetailsBoxComponent implements OnInit {
     }
   }
 
+  foundNode(event){
+    this.nodeService.hoveredNode([event])
+  }
 }

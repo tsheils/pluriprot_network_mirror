@@ -90,13 +90,12 @@ export class ForceDirectedGraph {
     if (!options || !options.width || !options.height) {
       throw new Error('missing options when initializing simulation');
     }
-
     /** Creating the simulation */
     if (!this.simulation) {
       const ticker = this.ticker;
       this.simulation = d3.forceSimulation()
         .force('link', d3.forceLink(this.links).id(d => d['uuid'])
-          .distance(this.links.length * 150))
+          .distance(this.links.length * 50))
         /* repels the nodes away from each other*/
         .force('charge', d3.forceManyBody()
         .strength(d => (FORCES.CHARGE * d['r'] / 100)))
@@ -104,23 +103,19 @@ export class ForceDirectedGraph {
         .force('center', d3.forceCenter(options.width / 2, options.height / 2))
         /* prevents node overlap*/
         .force('collide', d3.forceCollide()
-          .radius(d => d['r'] + 5).iterations(1)
+          .radius(d => d['r'] + 5).iterations(0)
           .strength(FORCES.COLLISION));
-
-
+          // .stop();
 
       //  Connecting the d3 ticker to an angular event emitter
       this.simulation.on('tick', () => {
         ticker.emit(this.simulation)
-      });
-
-      this.simulation.on('end', () => {
-          console.log("done");
-      });
+        });
     }
-
 
     /** Restarting the simulation internal timer */
     this.simulation.restart();
   }
+
+
 }

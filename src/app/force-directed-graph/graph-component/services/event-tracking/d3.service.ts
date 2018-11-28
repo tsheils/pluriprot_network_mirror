@@ -28,9 +28,7 @@ export class D3Service {
     container = d3.select('#root');
 
     container.attr("transform", transform);    // Applies initial transform
-  /*  container
-    .attr("transform","translate(550,375)scale(.15)");
-*/
+
     zoomed = () => {
       const transform = d3.event.transform;
       container.attr('transform', 'translate(' + transform.x + ',' + transform.y + ')scale(' + transform.k + ')');

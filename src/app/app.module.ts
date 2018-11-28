@@ -26,6 +26,9 @@ import { GraphMenuComponent } from './force-directed-graph/graph-component/share
 import { RangeSliderComponent } from './tools/range-slider/range-slider.component';
 import { D3ColorLegendComponent } from './tools/d3-color-legend/d3-color-legend.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {SearchComponent} from "./tools/search-component/search.component";
+import {HighlightPipe} from "./tools/search-component/highlight.pipe";
+import { TreeViewerComponent } from './tools/tree-viewer/tree-viewer.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +46,10 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     NodeDetailsBoxComponent,
     GraphMenuComponent,
     RangeSliderComponent,
-    D3ColorLegendComponent
+    D3ColorLegendComponent,
+    HighlightPipe,
+    SearchComponent,
+    TreeViewerComponent
   ],
   imports: [
     BrowserModule,
