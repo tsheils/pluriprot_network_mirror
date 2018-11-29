@@ -46,18 +46,23 @@ export class AppComponent {
   ngOnInit() {
     console.log(this);
     this.dataParserService.LoadData().subscribe(res => {
+      this.dataMap = this.dataParserService.getDataMap();
+      this.graphDataService.setGraph(this.dataMap.get('nscs'))
+    });
+
+  /*  this.dataParserService.LoadData().subscribe(res => {
       console.log(res);
       this.graphDataService.setGraph({
         nodes: this.graphDataService.getNodes(),
         links: this.graphDataService.getLinks()
       });
-
+*/
 
       // this._http.get<any>(environment.parsedData).subscribe(res => {
       // console.log(res);
       //     this.graphDataService.setGraph(res);
       // this.loaded = true;
-    });
+   // });
 
 
 
@@ -90,8 +95,8 @@ export class AppComponent {
 
   _filterNodes(params: Event): Protein[]{
     const data = params['data'] ? params['data'] : 'nscs';
-    // let nodes: Protein[] = this.dataMap.get(data).nodes as Protein[];
-    let nodes: Protein[] = this.graphDataService.getNodes() as Protein[];
+     let nodes: Protein[] = this.dataMap.get(data).nodes as Protein[];
+    //let nodes: Protein[] = this.graphDataService.getNodes() as Protein[];
     Object.keys(params).forEach(param => {
       // skip iterating from the fade parameter
       if(param !== 'fade') {
@@ -121,7 +126,7 @@ export class AppComponent {
 
   _filterEdges(params: Event, nodes : Protein[]){
   //  const data = params['data'] ? params['data'] : 'nscs';
-  //  let links: Link[] = this.dataMap.get(data).links as Link[];
+    // let links: Link[] = this.dataMap.get(data).links as Link[];
     let links: Link[] = this.graphDataService.getLinks();
     const currentNodes = nodes.map(node => node.uuid);
     links = links.filter(link => {
