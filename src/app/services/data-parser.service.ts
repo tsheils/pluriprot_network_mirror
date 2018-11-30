@@ -59,7 +59,6 @@ export class DataParserService {
   }
 
   private _parseData(data: any) {
-    console.log(data);
     const nodeObs = of(data.data.elements.nodes.map(node => {
       const n: Protein = this.nodeService.makeNode(node.data.id, {properties: node.data}) as Protein;
       if (node.position) {
@@ -76,13 +75,7 @@ export class DataParserService {
       const names = edge.data.name.split(' ');
       const source: Protein = this.nodeService.getById(names[0].trim()) as Protein;
       const target: Protein = this.nodeService.getById(names[2].trim()) as Protein;
-      console.log(source);
       if (source.gene !== target.gene) {
-        const l = this.linkService.makeLink(edge.data.id, source, target, {properties: edge.data});
-        this.linkService.setLink(l);
-        return l;
-      } else {
-        circles.push(edge);
         const l = this.linkService.makeLink(edge.data.id, source, target, {properties: edge.data});
         this.linkService.setLink(l);
         return l;
@@ -93,10 +86,9 @@ export class DataParserService {
     const zipped: Observable<any> = from([nodeObs, linkObs]).pipe(zipAll());
 
     return zipped.subscribe(res => {
-      console.log(res);
       this.dataMap.set(data.origin, {
         nodes: res[0],
-        links: res[1]
+        links: res[1].filter(link => link != undefined)
       });
       this.graphDataService.clearGraph();
       return res;

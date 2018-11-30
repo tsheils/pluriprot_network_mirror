@@ -8,7 +8,7 @@ import {Link} from '../../models/link';
 @Component({
   selector: '[link]',
   templateUrl: './link-visual.component.html',
-  styleUrls: ['./link-visual.component.css']
+  styleUrls: ['./link-visual.component.scss']
 })
 export class LinkVisualComponent implements OnInit {
   /**

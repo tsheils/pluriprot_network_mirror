@@ -61,7 +61,7 @@ export class NodeVisualComponent implements OnInit {
    */
   toggleMenu(): void {
     // this is the only place where the menu is opened
-    this.nodeClicked = !this.nodeClicked;
+   // this.nodeClicked = !this.nodeClicked;
     this.nodeService.clickedNodes(this.node);
     this.nodeMenuController.toggleVisible(this.node.uuid);
   }

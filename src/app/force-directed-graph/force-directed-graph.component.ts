@@ -78,9 +78,7 @@ export class ForceDirectedGraphComponent implements OnInit, AfterViewInit {
    * set up graph data subscription
    */
   ngOnInit() {
-    console.log(this);
     this.graphDataService.graphhistory$.subscribe(res => {
-      console.log(res);
       this.nodes = res.nodes;
       this.links = res.links;
       this.graphDataService.countLinks();

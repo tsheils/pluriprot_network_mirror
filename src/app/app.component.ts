@@ -120,16 +120,17 @@ export class AppComponent {
      nodes = nodes.filter(node => {
        return node.hESC_NSC_Fold_Change !==-100
      });
+
     }
     return nodes;
   }
 
   _filterEdges(params: Event, nodes : Protein[]){
-  //  const data = params['data'] ? params['data'] : 'nscs';
-    // let links: Link[] = this.dataMap.get(data).links as Link[];
-    let links: Link[] = this.graphDataService.getLinks();
+    const data = params['data'] ? params['data'] : 'nscs';
+    let links: Link[] = this.dataMap.get(data).links as Link[];
+    // let links: Link[] = this.graphDataService.getLinks();
     const currentNodes = nodes.map(node => node.uuid);
-    links = links.filter(link => {
+     links = links.filter(link => {
       const source: string = link.getSourceId();
       const target: string = link.getTargetId();
       return currentNodes.includes(source) && currentNodes.includes(target);

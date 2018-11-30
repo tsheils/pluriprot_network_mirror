@@ -59,8 +59,14 @@
 
 .clicked {
   stroke: #595959;
-  stroke-width: 3px;
+  stroke-width: 5px;
 }
+
+.not-related {
+  stroke: #b7b7b7;
+  stroke-width: .5px !important;
+}
+
 
 /*#arrow{
   stroke-width: 2;

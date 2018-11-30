@@ -188,6 +188,93 @@ export class D3Service {
   /** A method to bind click events to an svg element */
   // emits the node for other components to listen for
   applyClickableNodeBehaviour = (element, node: Node, graph: ForceDirectedGraph) =>  {
+
+    const d3element = d3.select(element);
+    let connectedLinks;
+    let nonConnectedLinks;
+    let connectedNodes;
+    let nonConnectedNodes;
+    let subgraph;
+    let parent;
+    let maximalLinks: any[] = [];
+    let neighbors: Link[] = [];
+    //  let downstreamNeighbors: Link[] = [];
+
+    const getNeighborLinks = (e: Link): boolean => {
+      return (node.uuid === (typeof (e.source) === 'object' ? e.source.uuid : e.source)
+        || node.uuid === (typeof (e.target) === 'object' ? e.target.uuid : e.target));
+    };
+
+    const getNonNeighborLinks = (e: Link): boolean => {
+      return (node.uuid !== (typeof (e.source) === 'object' ? e.source.uuid : e.source)
+        && node.uuid !== (typeof (e.target) === 'object' ? e.target.uuid : e.target));
+    };
+
+    const getNeighborNodes = (e: any): boolean => {
+      return (connectedLinks.data().map(link => link.target.uuid).indexOf(e.uuid) > -1) ||
+        (connectedLinks.data().map(link => link.source.uuid).indexOf(e.uuid) > -1);
+    };
+
+    const getNotNeighborNodes = (e: any): boolean => {
+      return (connectedLinks.data().map(link => link.target.uuid).indexOf(e.uuid) === -1) &&
+        (connectedLinks.data().map(link => link.source.uuid).indexOf(e.uuid) === -1);
+    };
+
+
+    const decorateNodes = (): void => {
+      // highlight parent
+    //  d3element.select('.node').classed('clicked-parent', true);
+
+      //highlight links
+      connectedLinks = d3.selectAll('.link')
+        .data(graph.links)
+        .filter(getNeighborLinks)
+        .classed('clicked', true);
+
+      nonConnectedLinks = d3.selectAll('.link')
+        .data(graph.links)
+        .filter(getNonNeighborLinks)
+        .classed('not-related', true);
+
+              // highlight neighbor nodes
+      connectedNodes = d3.selectAll('.node')
+        .data(graph.nodes)
+        .filter(getNeighborNodes)
+        .classed('clicked-neighbor', true);
+
+      nonConnectedNodes = d3.selectAll('.node')
+        .data(graph.nodes)
+        .filter(getNotNeighborNodes)
+        //.classed('connected', true)
+        .classed('not-related', true);
+
+      console.log(connectedNodes);
+    };
+
+    const clearNodes = (): void => {
+      d3.selectAll('.link')
+        .classed('clicked', false)
+        .classed('not-related', false)
+        .classed('maximal', false);
+      d3.selectAll('.node')
+        .classed('connected', false)
+        .classed('connected-parent', false)
+        .classed('connected-neighbor', false)
+        .classed('not-related', false)
+        .classed('clicked', false)
+        .classed('maximal', false);
+    };
+
+     const clickFunction = (): void => {
+      clearNodes();
+      subgraph = this._getSubgraph(node, graph);
+      console.log(subgraph);
+      decorateNodes();
+      // d3.select('#root').attr('transform', 'translate(' + -node.x + ',' + -node.y + ')');
+    };
+
+    d3element.on('click', clickFunction);
+
   }
 
   /** A method to bind click events to an svg element */
@@ -260,5 +347,30 @@ export class D3Service {
       .call(zoom.transform, transform);
   }
 
+  _getSubgraph(node: Node, graph: ForceDirectedGraph) {
+      console.log(graph);
+     const connectedLinks: Link[] = graph.links.filter( e =>{
+     return (node.uuid === (typeof (e.source) === 'object' ? e.source.uuid : e.source)
+        || node.uuid === (typeof (e.target) === 'object' ? e.target.uuid : e.target));
+     /* if (neighbor === true) {
+        neighbors.push(e);
+      }
+      return node.uuid === (typeof (e.source) === 'object' ? e.source.uuid : e.source);*/
+    });
+
+    const neighborNodes: Node[] = connectedLinks
+      .filter(link => link.target['uuid'] !== node.uuid)
+      .map(link => link.target as Node);
+  console.log(connectedLinks);
+  console.log(neighborNodes);
+    return {
+      connectedLinks: connectedLinks,
+      neighborNodes: neighborNodes,
+      parent: node
+    }
+  }
+
+  _getNeighborLinks(){}
+  _getNeighborNodes(){}
 
 }
