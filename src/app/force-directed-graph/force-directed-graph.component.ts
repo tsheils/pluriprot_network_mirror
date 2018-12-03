@@ -109,10 +109,6 @@ export class ForceDirectedGraphComponent implements OnInit, AfterViewInit {
     this.graph.initSimulation(this.options);
   }
 
-resetZoom() {
-    this.d3Service.zoomFit(.85, 100);
-}
-
   /*  downloadGraph(): void {
       this.downloader.downloadFile(d3.select('svg'), this.options);
     }*/

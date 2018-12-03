@@ -39,7 +39,8 @@ export class NodeDetailsBoxComponent implements OnInit {
   }
 
   foundNode(event){
+    this.d3Service._clearNodes();
     this.nodeService.hoveredNode([event])
-  //  this.d3Service.applyClickableNodeBehaviour
+    this.d3Service._manualClick(event, this.graphDataService.returnGraph());
   }
 }

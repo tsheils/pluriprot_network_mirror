@@ -15,8 +15,6 @@ export class HighlightPipe implements PipeTransform {
    */
   transform(text: string, search: string): string {
     if ((search && typeof search === 'string') && text ) {
-      console.log(search)
-      console.log(text)
       let pattern = search.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
       pattern = pattern.split(' ').filter((t) => {
         return t.length > 0;

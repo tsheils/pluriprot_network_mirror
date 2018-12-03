@@ -40,8 +40,10 @@
   stroke-width: .5px;
 }
 
-.not-related > .node-name {
+.not-related {
+&  + .node-text {
   display: none;
+}
 }
 
 .relationship {
@@ -52,4 +54,6 @@
   caption: '<type>';
 }
 
-
+.hidden {
+  display: none;
+}

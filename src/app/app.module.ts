@@ -29,6 +29,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {SearchComponent} from "./tools/search-component/search.component";
 import {HighlightPipe} from "./tools/search-component/highlight.pipe";
 import { TreeViewerComponent } from './tools/tree-viewer/tree-viewer.component';
+import {GraphClickDirective} from "./force-directed-graph/graph-component/directives/graph-click.directive";
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { TreeViewerComponent } from './tools/tree-viewer/tree-viewer.component';
     DraggableDirective,
     ClickableNodeDirective,
     ClickableLinkDirective,
+    GraphClickDirective,
     NodeMenuComponent,
     ForceDirectedGraphComponent,
     NodeDetailsBoxComponent,

@@ -22,24 +22,33 @@ export class D3Service {
   applyZoomableBehaviour(svgElement, containerElement) {
     let svg, container, zoomed, zoom;
 
-    var transform = d3.zoomIdentity.translate(600, 500).scale(.15);
-
     svg = d3.select(svgElement);
     container = d3.select('#root');
+    console.log(svg.node().clientHeight);
+    var transform = d3.zoomIdentity.translate(700, 600).scale(.15);
 
-    container.attr("transform", transform);    // Applies initial transform
+ //   container.attr("transform", transform);    // Applies initial transform
 
     zoomed = () => {
       const transform = d3.event.transform;
-      container.attr('transform', 'translate(' + transform.x + ',' + transform.y + ')scale(' + transform.k + ')');
+      //container.attr('transform', 'translate(' + transform.x + ',' + transform.y + ')scale(' + transform.k + ')');
+      container.attr("transform", d3.event.transform); // updated for d3 v4
     };
     zoom = d3.zoom().on("zoom", zoomed);
 
-    //zoom.transform(svg, d3.zoomIdentity);
+   // zoom.transform(svg, d3.zoomIdentity);
 
-    svg
-    //  .call(zoom.transform, transform) // Calls/inits handleZoom
-      .call(zoom);
+     svg
+       .attr("preserveAspectRatio", "xMidYMid meet")
+       .call(zoom.transform, transform) // Calls/inits handleZoom
+       .call(zoom);
+  }
+
+  /** A method to register clicks on the graph that aren't node or link clicks (resets those behaviors) */
+  applyClickOffBehaviour(svgElement) {
+    const d3element = d3.select(svgElement);
+    d3element.on('click',  () => { this._clearNodes()});
+
   }
 
   /** A method to bind a draggable behaviour to an svg element */
@@ -194,11 +203,176 @@ export class D3Service {
     let nonConnectedLinks;
     let connectedNodes;
     let nonConnectedNodes;
-    let subgraph;
-    let parent;
-    let maximalLinks: any[] = [];
-    let neighbors: Link[] = [];
-    //  let downstreamNeighbors: Link[] = [];
+
+    const getNeighborLinks = (e: Link): boolean => {
+      return (node.uuid === (typeof (e.source) === 'object' ? e.source.uuid : e.source)
+        || node.uuid === (typeof (e.target) === 'object' ? e.target.uuid : e.target));
+    };
+
+    const getNonNeighborLinks = (e: Link): boolean => {
+      return (node.uuid !== (typeof (e.source) === 'object' ? e.source.uuid : e.source)
+        && node.uuid !== (typeof (e.target) === 'object' ? e.target.uuid : e.target));
+    };
+
+    const getNeighborNodes = (e: any): boolean => {
+      return (connectedLinks.data().map(link => link.target.uuid).indexOf(e.uuid) > -1) ||
+        (connectedLinks.data().map(link => link.source.uuid).indexOf(e.uuid) > -1);
+    };
+
+    const getNotNeighborNodes = (e: any): boolean => {
+      if((connectedLinks.data().map(link => link.target.uuid).indexOf(e.uuid) === -1) &&
+        (connectedLinks.data().map(link => link.source.uuid).indexOf(e.uuid) === -1)) {
+        e.showLabel = false;
+      }
+      return (connectedLinks.data().map(link => link.target.uuid).indexOf(e.uuid) === -1) &&
+        (connectedLinks.data().map(link => link.source.uuid).indexOf(e.uuid) === -1);
+    };
+
+
+    const decorateNodes = (): void => {
+
+      //highlight links
+      connectedLinks = d3.selectAll('.link')
+        .data(graph.links)
+        .filter(getNeighborLinks)
+        .classed('clicked', true);
+
+      nonConnectedLinks = d3.selectAll('.link')
+        .data(graph.links)
+        .filter(getNonNeighborLinks)
+        .classed('not-related', true);
+
+              // highlight neighbor nodes
+      connectedNodes = d3.selectAll('.node-child')
+        .data(graph.nodes)
+        .filter(getNeighborNodes)
+        .classed('clicked-neighbor', true);
+
+      nonConnectedNodes = d3.selectAll('.node-child')
+        .data(graph.nodes)
+        .filter(getNotNeighborNodes)
+        .classed('not-related', true);
+
+      // highlight parent
+      const parent = d3.selectAll('.node-child')
+        .data(graph.nodes)
+        .filter(d => d.uuid === node.uuid)
+        .classed('clicked-neighbor', true)
+        .classed('not-related', false);
+      };
+
+
+     const clickFunction = (): void => {
+       d3.event.stopPropagation();
+       this._clearNodes();
+      decorateNodes();
+      // d3.select('#root').attr('transform', 'translate(' + -node.x + ',' + -node.y + ')');
+    };
+
+    d3element.on('click', clickFunction);
+    }
+
+  /** A method to bind click events to an svg element */
+    // emits the link for other components to listen for
+  applyClickableLinkBehaviour = (element, link: Link, graph: ForceDirectedGraph) =>  {
+    const d3element = d3.select(element);
+    const arrowType = 'connected';
+
+    const clickFunction = (): void => {
+      d3.event.stopPropagation();
+      const d3link = d3element.select('.link');
+      d3link.classed('clicked', !d3link.classed('clicked')).classed(arrowType, !d3link.classed(arrowType));
+      if (d3link.classed('clicked')) {
+        this.linkService.clickedLinks(link);
+      } else {
+        this.linkService.removeClickedLink(link);
+      }
+    };
+
+    d3element.on('click', clickFunction);
+  }
+
+  /** The interactable graph we will return
+   * This method does not interact with the document, purely physical calculations with d3
+   */
+  getForceDirectedGraph(nodes: Node[], links: Link[], options: {width, height}) {
+    return new ForceDirectedGraph(nodes, links, options);
+  }
+
+  zoomFit(node?) {
+    let root = d3.select('#root');
+    let container = d3.select('#fdg');
+if(node){
+  console.log("selecting node");
+  root = node.node().parentElement;
+}
+
+    const zoom = d3
+      .zoom()
+      .on('zoom', function () {
+        console.log(d3.event);
+        d3.select('#root').attr("transform", d3.event.transform); // updated for d3 v4
+
+      });
+
+    const bounds = root.getBBox();
+    const parent = container.node();
+    const fullWidth = parent.clientWidth || parent.parentNode.clientWidth,
+      fullHeight = parent.clientHeight;
+    console.log(parent);
+    let width = bounds.width,
+      height = bounds.height;
+    console.log(bounds.y)
+    console.log(bounds.x)
+    const midX: number = bounds.x + (width / 2),
+      midY: number = bounds.y + (height / 2);
+    console.log(midX)
+    console.log(midY)
+    if (width == 0 || height == 0) return; // nothing to fit
+    console.log(0.9 / Math.max(width / fullWidth, height/fullHeight));
+    const scale = Math.max(1 , Math.min(8, 0.9 / Math.max(width / fullWidth, height/fullHeight)));
+    const translate = [fullWidth / 2 - width/2, fullHeight / 2 - height/2];
+    console.log(scale)
+    console.log(translate)
+
+    const contbbox = container.node().getBBox();
+    const  bbox = root.getBBox();
+    const vx = contbbox.x;		// container x co-ordinate
+    const vy = contbbox.y;		// container y co-ordinate
+    const vw = contbbox.width;	// container width
+    const vh = contbbox.height;	// container height
+    var bx = bbox.x;
+    var by = bbox.y;
+    var bw = bbox.width;
+    var bh = bbox.height;
+    var tx = -bx*scale + vx + vw/2 - bw*scale/2;
+    var ty = -by*scale + vy + vh/2 - bh*scale/2;
+
+console.log([tx, ty]);
+
+  container
+    .call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale) ); // updated for d3 v4
+
+  }
+
+  _clearNodes(): void {
+    d3.selectAll('.link')
+      .classed('clicked', false)
+      .classed('not-related', false);
+    d3.selectAll('.node-child')
+      .classed('connected', false)
+      .classed('clicked-parent', false)
+      .classed('clicked-neighbor', false)
+      .classed('not-related', false)
+      .classed('clicked', false);
+  };
+
+  _manualClick(node: Node, graph: ForceDirectedGraph){
+    this._clearNodes();
+    let connectedLinks;
+    let nonConnectedLinks;
+    let connectedNodes;
+    let nonConnectedNodes;
 
     const getNeighborLinks = (e: Link): boolean => {
       return (node.uuid === (typeof (e.source) === 'object' ? e.source.uuid : e.source)
@@ -220,11 +394,6 @@ export class D3Service {
         (connectedLinks.data().map(link => link.source.uuid).indexOf(e.uuid) === -1);
     };
 
-
-    const decorateNodes = (): void => {
-      // highlight parent
-    //  d3element.select('.node').classed('clicked-parent', true);
-
       //highlight links
       connectedLinks = d3.selectAll('.link')
         .data(graph.links)
@@ -236,141 +405,26 @@ export class D3Service {
         .filter(getNonNeighborLinks)
         .classed('not-related', true);
 
-              // highlight neighbor nodes
-      connectedNodes = d3.selectAll('.node')
+    nonConnectedNodes = d3.selectAll('.node-child')
+      .data(graph.nodes)
+      .filter(getNotNeighborNodes)
+      .classed('not-related', true);
+
+      // highlight neighbor nodes
+      connectedNodes = d3.selectAll('.node-child')
         .data(graph.nodes)
         .filter(getNeighborNodes)
         .classed('clicked-neighbor', true);
 
-      nonConnectedNodes = d3.selectAll('.node')
-        .data(graph.nodes)
-        .filter(getNotNeighborNodes)
-        //.classed('connected', true)
-        .classed('not-related', true);
+    // highlight parent
+    const parent = d3.selectAll('.node-child')
+      .data(graph.nodes)
+      .filter(d => d.uuid === node.uuid)
+      .classed('clicked-neighbor', true)
+      .classed('not-related', false);
 
-      console.log(connectedNodes);
+    this.zoomFit(parent);
     };
 
-    const clearNodes = (): void => {
-      d3.selectAll('.link')
-        .classed('clicked', false)
-        .classed('not-related', false)
-        .classed('maximal', false);
-      d3.selectAll('.node')
-        .classed('connected', false)
-        .classed('connected-parent', false)
-        .classed('connected-neighbor', false)
-        .classed('not-related', false)
-        .classed('clicked', false)
-        .classed('maximal', false);
-    };
-
-     const clickFunction = (): void => {
-      clearNodes();
-      subgraph = this._getSubgraph(node, graph);
-      console.log(subgraph);
-      decorateNodes();
-      // d3.select('#root').attr('transform', 'translate(' + -node.x + ',' + -node.y + ')');
-    };
-
-    d3element.on('click', clickFunction);
-
-  }
-
-  /** A method to bind click events to an svg element */
-    // emits the link for other components to listen for
-  applyClickableLinkBehaviour = (element, link: Link, graph: ForceDirectedGraph) =>  {
-    const d3element = d3.select(element);
-    const svg = d3.select('svg');
-    const arrowType = 'connected';
-
-    const clickFunction = (): void => {
-      const d3link = d3element.select('.link');
-      d3link.classed('clicked', !d3link.classed('clicked')).classed(arrowType, !d3link.classed(arrowType));
-      if (d3link.classed('clicked')) {
-        this.linkService.clickedLinks(link);
-      } else {
-        this.linkService.removeClickedLink(link);
-      }
-    };
-
-    d3element.on('click', clickFunction);
-  }
-
-  /** The interactable graph we will return
-   * This method does not interact with the document, purely physical calculations with d3
-   */
-  getForceDirectedGraph(nodes: Node[], links: Link[], options: {width, height}) {
-    return new ForceDirectedGraph(nodes, links, options);
-  }
-
-  zoomFit(paddingPercent?, transitionDuration?) {
-    const root = d3.select('#root');
-
-    const zoom = d3
-      .zoom()
-      .scaleExtent([0, 10])
-      .on('zoom.zoom', function () {
-        console.log(d3.event);
-      //  console.trace("zoom", d3.event.translate, d3.event.scale);
-        root.attr('transform',
-          'translate(' + d3.event.transform.x + ',' + d3.event.transform.y + ')'
-          +   'scale(' + d3.event.transform.k     + ')');
-      });
-
-    const bounds = root.node().getBBox();
-    const parent = root.node().parentElement;
-    const fullWidth = parent.clientWidth || parent.parentNode.clientWidth,
-      fullHeight = parent.clientHeight;
-    let width = bounds.width,
-      height = bounds.height;
-    if(width === 0){
-      width = 400
-    }
-    if(height === 0){
-      height = 300
-    }
-    const midX = bounds.x + width / 2,
-      midY = bounds.y + height / 2;
-    if (width == 0 || height == 0) return; // nothing to fit
-    const scale = Math.max(width / fullWidth, height / fullHeight);
-    const translate = [fullWidth / 2 - scale * midX, fullHeight / 2 - scale * midY];
-    var transform = d3.zoomIdentity
-      .translate(
-        translate[0],
-        translate[1])
-      .scale(scale);
-
-  root
-      .transition()
-      .duration(transitionDuration || 0) // milliseconds
-      .call(zoom.transform, transform);
-  }
-
-  _getSubgraph(node: Node, graph: ForceDirectedGraph) {
-      console.log(graph);
-     const connectedLinks: Link[] = graph.links.filter( e =>{
-     return (node.uuid === (typeof (e.source) === 'object' ? e.source.uuid : e.source)
-        || node.uuid === (typeof (e.target) === 'object' ? e.target.uuid : e.target));
-     /* if (neighbor === true) {
-        neighbors.push(e);
-      }
-      return node.uuid === (typeof (e.source) === 'object' ? e.source.uuid : e.source);*/
-    });
-
-    const neighborNodes: Node[] = connectedLinks
-      .filter(link => link.target['uuid'] !== node.uuid)
-      .map(link => link.target as Node);
-  console.log(connectedLinks);
-  console.log(neighborNodes);
-    return {
-      connectedLinks: connectedLinks,
-      neighborNodes: neighborNodes,
-      parent: node
-    }
-  }
-
-  _getNeighborLinks(){}
-  _getNeighborNodes(){}
 
 }

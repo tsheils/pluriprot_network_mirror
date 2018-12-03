@@ -3,6 +3,7 @@
 
   <svg:circle *ngIf= "!node.Phosph_in_ESC_1_NSC_0_"
               [ngClass]="{clicked: nodeClicked}"
+              class="node-child"
               cx="0"
               cy="0"
               [attr.fill]="node.tempcolor ? node.tempcolor : node.color"
@@ -11,6 +12,7 @@
   </svg:circle>
 
   <svg:rect *ngIf="node.Phosph_in_ESC_1_NSC_0_ === 1"
+            class="node-child"
             [attr.width]= node.r*2
   [attr.height]= node.r*2
   [attr.fill]="node.tempcolor ? node.tempcolor : node.color"
@@ -18,6 +20,7 @@
   </svg:rect>
 
   <svg:rect *ngIf="node.Phosph_in_ESC_1_NSC_0_ === 0"
+            class="node-child"
             [attr.width]= node.r*2
   [attr.height]= node.r*2
   [attr.fill]="node.tempcolor ? node.tempcolor : node.color"
@@ -25,5 +28,6 @@
   [attr.transform]="'rotate(45 ' + node.r +' '+ -node.r+')'">
   </svg:rect>
 
-  <svg:text [attr.transform]="'translate(' + node.r * 1.5  + ',' + -node.r + ')'" class="node-name">{{displayName}}</svg:text>
+  <svg:text [attr.transform]="'translate(' + node.r * 1.5  + ',' + -node.r + ')'"
+            class="node-text">{{displayName}}</svg:text>
 </svg:g>

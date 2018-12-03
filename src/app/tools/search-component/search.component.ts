@@ -49,6 +49,7 @@ export class SearchComponent implements OnInit {
           )
         ))
       .subscribe(res => {
+        console.log(res);
         this.options = res;
       });
   }

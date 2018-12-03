@@ -4,7 +4,7 @@
 
 <svg #svg
      [attr.width]="_options.width"
-     [attr.height]="_options.height">
+     [attr.height]="_options.height" id="fdg">
   <g [zoomableOf]="svg" [draggableInGraph]="graph" pharosZoomable id="root">
     <g [link]="link" [pharosClickableLink]="link" [pharosHoverableLink]="link" *ngFor="let link of links"></g>
     <g [node]="node" *ngFor="let node of nodes" [pharosHoverableNode]="node"
