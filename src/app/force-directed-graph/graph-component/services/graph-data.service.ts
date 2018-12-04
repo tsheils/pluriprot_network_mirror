@@ -29,6 +29,7 @@ export class GraphDataService {
     private nodeService: NodeService,
     private linkService: LinkService
   ) {
+    console.log(this);
     this.makeGraph();
   }
 

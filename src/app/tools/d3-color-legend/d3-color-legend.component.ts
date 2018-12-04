@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import * as d3 from 'd3';
 
 /**
@@ -12,6 +12,7 @@ import * as d3 from 'd3';
 })
 export class D3ColorLegendComponent implements OnInit {
   @ViewChild('colorScaleTarget') chartContainer: ElementRef;
+  @Input() range: any;
 
   constructor() { }
 
@@ -26,7 +27,7 @@ export class D3ColorLegendComponent implements OnInit {
       .attr('height', '30')
     const defs = svg.append("defs");
 
-    const colorScale = d3.scaleSequential(d3.interpolateYlGnBu).domain([-50, 50])
+    const colorScale = d3.scaleSequential(d3.interpolateYlGnBu).domain(this.range)
 
     const linearGradient = defs.append("linearGradient")
       .attr("id", "linear-gradient");

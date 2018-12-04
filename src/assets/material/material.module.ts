@@ -11,7 +11,7 @@ import {
 import {MatChipsModule} from '@angular/material/chips';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatRadioModule} from '@angular/material/radio';
-import {MatTreeModule} from '@angular/material/tree';
+import {MatRippleModule} from '@angular/material/core';
 
 
 
@@ -21,12 +21,12 @@ import {MatTreeModule} from '@angular/material/tree';
     MatInputModule, MatIconModule, MatListModule, MatSliderModule, MatProgressSpinnerModule,
     MatTableModule, MatSortModule, MatSidenavModule, MatSlideToggleModule, MatRadioModule,
       MatDividerModule, MatTabsModule, MatCheckboxModule, MatCardModule, MatTooltipModule,
-      MatSelectModule, MatExpansionModule, MatChipsModule, DragDropModule, MatTreeModule],
+      MatSelectModule, MatExpansionModule, MatChipsModule, DragDropModule, MatRippleModule],
   exports: [MatButtonModule, MatAutocompleteModule, MatMenuModule, MatToolbarModule,
     MatInputModule, MatIconModule, MatListModule, MatSliderModule, MatProgressSpinnerModule,
     MatTableModule, MatSortModule, MatSidenavModule, MatSlideToggleModule, MatRadioModule,
       MatDividerModule, MatTabsModule, MatCheckboxModule, MatCardModule, MatTooltipModule,
-      MatSelectModule, MatExpansionModule, MatChipsModule, DragDropModule, MatTreeModule],
+      MatSelectModule, MatExpansionModule, MatChipsModule, DragDropModule, MatRippleModule],
 })
 export class MaterialModule { }
 

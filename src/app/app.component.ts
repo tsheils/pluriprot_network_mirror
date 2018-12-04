@@ -9,6 +9,7 @@ import {LinkService} from "./force-directed-graph/graph-component/services/event
 import {GraphDataService} from "./force-directed-graph/graph-component/services/graph-data.service";
 import {DataParserService} from "./services/data-parser.service";
 import {environment} from "src/environments/environment.prod";
+import {D3Service} from "./force-directed-graph/graph-component/services/event-tracking/d3.service";
 
 @Component({
   selector: 'app-root',
@@ -38,6 +39,7 @@ export class AppComponent {
   constructor(
     private _http: HttpClient,
     private dataParserService: DataParserService,
+    private d3Service: D3Service,
     private nodeService: NodeService,
     private linkService: LinkService,
     private graphDataService: GraphDataService
@@ -122,6 +124,12 @@ export class AppComponent {
      });
 
     }
+    if(params['subgraph']) {
+      const node = nodes.filter(node => node.name === params['subgraph']);
+      this.nodeService.hoveredNode(node)
+      this.d3Service._manualClick(node[0], this.graphDataService.returnGraph());
+    }
+
     return nodes;
   }
 

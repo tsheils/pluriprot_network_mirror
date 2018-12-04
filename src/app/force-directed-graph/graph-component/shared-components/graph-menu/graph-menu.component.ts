@@ -17,7 +17,8 @@ export class GraphMenuComponent implements OnInit {
     fade: false
   };
 
-  graphTypeCtrl: FormControl = new FormControl();
+  subGraphTypeCtrl: FormControl = new FormControl();
+  activeGraph: string = 'nscs';
 
   @Output()
   readonly optionsChange: EventEmitter<any> = new EventEmitter<any>();
@@ -27,14 +28,22 @@ export class GraphMenuComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-  this.graphTypeCtrl.valueChanges.subscribe(val => {
-    console.log(val)
-    this._settings.data = val;
-    this.optionsChange.emit(this._settings);
+    this.subGraphTypeCtrl.valueChanges.subscribe(val => {
+      this._settings = {
+        fade: false
+      };
+
+      this._settings.subgraph = val;
+      this.optionsChange.emit(this._settings);
   })
   }
 
-
+  setActiveGraph(val: string) {
+    this.activeGraph = val;
+    this._settings.data = val;
+    this._settings.subgraph = null;
+    this.optionsChange.emit(this._settings);
+  }
 
   sliderChange(change: MatSliderChange, field: string) {
     this._settings[field] = change.value;
