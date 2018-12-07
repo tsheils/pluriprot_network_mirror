@@ -135,7 +135,7 @@ export const _RangeSliderComponentMixinBase:
     templateUrl: './range-slider.component.html',
     styleUrls: ['./range-slider.component.scss'],
   inputs: ['disabled', 'color', 'tabIndex'],
- // encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.Native,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RangeSliderComponent extends _RangeSliderComponentMixinBase

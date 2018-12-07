@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import * as d3 from 'd3';
 
 /**
@@ -8,7 +8,8 @@ import * as d3 from 'd3';
 @Component({
   selector: 'app-d3-color-legend',
   templateUrl: './d3-color-legend.component.html',
-  styleUrls: ['./d3-color-legend.component.scss']
+  styleUrls: ['./d3-color-legend.component.scss'],
+  encapsulation: ViewEncapsulation.Native
 })
 export class D3ColorLegendComponent implements OnInit {
   @ViewChild('colorScaleTarget') chartContainer: ElementRef;

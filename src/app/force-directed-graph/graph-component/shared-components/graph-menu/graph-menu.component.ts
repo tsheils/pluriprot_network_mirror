@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewChild, ViewEncapsulation} from '@angular/core';
 import {
   MatCheckboxChange, MatFormField, MatFormFieldControl, MatSidenav, MatSliderChange,
   MatSlideToggleChange
@@ -9,7 +9,8 @@ import {FormControl, FormGroup} from "@angular/forms";
 @Component({
   selector: 'app-graph-menu',
   templateUrl: './graph-menu.component.html',
-  styleUrls: ['./graph-menu.component.scss']
+  styleUrls: ['./graph-menu.component.scss'],
+  encapsulation: ViewEncapsulation.Native
 })
 export class GraphMenuComponent implements OnInit {
 

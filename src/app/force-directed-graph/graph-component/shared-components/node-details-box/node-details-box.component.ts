@@ -1,17 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Protein} from "../../models/node";
 import {NodeService} from "../../services/event-tracking/node.service";
 import {LinkService} from "../../services/event-tracking/link.service";
 import {Link} from "../../models/link";
-import {FormControl} from "@angular/forms";
-import {debounceTime, distinctUntilChanged, switchMap} from "rxjs/internal/operators";
 import {GraphDataService} from "../../services/graph-data.service";
 import {D3Service} from "../../services/event-tracking/d3.service";
 
 @Component({
   selector: 'app-node-details-box',
   templateUrl: './node-details-box.component.html',
-  styleUrls: ['./node-details-box.component.scss']
+  styleUrls: ['./node-details-box.component.scss'],
+  encapsulation: ViewEncapsulation.Native
 })
 export class NodeDetailsBoxComponent implements OnInit {
 

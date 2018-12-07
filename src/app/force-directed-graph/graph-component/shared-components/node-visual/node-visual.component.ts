@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ElementRef, ViewChild} from '@angular/core';
+import {Component, OnInit, Input, ElementRef, ViewChild, ViewEncapsulation} from '@angular/core';
 import {Node} from '../../models/node';
 import {NodeService} from '../../services/event-tracking/node.service';
 import {NodeMenuControllerService} from '../../services/event-tracking/node-menu-controller.service';
@@ -13,7 +13,8 @@ import {NodeMenuControllerService} from '../../services/event-tracking/node-menu
 @Component({
   selector: '[node]',
   templateUrl: './node-visual.component.html',
-  styleUrls: ['./node-visual.component.scss']
+  styleUrls: ['./node-visual.component.scss'],
+  encapsulation: ViewEncapsulation.Native
 })
 export class NodeVisualComponent implements OnInit {
 

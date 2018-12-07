@@ -29,6 +29,8 @@ export class ZoomableDirective implements OnInit {
    * apply behavior to graph
    */
     ngOnInit() {
-        this.d3Service.applyZoomableBehaviour(this.zoomableOf, this._element.nativeElement);
+    console.log("adding zoom");
+    console.log(this);
+    this.d3Service.applyZoomableBehaviour(this.zoomableOf, this._element.nativeElement);
     }
 }

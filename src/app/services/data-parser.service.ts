@@ -96,7 +96,6 @@ export class DataParserService {
 
   }
 
-
   getDataMap(): Map<string,any> {
     return this.dataMap;
   }

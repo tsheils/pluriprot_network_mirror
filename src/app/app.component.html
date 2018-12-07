@@ -1,4 +1,4 @@
-<div class = "fdg">
+<div class = "fdg-container">
 <mat-sidenav-container class="sctl-graph-container" [hasBackdrop]="false">
     <mat-sidenav #graphMenu [opened]="true" mode="over"
                  class="menu-drawer">
@@ -8,16 +8,17 @@
       ></app-graph-menu>
     </mat-sidenav>
     <mat-sidenav-content>
-      <button mat-button (click)="graphMenu.toggle()" class="close-button" *ngIf="graphMenu.opened"><mat-icon>arrow_left</mat-icon> close</button>
-      <button mat-button (click)="graphMenu.toggle()" class="open-button"><mat-icon>arrow_right</mat-icon> open</button>
+      <button mat-button (click)="graphMenu.toggle()" class="close-button" *ngIf="graphMenu.opened">
+        <mat-icon svgIcon="arrow_left">close</mat-icon>
+      </button>
+      <button mat-button (click)="graphMenu.toggle()" class="open-button">
+        <mat-icon svgIcon="arrow_right"></mat-icon>open options
+        </button>
         <div class = "info-panel" cdkDrag>
     <app-node-details-box></app-node-details-box>
   </div>
   <app-force-directed-graph cdkDropList></app-force-directed-graph>
     </mat-sidenav-content>
 </mat-sidenav-container>
-</div>
-<div class="table-image">
-  <img class="full-width" src="../assets/table-image.png"/>
 </div>
 

@@ -1,14 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-
+import {Injector, NgModule} from '@angular/core';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ForceDirectedGraphComponent } from './force-directed-graph/force-directed-graph.component';
 import {CommonModule} from "@angular/common";
 import {HttpClientModule} from "@angular/common/http";
-import {D3Service} from "./force-directed-graph/graph-component/services/event-tracking/d3.service";
 import {MaterialModule} from "../assets/material/material.module";
-import {NodeMenuComponent} from "./force-directed-graph/graph-component/shared-components/node-menu/node-menu.component";
 import {ClickableLinkDirective} from "./force-directed-graph/graph-component/directives/clickable-link.directive";
 import {ClickableNodeDirective} from "./force-directed-graph/graph-component/directives/clickable-node.directive";
 import {DraggableDirective} from "./force-directed-graph/graph-component/directives/draggable.directive";
@@ -29,6 +26,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {SearchComponent} from "./tools/search-component/search.component";
 import {HighlightPipe} from "./tools/search-component/highlight.pipe";
 import {GraphClickDirective} from "./force-directed-graph/graph-component/directives/graph-click.directive";
+import {createCustomElement} from "@angular/elements";
 
 @NgModule({
   declarations: [
@@ -42,7 +40,6 @@ import {GraphClickDirective} from "./force-directed-graph/graph-component/direct
     ClickableNodeDirective,
     ClickableLinkDirective,
     GraphClickDirective,
-    NodeMenuComponent,
     ForceDirectedGraphComponent,
     NodeDetailsBoxComponent,
     GraphMenuComponent,
@@ -61,12 +58,24 @@ import {GraphClickDirective} from "./force-directed-graph/graph-component/direct
     MaterialModule
   ],
   providers: [
-    D3Service,
     NodeService,
     LinkService,
     GraphDataService,
     NodeMenuControllerService
   ],
-  bootstrap: [AppComponent]
+/*  bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { }*/
+
+entryComponents:[
+  AppComponent
+]
+})
+export class AppModule {
+  constructor(private injector: Injector) {}
+
+  ngDoBootstrap() {
+    const el = createCustomElement(AppComponent, { injector: this.injector });
+    customElements.define('sctl-graph', el);
+  }
+}

@@ -3,30 +3,22 @@
  */
 import { NgModule } from '@angular/core';
 import {
-    MatButtonModule, MatAutocompleteModule, MatMenuModule, MatToolbarModule, MatInputModule, MatIconModule,
-    MatListModule, MatSliderModule, MatProgressSpinnerModule, MatSortModule, MatTableModule, MatSidenavModule,
-    MatSlideToggleModule, MatCheckboxModule, MatTabsModule, MatCardModule, MatTooltipModule,
-    MatSelectModule, MatExpansionModule, MatDividerModule
+    MatButtonModule, MatAutocompleteModule, MatInputModule, MatIconModule, MatSliderModule, MatProgressSpinnerModule,
+  MatSidenavModule, MatCheckboxModule, MatExpansionModule
 } from '@angular/material';
-import {MatChipsModule} from '@angular/material/chips';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatRadioModule} from '@angular/material/radio';
-import {MatRippleModule} from '@angular/material/core';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+
 
 
 
 
 @NgModule({
-  imports: [MatButtonModule, MatAutocompleteModule, MatMenuModule, MatToolbarModule,
-    MatInputModule, MatIconModule, MatListModule, MatSliderModule, MatProgressSpinnerModule,
-    MatTableModule, MatSortModule, MatSidenavModule, MatSlideToggleModule, MatRadioModule,
-      MatDividerModule, MatTabsModule, MatCheckboxModule, MatCardModule, MatTooltipModule,
-      MatSelectModule, MatExpansionModule, MatChipsModule, DragDropModule, MatRippleModule],
-  exports: [MatButtonModule, MatAutocompleteModule, MatMenuModule, MatToolbarModule,
-    MatInputModule, MatIconModule, MatListModule, MatSliderModule, MatProgressSpinnerModule,
-    MatTableModule, MatSortModule, MatSidenavModule, MatSlideToggleModule, MatRadioModule,
-      MatDividerModule, MatTabsModule, MatCheckboxModule, MatCardModule, MatTooltipModule,
-      MatSelectModule, MatExpansionModule, MatChipsModule, DragDropModule, MatRippleModule],
+  imports: [MatButtonModule, MatAutocompleteModule, MatInputModule, MatIconModule, MatSliderModule, MatSlideToggleModule,
+    MatProgressSpinnerModule, MatSidenavModule, MatRadioModule, MatCheckboxModule, MatExpansionModule, DragDropModule],
+  exports: [MatButtonModule, MatAutocompleteModule, MatInputModule, MatIconModule, MatSliderModule, MatSlideToggleModule,
+    MatProgressSpinnerModule, MatSidenavModule, MatRadioModule, MatCheckboxModule, MatExpansionModule, DragDropModule]
 })
 export class MaterialModule { }
 

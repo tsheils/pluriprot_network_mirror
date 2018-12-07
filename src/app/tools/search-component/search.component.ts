@@ -11,7 +11,7 @@ import {finalize, tap} from "rxjs/internal/operators";
   selector: 'search-component',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.Native
 })
 export class SearchComponent implements OnInit {
 @Output()

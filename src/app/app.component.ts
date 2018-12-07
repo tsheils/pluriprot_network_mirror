@@ -1,20 +1,20 @@
-import {Component, Input} from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {from, Observable, of} from "rxjs/index";
-import {zipAll} from "rxjs/internal/operators";
+import {OverlayContainer} from '@angular/cdk/overlay';
 import {Link} from "./force-directed-graph/graph-component/models/link";
 import {Node, Protein} from "./force-directed-graph/graph-component/models/node";
 import {NodeService} from "./force-directed-graph/graph-component/services/event-tracking/node.service";
 import {LinkService} from "./force-directed-graph/graph-component/services/event-tracking/link.service";
 import {GraphDataService} from "./force-directed-graph/graph-component/services/graph-data.service";
 import {DataParserService} from "./services/data-parser.service";
-import {environment} from "src/environments/environment.prod";
 import {D3Service} from "./force-directed-graph/graph-component/services/event-tracking/d3.service";
+import {IconService} from "src/app/services/icon.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  encapsulation: ViewEncapsulation.Native
 })
 export class AppComponent {
   /**
@@ -42,47 +42,20 @@ export class AppComponent {
     private d3Service: D3Service,
     private nodeService: NodeService,
     private linkService: LinkService,
-    private graphDataService: GraphDataService
-  ){}
+    private graphDataService: GraphDataService,
+    private iconService: IconService,
+    private overlayContainer: OverlayContainer
+  ){
+    this.overlayContainer.getContainerElement().classList.add('candy-app-theme');
+  }
 
   ngOnInit() {
     console.log(this);
+    this.iconService.init();
     this.dataParserService.LoadData().subscribe(res => {
       this.dataMap = this.dataParserService.getDataMap();
       this.graphDataService.setGraph(this.dataMap.get('nscs'))
     });
-
-  /*  this.dataParserService.LoadData().subscribe(res => {
-      console.log(res);
-      this.graphDataService.setGraph({
-        nodes: this.graphDataService.getNodes(),
-        links: this.graphDataService.getLinks()
-      });
-*/
-
-      // this._http.get<any>(environment.parsedData).subscribe(res => {
-      // console.log(res);
-      //     this.graphDataService.setGraph(res);
-      // this.loaded = true;
-   // });
-
-
-
-     /*this.dataParserService.LoadData().subscribe(res => {
-       console.log(res);
-       this.graphDataService.setGraph({
-         nodes: this.graphDataService.getNodes(),
-         links: this.graphDataService.getLinks()
-       });
-
-       this.graph = {
-         nodes: this.graphDataService.getNodes(),
-         links: this.graphDataService.getLinks()
-       }
-      // this.dataMap = this.dataParserService.getDataMap();
-//       this.graphDataService.setGraph(this.dataMap.get('nscs'))
-     });*/
-     //console.log(data);
     }
 
   filterGraph(event: Event) {
