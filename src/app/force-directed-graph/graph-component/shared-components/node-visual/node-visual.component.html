@@ -16,7 +16,9 @@
             [attr.width]= node.r*2
   [attr.height]= node.r*2
   [attr.fill]="node.tempcolor ? node.tempcolor : node.color"
-  [attr.stroke]="node.tempcolor ? '#b0b0b0' : ''">
+  [attr.stroke]="node.tempcolor ? '#b0b0b0' : ''"
+            [attr.transform]="'translate(' + -node.r + ',' + (-node.r) + ')'"
+  >
   </svg:rect>
 
   <svg:rect *ngIf="node.Phosph_in_ESC_1_NSC_0_ === 0"

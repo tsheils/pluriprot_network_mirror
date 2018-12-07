@@ -32,7 +32,7 @@ export class GraphMenuComponent implements OnInit {
       this._settings = {
         fade: false
       };
-
+      this._settings.data = this.activeGraph;
       this._settings.subgraph = val;
       this.optionsChange.emit(this._settings);
   })

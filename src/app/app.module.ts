@@ -1,14 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ForceDirectedGraphComponent } from './force-directed-graph/force-directed-graph.component';
 import {CommonModule} from "@angular/common";
 import {HttpClientModule} from "@angular/common/http";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+
+import { AppComponent } from './app.component';
+import { ForceDirectedGraphComponent } from './force-directed-graph/force-directed-graph.component';
 import {D3Service} from "./force-directed-graph/graph-component/services/event-tracking/d3.service";
 import {MaterialModule} from "../assets/material/material.module";
-import {NodeMenuComponent} from "./force-directed-graph/graph-component/shared-components/node-menu/node-menu.component";
 import {ClickableLinkDirective} from "./force-directed-graph/graph-component/directives/clickable-link.directive";
 import {ClickableNodeDirective} from "./force-directed-graph/graph-component/directives/clickable-node.directive";
 import {DraggableDirective} from "./force-directed-graph/graph-component/directives/draggable.directive";
@@ -25,7 +25,6 @@ import { NodeDetailsBoxComponent } from './force-directed-graph/graph-component/
 import { GraphMenuComponent } from './force-directed-graph/graph-component/shared-components/graph-menu/graph-menu.component';
 import { RangeSliderComponent } from './tools/range-slider/range-slider.component';
 import { D3ColorLegendComponent } from './tools/d3-color-legend/d3-color-legend.component';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {SearchComponent} from "./tools/search-component/search.component";
 import {HighlightPipe} from "./tools/search-component/highlight.pipe";
 import {GraphClickDirective} from "./force-directed-graph/graph-component/directives/graph-click.directive";
@@ -42,7 +41,6 @@ import {GraphClickDirective} from "./force-directed-graph/graph-component/direct
     ClickableNodeDirective,
     ClickableLinkDirective,
     GraphClickDirective,
-    NodeMenuComponent,
     ForceDirectedGraphComponent,
     NodeDetailsBoxComponent,
     GraphMenuComponent,
