@@ -293,7 +293,7 @@ export class D3Service {
     return new ForceDirectedGraph(nodes, links, options);
   }
 
-  zoomFit2 (node, nodeElement) {
+/*  zoomFit2 (node, nodeElement) {
     console.log(node);
     console.log(nodeElement);
     console.log(nodeElement.node().parentElement);
@@ -350,11 +350,11 @@ export class D3Service {
 
 
   zoomFit(node?) {
-    let root = d3.select('#root');
-    let container = d3.select('#fdg');
+    let svg = d3.select('#fdg');
+    let container = d3.select('#root').node();
 if(node){
   console.log("selecting node");
-  root = node.node().parentElement;
+  container = node.node().parentElement;
 }
 
     const zoom = d3
@@ -365,8 +365,8 @@ if(node){
 
       });
 
-    const bounds = root.getBBox();
-    const parent = container.node();
+    const bounds = container.getBBox();
+    const parent = svg.node();
     const fullWidth = parent.clientWidth || parent.parentNode.clientWidth,
       fullHeight = parent.clientHeight;
     console.log(parent);
@@ -383,8 +383,8 @@ if(node){
     console.log(scale)
     console.log(translate)
 
-    const contbbox = container.node().getBBox();
-    const  bbox = root.getBBox();
+    const contbbox = svg.node().getBBox();
+    const  bbox = container.getBBox();
     console.log(contbbox);
     console.log(bbox);
     const vx = contbbox.x;		// container x co-ordinate
@@ -400,10 +400,10 @@ if(node){
 
 console.log([tx, ty]);
 
-  container
-    .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale / 10) ); // updated for d3 v4
+    svg
+    .call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale / 10) ); // updated for d3 v4
 
-  }
+  }*/
 
   _clearNodes(): void {
     d3.selectAll('.link')
@@ -480,4 +480,22 @@ console.log([tx, ty]);
     };
 
 
+  resetZoom() {
+   // this.zoomFit();
+    const svg = d3.select('#fdg');
+    const container = d3.select('#root');
+    var transform = d3.zoomIdentity.scale(.15);
+
+
+   const zoomed = () => {
+      const transform = d3.event.transform;
+      container.attr("transform", d3.event.transform); // updated for d3 v4
+    };
+
+   const zoom = d3.zoom().on("zoom", zoomed);
+
+    svg
+      .call(zoom.transform, transform) // Calls/inits handleZoom
+      .call(zoom);
+  }
 }

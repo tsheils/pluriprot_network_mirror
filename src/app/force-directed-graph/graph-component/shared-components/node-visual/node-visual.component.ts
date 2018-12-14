@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, ElementRef, ViewChild} from '@angular/core';
-import {Node} from '../../models/node';
+import {Node, Protein} from '../../models/node';
 import {NodeService} from '../../services/event-tracking/node.service';
 import {NodeMenuControllerService} from '../../services/event-tracking/node-menu-controller.service';
 
@@ -20,7 +20,7 @@ export class NodeVisualComponent implements OnInit {
   /**
    * node passed in from graph
    */
-  @Input() node: Node;
+  @Input() node: Protein;
   /**
    * node label
    */

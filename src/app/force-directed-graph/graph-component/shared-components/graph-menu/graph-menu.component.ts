@@ -39,6 +39,9 @@ export class GraphMenuComponent implements OnInit {
   }
 
   setActiveGraph(val: string) {
+    this._settings = {
+      fade: false
+    };
     this.activeGraph = val;
     this._settings.data = val;
     this._settings.subgraph = null;
@@ -56,7 +59,6 @@ export class GraphMenuComponent implements OnInit {
   }
 
   noData(change: MatCheckboxChange) {
-    console.log(change);
     this._settings['no_data'] = change.checked;
     this.optionsChange.emit(this._settings);
   }

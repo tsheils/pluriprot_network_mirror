@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 
 const COLOR = d3.scaleSequential(
   d3.interpolateYlGnBu
-).domain([-10, 11]);
+).domain([-10, 20]);
 
 
 /*const COLOR = d3.scaleOrdinal(
@@ -157,9 +157,9 @@ export class Protein extends Node {
     this.hESC_NSC_Fold_Change = data.properties.hESC_NSC_Fold_Change;
     this.hESC_NSC_Ratio = data.properties.hESC_NSC_Ratio;
     this.gene = data.properties.Gene ? data.properties.Gene.trim() : data.properties.Gene_Symbol.trim();
-    this.Phosph_in_ESC_1_NSC_0_ = data.properties.Phosph_in_ESC_1_NSC_0_ || null;
+    this.Phosph_in_ESC_1_NSC_0_ = data.properties.Phosph_in_ESC_1_NSC_0_;
     this.color = !this.hESC_NSC_Fold_Change || this.hESC_NSC_Fold_Change === -100 ?
-      '#CCCCCC' : COLOR(-this.hESC_NSC_Fold_Change * .4);
+      '#CCCCCC' : COLOR(-this.hESC_NSC_Fold_Change * .6);
   }
 
   private _setShape(data: any){

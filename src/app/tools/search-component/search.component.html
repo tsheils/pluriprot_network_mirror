@@ -8,7 +8,7 @@
          formControlName="typeaheadInput"
          class ="input-field">
   <mat-label class="search-label">Protein search</mat-label>
-  <mat-autocomplete #auto="matAutocomplete" (optionSelected) = "search($event)" [displayWith]="displayFn">
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected) = "search()" [displayWith]="displayFn">
     <mat-option *ngIf="isLoading" class="is-loading"><mat-spinner diameter="50"></mat-spinner></mat-option>
     <ng-container *ngIf="!isLoading">
       <mat-option *ngFor="let option of options" [value]="option">

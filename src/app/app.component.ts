@@ -94,11 +94,13 @@ export class AppComponent {
 
     }
     if(params['subgraph']) {
-      const node = nodes.filter(node => {
-        return node.name === params['subgraph']
-      });
-      this.nodeService.hoveredNode(node);
-      this.d3Service._manualClick(node[0], this.graphDataService.returnGraph());
+      if (params['subgraph'] !== 'null') {
+        const node = nodes.filter(node => {
+          return node.name === params['subgraph']
+        });
+        this.nodeService.hoveredNode(node);
+        this.d3Service._manualClick(node[0], this.graphDataService.returnGraph());
+      }
     }
     return nodes;
   }
@@ -113,5 +115,9 @@ export class AppComponent {
       return currentNodes.includes(source) && currentNodes.includes(target);
     });
     return links;
+  }
+
+  resetZoom():void {
+    this.d3Service.resetZoom();
   }
 }

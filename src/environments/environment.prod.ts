@@ -10,20 +10,20 @@ export const environment = {
   dataUrls: [
     {
       origin: 'nsc-only',
-      url: '../assets/data/NSC_only.json' // phosphorylation
+      url: './assets/data/NSC_only.json' // phosphorylation
     },
     {
       origin: 'esc-only',
-      url: '../assets/data/ESC_only.json' // phosphorylation
+      url: './assets/data/ESC_only.json' // phosphorylation
     },
     {
       origin: 'nscs',
-      url: '../assets/data/2.5x_up_in_nscs.json' // expression
+      url: './assets/data/2.5x_up_in_nscs.json' // expression
     },
     {
       origin: 'escs',
-      url: '../assets/data/2.5x_up_in_escs.json' //expression
+      url: './assets/data/2.5x_up_in_escs.json' //expression
     }
   ],
-  parsedData: '../assets/data/data.json'
+  parsedData: './assets/data/data.json'
 };

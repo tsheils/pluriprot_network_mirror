@@ -41,6 +41,13 @@
   height: auto;
 }
 
+.zoom-button-holder {
+  justify-content: flex-end;
+  display: flex;
+  background-color: transparent;
+  z-index: 6666;
+}
+
 @media only screen and (max-width: 960px) {
   .menu-drawer {
     width: 50vw;
