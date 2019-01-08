@@ -28,12 +28,15 @@ export class GraphMenuComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log(this._settings);
+
     this.subGraphTypeCtrl.valueChanges.subscribe(val => {
       this._settings = {
         fade: false
       };
       this._settings.data = this.activeGraph;
       this._settings.subgraph = val;
+      console.log(this._settings);
       this.optionsChange.emit(this._settings);
   })
   }
@@ -45,6 +48,7 @@ export class GraphMenuComponent implements OnInit {
     this.activeGraph = val;
     this._settings.data = val;
     this._settings.subgraph = null;
+    console.log(this._settings);
     this.optionsChange.emit(this._settings);
   }
 
@@ -52,6 +56,11 @@ export class GraphMenuComponent implements OnInit {
     this._settings[field] = change.value;
     this.optionsChange.emit(this._settings);
 
+  }
+
+  resetScale(a: number, b: number) {
+    this._settings['hESC_NSC_Fold_Change'] = [a,b];
+    this.optionsChange.emit(this._settings);
   }
 
   setFilterType(change: MatSlideToggleChange) {

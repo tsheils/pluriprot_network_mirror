@@ -35,6 +35,10 @@ this.matIconRegistry.addSvgIcon(
       "reset_zoom",
       this.domSanitizer.bypassSecurityTrustResourceUrl("./assets/icons/baseline-find_replace-24px.svg")
     );
+this.matIconRegistry.addSvgIcon(
+      "refresh",
+      this.domSanitizer.bypassSecurityTrustResourceUrl("./assets/icons/baseline-refresh-24px.svg")
+    );
 
   }
 }

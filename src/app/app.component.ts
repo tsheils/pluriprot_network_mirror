@@ -66,6 +66,7 @@ export class AppComponent {
   }
 
   _filterNodes(params: Event): Protein[]{
+    console.log(params);
     const data = params['data'] ? params['data'] : 'nscs';
      let nodes: Protein[] = this.dataMap.get(data).nodes as Protein[];
     Object.keys(params).forEach(param => {

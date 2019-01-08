@@ -24,3 +24,34 @@
   padding-bottom: .5vh;
   padding-top: .5vh;
 }
+
+.square {
+  width:25px;
+  height: 25px;
+  background-color: #CCCCCC;
+  background-image: linear-gradient(#cccccc, #fde725, #1f978b, #460b5e);
+  margin: 10px;
+}
+
+.diamond {
+  width:25px;
+  height: 25px;
+  background-image: linear-gradient(to bottom right, #cccccc, #fde725,#1f978b, #460b5e);
+  transform: rotate(45deg);
+  margin: 10px;
+}
+
+.circle{
+  width: 25px;
+  height: 25px;
+  background-image: linear-gradient(#cccccc, #fde725, #1f978b, #460b5e);
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  border-radius: 25px;
+  margin: 10px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
