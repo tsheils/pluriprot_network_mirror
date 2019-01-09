@@ -58,6 +58,7 @@ export class ForceDirectedGraphComponent implements OnInit, AfterViewInit {
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.graph.initSimulation(this.options);
+    this.d3Service.resetZoom();
   }
 
   /**
@@ -107,6 +108,7 @@ export class ForceDirectedGraphComponent implements OnInit, AfterViewInit {
    */
   ngAfterViewInit() {
     this.graph.initSimulation(this.options);
+    this.d3Service.resetZoom();
   }
 
   /*  downloadGraph(): void {

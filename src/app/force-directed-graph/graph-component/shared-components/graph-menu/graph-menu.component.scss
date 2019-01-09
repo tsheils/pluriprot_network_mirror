@@ -16,7 +16,7 @@
 }
 
 .close-button {
-  padding-right: 10px;
+  margin-right: 7px;
 }
 
 .sub-graph-toggle {
@@ -52,6 +52,12 @@
 }
 
 .row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.row-close {
   display: flex;
   align-items: center;
 }

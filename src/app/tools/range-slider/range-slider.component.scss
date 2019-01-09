@@ -649,6 +649,10 @@ $mat-slider-focus-ring-size: 30px !default;
   }
 }
 
-.mat-slider-min-value.mat-slider-thumb-label-showing .mat-slider-thumb, .mat-slider-min-value.mat-slider-thumb-label-showing .mat-slider-thumb-label {
-  background-color: #3f51b5;
+.pink {
+  background-color: #ff4081 !important;
+}
+
+.show {
+  display: flex;
 }

@@ -218,7 +218,7 @@ export class RangeSliderComponent extends _RangeSliderComponentMixinBase
     this._thumbLabel = coerceBooleanProperty(value);
   }
 
-  private _thumbLabel: boolean = false;
+  private _thumbLabel: boolean = true;
 
   /**
    * How often to show ticks. Relative to the step so that a tick always appears on a step.

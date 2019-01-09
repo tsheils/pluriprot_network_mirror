@@ -24,7 +24,7 @@ export class D3Service {
 
     svg = d3.select(svgElement);
     container = d3.select('#root');
-    var transform = d3.zoomIdentity.translate(700, 600).scale(.15);
+    const transform = d3.zoomIdentity.translate(svg.node().clientHeight / 2, svg.node().clientWidth / 2).scale(.15);
 
 
     zoomed = () => {
@@ -481,14 +481,13 @@ console.log([tx, ty]);
 
 
   resetZoom() {
-   // this.zoomFit();
     const svg = d3.select('#fdg');
     const container = d3.select('#root');
-    var transform = d3.zoomIdentity.scale(.15);
+    const transform = d3.zoomIdentity.translate(svg.node().clientHeight / 2, svg.node().clientWidth / 2).scale(.15);
 
 
-   const zoomed = () => {
-      const transform = d3.event.transform;
+
+    const zoomed = () => {
       container.attr("transform", d3.event.transform); // updated for d3 v4
     };
 

@@ -10,16 +10,16 @@
   <div class="mat-slider-thumb-container" #leftSlider
        [ngStyle]="_thumbContainerStylesLeft">
     <div class="mat-slider-focus-ring"></div>
-    <div class="mat-slider-thumb left"></div>
-    <div class="mat-slider-thumb-label">
+    <div class="mat-slider-thumb left pink"></div>
+    <div class="mat-slider-thumb-label pink show">
       <span class="mat-slider-thumb-label-text">{{displayValue}}</span>
     </div>
   </div>
   <div *ngIf="isRangeSlider()" class="mat-slider-thumb-container" #rightSlider
        [ngStyle]="_thumbContainerStylesRight">
     <div class="mat-slider-focus-ring"></div>
-    <div class="mat-slider-thumb right"></div>
-    <div class="mat-slider-thumb-label">
+    <div class="mat-slider-thumb right pink"></div>
+    <div class="mat-slider-thumb-label pink show">
       <span class="mat-slider-thumb-label-text">{{displayValueRight}}</span>
     </div>
   </div>

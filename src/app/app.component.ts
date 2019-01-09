@@ -66,44 +66,53 @@ export class AppComponent {
   }
 
   _filterNodes(params: Event): Protein[]{
-    console.log(params);
     const data = params['data'] ? params['data'] : 'nscs';
      let nodes: Protein[] = this.dataMap.get(data).nodes as Protein[];
-    Object.keys(params).forEach(param => {
-      // skip iterating from the fade parameter
-      if(param !== 'fade') {
-        if (Array.isArray(params[param])) {
-          if (params['fade'] === true) {
-            nodes = nodes.map(node => {
-              if (node[param] >= params[param][0] && node[param] <= params[param][1]) {
-                node.tempcolor = null;
-              } else {
-                node.tempcolor = '#f6f6f6';
-              }
-              return node;
-            });
-          } else {
-            nodes = nodes.filter(node => node[param] >= params[param][0] && node[param] <= params[param][1]);
-          }
-        }
-      }
-    });
-    if(params['no_data'] === true){
-     nodes = nodes.filter(node => {
-       return node.hESC_NSC_Fold_Change !==-100
-     });
+     if(params['reset']){
+       return nodes.map(node => {
+         node.tempcolor = null;
+         return node;
+       });
+     } else {
+       Object.keys(params).forEach(param => {
+         // skip iterating from the fade parameter
+         if (param !== 'fade') {
+           if (Array.isArray(params[param])) {
+             if (params['fade'] === true) {
+               nodes = nodes.map(node => {
+                 if (node[param] >= params[param][0] && node[param] <= params[param][1]) {
+                   node.tempcolor = null;
+                 } else {
+                   node.tempcolor = '#f6f6f6';
+                 }
+                 return node;
+               });
+             } else {
+               nodes = nodes.filter(node => {
+                 node.tempcolor = null;
+                 return node[param] >= params[param][0] && node[param] <= params[param][1];
+               });
+             }
+           }
+         }
+       });
+       if (params['no_data'] === true) {
+         nodes = nodes.filter(node => {
+           return node.hESC_NSC_Fold_Change !== -100
+         });
 
-    }
-    if(params['subgraph']) {
-      if (params['subgraph'] !== 'null') {
-        const node = nodes.filter(node => {
-          return node.name === params['subgraph']
-        });
-        this.nodeService.hoveredNode(node);
-        this.d3Service._manualClick(node[0], this.graphDataService.returnGraph());
-      }
-    }
-    return nodes;
+       }
+       if (params['subgraph']) {
+         if (params['subgraph'] !== 'null') {
+           const node = nodes.filter(node => {
+             return node.name === params['subgraph']
+           });
+           this.nodeService.hoveredNode(node);
+           this.d3Service._manualClick(node[0], this.graphDataService.returnGraph());
+         }
+       }
+       return nodes;
+     }
   }
 
   _filterEdges(params: Event, nodes : Protein[]){
@@ -116,9 +125,5 @@ export class AppComponent {
       return currentNodes.includes(source) && currentNodes.includes(target);
     });
     return links;
-  }
-
-  resetZoom():void {
-    this.d3Service.resetZoom();
   }
 }
