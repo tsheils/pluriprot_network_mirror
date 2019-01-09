@@ -1,21 +1,18 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
-import {Observable} from 'rxjs';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {Component, EventEmitter, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 import {GraphDataService} from "../../force-directed-graph/graph-component/services/graph-data.service";
-import {Node, Protein} from "../../force-directed-graph/graph-component/models/node";
-import {Link} from "../../force-directed-graph/graph-component/models/link";
 import {finalize, tap} from "rxjs/internal/operators";
 
 @Component({
   selector: 'search-component',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./search.component.scss']
 })
+
 export class SearchComponent implements OnInit {
 @Output()
-  public selected: EventEmitter<Protein> = new EventEmitter();
+  public selected: EventEmitter<any> = new EventEmitter();
   searchForm: FormGroup;
   options: any;
   isLoading = false;
@@ -53,7 +50,7 @@ export class SearchComponent implements OnInit {
       });
   }
 
-  displayFn(node?: Protein): string | undefined {
+  displayFn(node?: any): string | undefined {
     return node ? node.name : undefined;
   }
 

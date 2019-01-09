@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {Injector, NgModule} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {HttpClientModule} from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -28,6 +28,7 @@ import { D3ColorLegendComponent } from './tools/d3-color-legend/d3-color-legend.
 import {SearchComponent} from "./tools/search-component/search.component";
 import {HighlightPipe} from "./tools/search-component/highlight.pipe";
 import {GraphClickDirective} from "./force-directed-graph/graph-component/directives/graph-click.directive";
+import {createCustomElement} from "@angular/elements";
 
 @NgModule({
   declarations: [
@@ -65,6 +66,21 @@ import {GraphClickDirective} from "./force-directed-graph/graph-component/direct
     GraphDataService,
     NodeMenuControllerService
   ],
-  bootstrap: [AppComponent]
+ /* bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { }*/
+entryComponents: [AppComponent]
+})
+
+export class AppModule {
+  constructor(private injector: Injector) {
+    const el = createCustomElement(AppComponent, { injector });
+    customElements.define('ncats-pluriprot-network', el);
+  }
+
+  ngDoBootstrap() {}
+ }
+
+
+
+

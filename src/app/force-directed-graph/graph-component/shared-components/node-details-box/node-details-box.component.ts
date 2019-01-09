@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Protein} from "../../models/node";
 import {NodeService} from "../../services/event-tracking/node.service";
 import {LinkService} from "../../services/event-tracking/link.service";

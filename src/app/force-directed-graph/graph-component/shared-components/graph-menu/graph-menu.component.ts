@@ -1,15 +1,16 @@
-import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {
-  MatCheckboxChange, MatFormField, MatFormFieldControl, MatSidenav, MatSliderChange,
+  MatCheckboxChange, MatSliderChange,
   MatSlideToggleChange
 } from "@angular/material";
-import {RangeSliderComponentChange} from "../../../../tools/range-slider/range-slider.component";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-graph-menu',
   templateUrl: './graph-menu.component.html',
-  styleUrls: ['./graph-menu.component.scss']
+  styleUrls: ['./graph-menu.component.scss'],
+  encapsulation: ViewEncapsulation.Native
+
 })
 export class GraphMenuComponent implements OnInit {
 
@@ -39,9 +40,7 @@ export class GraphMenuComponent implements OnInit {
   }
 
   setActiveGraph(val: string) {
-    this._settings = {
-      fade: false
-    };
+   // this.resetScale(0,0);
     this.activeGraph = val;
     this._settings.data = val;
     this._settings.subgraph = null;
@@ -55,13 +54,15 @@ export class GraphMenuComponent implements OnInit {
   }
 
   resetScale(a: number, b: number) {
+    this.subGraphTypeCtrl.reset();
     this._settings = {
       fade: false,
       hESC_NSC_Fold_Change: [a,b],
       reset: true
     };
+    // this._settings.subgraph = null;
     this.optionsChange.emit(this._settings);
-    delete this._settings['reset'];
+    this._settings['reset'] = false;
   }
 
   setFilterType(change: MatSlideToggleChange) {
