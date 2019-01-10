@@ -8,7 +8,6 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { AppComponent } from './app.component';
 import { ForceDirectedGraphComponent } from './force-directed-graph/force-directed-graph.component';
 import {D3Service} from "./force-directed-graph/graph-component/services/event-tracking/d3.service";
-import {MaterialModule} from "../assets/material/material.module";
 import {ClickableLinkDirective} from "./force-directed-graph/graph-component/directives/clickable-link.directive";
 import {ClickableNodeDirective} from "./force-directed-graph/graph-component/directives/clickable-node.directive";
 import {DraggableDirective} from "./force-directed-graph/graph-component/directives/draggable.directive";
@@ -29,6 +28,22 @@ import {SearchComponent} from "./tools/search-component/search.component";
 import {HighlightPipe} from "./tools/search-component/highlight.pipe";
 import {GraphClickDirective} from "./force-directed-graph/graph-component/directives/graph-click.directive";
 import {createCustomElement} from "@angular/elements";
+
+import {
+  MatButtonModule, MatInputModule, MatIconModule,
+  MatListModule, MatSliderModule, MatProgressSpinnerModule, MatSidenavModule,
+  MatCheckboxModule, MatCardModule,
+  MatSelectModule, MatExpansionModule
+} from '@angular/material';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatRippleModule} from '@angular/material/core';
+
+
+
+
 
 @NgModule({
   declarations: [
@@ -57,7 +72,22 @@ import {createCustomElement} from "@angular/elements";
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialModule
+    MatButtonModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    MatIconModule,
+    MatListModule,
+    MatSliderModule,
+    MatProgressSpinnerModule,
+    MatSidenavModule,
+    MatRadioModule,
+    MatCheckboxModule,
+    MatCardModule,
+    MatSelectModule,
+    MatExpansionModule,
+    DragDropModule,
+    MatRippleModule,
+    MatSlideToggleModule
   ],
   providers: [
     D3Service,

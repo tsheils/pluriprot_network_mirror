@@ -8,7 +8,6 @@ const concat = require('concat');
   ]
   await fs.ensureDir('elements')
   await concat(files, 'elements/sctl-graph.js');
-  await fs.copyFile('./dist/sctl-graph/styles.css', 'elements/styles.css')
   await fs.copy('./dist/sctl-graph/assets/', 'elements/assets/' )
 
 })()
