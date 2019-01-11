@@ -9,7 +9,7 @@ import {FormControl} from "@angular/forms";
   selector: 'app-graph-menu',
   templateUrl: './graph-menu.component.html',
   styleUrls: ['./graph-menu.component.scss'],
-  encapsulation: ViewEncapsulation.Native
+  encapsulation: ViewEncapsulation.None
 
 })
 export class GraphMenuComponent implements OnInit {

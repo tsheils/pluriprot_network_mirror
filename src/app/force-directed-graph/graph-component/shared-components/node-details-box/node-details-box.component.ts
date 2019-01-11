@@ -11,8 +11,7 @@ import {D3Service} from "../../services/event-tracking/d3.service";
 @Component({
   selector: 'app-node-details-box',
   templateUrl: './node-details-box.component.html',
-  styleUrls: ['./node-details-box.component.scss'],
-  encapsulation: ViewEncapsulation.Native
+  styleUrls: ['./node-details-box.component.scss']
 })
 export class NodeDetailsBoxComponent implements OnInit {
 

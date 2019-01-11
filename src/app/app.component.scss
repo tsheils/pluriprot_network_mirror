@@ -1,4 +1,7 @@
 /*
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+*/
+
 // Import theming functions
 @import '~@angular/material/theming';
 // Import your custom theme
@@ -12,11 +15,20 @@ $candy-app-accent:  mat-palette($mat-pink, A200, A100, A400);
 $candy-app-theme:   mat-light-theme($candy-app-primary, $candy-app-accent);
 // Include the theme styles for only specified components.
 @include mat-core-theme($candy-app-theme);
+@include mat-form-field-theme($candy-app-theme);
+@include mat-autocomplete-theme($candy-app-theme);
 @include mat-button-theme($candy-app-theme);
-@include mat-sidenav-theme($candy-app-theme);
+@include mat-button-toggle-theme($candy-app-theme);
+@include mat-checkbox-theme($candy-app-theme);
+@include mat-expansion-panel-theme($candy-app-theme);
 @include mat-icon-theme($candy-app-theme);
-@include mat-ripple-theme($candy-app-theme);
-*/
+@include mat-input-theme($candy-app-theme);
+@include mat-progress-spinner-theme($candy-app-theme);
+@include mat-radio-theme($candy-app-theme);
+@include mat-select-theme($candy-app-theme);
+@include mat-sidenav-theme($candy-app-theme);
+@include mat-slide-toggle-theme($candy-app-theme);
+@include mat-slider-theme($candy-app-theme);
 
 .info-panel {
   height: 50%;
@@ -30,14 +42,9 @@ $candy-app-theme:   mat-light-theme($candy-app-primary, $candy-app-accent);
 
 .menu-drawer {
   width: 30%;
+  min-width: 500px;
 }
 
-.close-button {
-  position: absolute;
-  right: 69vw;
-  top: 8px;
-  background-color: white;
-}
 
 .open-button {
   position: absolute;
