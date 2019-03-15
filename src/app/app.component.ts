@@ -11,6 +11,7 @@ import {DataParserService} from "./services/data-parser.service";
 import {environment} from "src/environments/environment.prod";
 import {D3Service} from "./force-directed-graph/graph-component/services/event-tracking/d3.service";
 import {IconService} from "src/app/services/icon.service";
+import {LineChartOptions} from "./line-chart/line-chart.component";
 
 @Component({
   selector: 'app-root',
@@ -29,6 +30,13 @@ export class AppComponent {
    * @type {Link[]}
    */
   public links: Link[] = [];
+
+  scatterData: any;
+
+  chartOptions = {
+    line: false,
+    margin: {top: 20, right: 45, bottom: 20, left: 35}
+  };
 
   dataMap: Map<string, any> = new Map<string, any>();
 
@@ -50,6 +58,9 @@ export class AppComponent {
   }
 
   ngOnInit() {
+    this.dataParserService.loadScatter().then(data => {
+      this.scatterData = data;
+    });
     this.dataParserService.LoadData().subscribe(res => {
       this.dataMap = this.dataParserService.getDataMap();
       this.graphDataService.setGraph(this.dataMap.get('nscs'))

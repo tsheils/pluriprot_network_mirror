@@ -1,4 +1,4 @@
-<div class = "fdg-container">
+<!--<div class = "fdg-container">
 <mat-sidenav-container class="sctl-graph-container" [hasBackdrop]="false">
     <mat-sidenav #graphMenu [opened]="true" mode="over"
                  class="menu-drawer">
@@ -20,5 +20,9 @@
   <app-force-directed-graph cdkDropList></app-force-directed-graph>
     </mat-sidenav-content>
 </mat-sidenav-container>
-</div>
+</div>-->
 
+<div class ="scatter-graph">
+
+  <pharos-line-chart [data]="scatterData" [options]="chartOptions"></pharos-line-chart>
+</div>

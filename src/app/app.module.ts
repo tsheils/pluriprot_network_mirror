@@ -28,6 +28,7 @@ import { D3ColorLegendComponent } from './tools/d3-color-legend/d3-color-legend.
 import {SearchComponent} from "./tools/search-component/search.component";
 import {HighlightPipe} from "./tools/search-component/highlight.pipe";
 import {GraphClickDirective} from "./force-directed-graph/graph-component/directives/graph-click.directive";
+import {LineChartComponent} from "./line-chart/line-chart.component";
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import {GraphClickDirective} from "./force-directed-graph/graph-component/direct
     RangeSliderComponent,
     D3ColorLegendComponent,
     HighlightPipe,
-    SearchComponent
+    SearchComponent,
+    LineChartComponent
   ],
   imports: [
     BrowserModule,

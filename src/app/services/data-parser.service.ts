@@ -9,6 +9,39 @@ import {HttpClient} from "@angular/common/http";
 import {GraphDataService} from "../force-directed-graph/graph-component/services/graph-data.service";
 import {mergeAll} from "rxjs/internal/operators";
 import {Link} from "../force-directed-graph/graph-component/models/link";
+import * as d3 from 'd3';
+import {PharosPoint} from "../line-chart/line-chart.component";
+
+class SCTLPoint implements PharosPoint {
+  /**
+   * optional point name
+   */
+  name?: string;
+
+  /**
+   * optional point label
+   */
+  label?: string;
+
+  /**
+   * optional variable to toggle hovering class
+   */
+  hovered?: boolean;
+
+  /**
+   * point key
+   */
+  key: number;
+
+  /**
+   * point value
+   */
+  value: number;
+
+  constructor(data: any){
+    Object.entries((data)).forEach((prop) => this[prop[0]] = prop[1]);
+  }
+}
 
 interface FileData {
   origin: string;
@@ -57,6 +90,29 @@ export class DataParserService {
       return this.dataMap;
     });*/
   }
+
+  loadScatter(): any {
+
+   return d3.dsv(",", '../assets/data/pluriprot-shiny.csv', function(d) {
+      return new SCTLPoint({
+        name: d.Symbol,
+      label: d.Symbol,
+      hovered: false,
+      key: parseFloat(d.hESC_Ln_NSAF),
+      value: parseFloat(d.hNSC_Ln_NSAF),
+       pvalue: d.t_test_p,
+        color: d.color
+      })
+    }).then(function(data) {
+      return data;
+    });
+
+/*
+    this._fetchFile('../assets/data/pluriprot-shiny.csv').subscribe(res => {
+
+    })*/
+  }
+
 
   private _parseData(data: any) {
     const nodeObs = of(data.data.elements.nodes.map(node => {
