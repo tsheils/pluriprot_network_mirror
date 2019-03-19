@@ -29,6 +29,7 @@ import {SearchComponent} from "./tools/search-component/search.component";
 import {HighlightPipe} from "./tools/search-component/highlight.pipe";
 import {GraphClickDirective} from "./force-directed-graph/graph-component/directives/graph-click.directive";
 import {LineChartComponent} from "./line-chart/line-chart.component";
+import { ScatterPlotComponent } from './scatter-plot/scatter-plot.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import {LineChartComponent} from "./line-chart/line-chart.component";
     D3ColorLegendComponent,
     HighlightPipe,
     SearchComponent,
-    LineChartComponent
+    LineChartComponent,
+    ScatterPlotComponent
   ],
   imports: [
     BrowserModule,

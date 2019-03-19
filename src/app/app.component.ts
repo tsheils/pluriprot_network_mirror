@@ -35,7 +35,11 @@ export class AppComponent {
 
   chartOptions = {
     line: false,
-    margin: {top: 20, right: 45, bottom: 20, left: 35}
+    margin: {top: 20, right: 30, bottom: 20, left: 30},
+    xdomain: [-16, -4],
+    ydomain: [-16, -4],
+    xLabel: 'hESC_Ln_NSAF',
+    yLabel: 'hNSC_Ln_NSAF'
   };
 
   dataMap: Map<string, any> = new Map<string, any>();

@@ -25,14 +25,14 @@ export interface PharosPoint {
   hovered?: boolean;
 
   /**
-   * point key
+   * x-axis point value
    */
-  key: number;
+  x: number;
 
   /**
-   * point value
+   * y-axis point value
    */
-  value: number;
+  y: number;
 }
 
 /**
@@ -59,6 +59,12 @@ export class LineChartOptions {
    */
   xAxisScale: 'linear' | 'log' = 'linear';
   yAxisScale: 'linear' | 'log' = 'linear';
+
+  xdomain?: [number, number];
+  ydomain?: [number, number];
+
+  xLabel: string;
+  yLabel: string;
 
   /**
    * merge new option properties with a default option object retrieved from the chart service
@@ -99,7 +105,7 @@ export class LineChartComponent  implements OnInit, OnDestroy {
   @Input()
   set data(value: any) {
     if (value) {
-      // value = value.sort((a, b) => a.key - b.key);
+      // value = value.sort((a, b) => a.x - b.x);
       this._data.next(value);
     }
   }
@@ -180,12 +186,16 @@ export class LineChartComponent  implements OnInit, OnDestroy {
   switch (scale) {
     case 'linear': {
      return d3.scalePoint()
-        .domain([-16, -4])
-        .rangeRound([0, this.width + this._chartOptions.margin.left]);
+       .domain(
+         this._chartOptions.xdomain ? this._chartOptions.xdomain : this.data.map(d => +d.x)
+       )
+       .rangeRound([0, this.width + this._chartOptions.margin.left]);
     }
     case 'log': {
       return d3.scaleLog()
-        .domain(this.data.map(d => +d.key))
+        .domain(
+          this._chartOptions.xdomain ? this._chartOptions.xdomain : this.data.map(d => +d.x)
+        )
         .rangeRound([0, this.width + this._chartOptions.margin.left]);
     }
   }
@@ -195,13 +205,16 @@ getYAxis(scale: string): any {
   switch (scale) {
     case 'linear': {
       return d3.scaleLinear()
-        .domain([-16, -4])
+        .domain(
+          this._chartOptions.ydomain ? this._chartOptions.ydomain : this.data.map(d => +d.y)
+        )
         .rangeRound([this.height, 0]);
     }
     case 'log': {
       return d3.scaleLog()
-        .domain(d3.extent(this.data, (d) => d.value)).nice()
-        // .domain([0.001, 1])
+        .domain(
+          this._chartOptions.ydomain ? this._chartOptions.ydomain : this.data.map(d => +d.y)
+        )
         .rangeRound([this.height, 0]);
     }
   }
@@ -216,8 +229,6 @@ getYAxis(scale: string): any {
     this.height = element.offsetHeight - this._chartOptions.margin.top - this._chartOptions.margin.bottom;
     // Remove whatever chart with the same id/class was present before
     d3.select(element).selectAll('svg').remove();
-
-
 
     this.svg = d3.select(element).append('svg')
       .attr('width', '100%')
@@ -289,16 +300,42 @@ getYAxis(scale: string): any {
 
 
     const zoomed = () => {
-      console.log('zooming');
-// create new scale ojects based on event
-      const new_xScale = d3.event.transform.rescaleX(x);
-      const new_yScale = d3.event.transform.rescaleY(y);
-// update axes
-      xaxis.call(x.scale(new_xScale));
-      yaxis.call(y.scale(new_yScale));
-      points.data(this.data)
-        .attr('cx', function(d) {return new_xScale(d.key)})
-        .attr('cy', function(d) {return new_yScale(d.value)});
+      console.log("zooming");
+      console.log(d3.event.transform);
+    //  xaxis.scale(d3.event.transform.rescaleX(x));
+      this.svg.select('.xaxis')
+        .call(d3.axisBottom(d3.event.transform.rescaleX(x))
+          .ticks((this.width + 2) / (this.height + 2) * 20));
+
+      this.svg.select('.yaxis')
+        .call(d3.axisLeft(d3.event.transform.rescaleY(y))
+          .ticks(20));
+
+     // yaxis.scale(d3.event.transform.rescaleY(y));
+      var t = d3.event.transform,
+        xt = t.rescaleX(x),
+        yt = t.rescaleY(y);
+
+      /*var priceSeries2 = d3.line()
+        .defined(function(d) { return d.price != 0; })
+        .x(function(d) { return xt(d.dt); })
+        .y(function(d) { return yt(d.price); });
+
+      var voronoi2 = d3.voronoi()
+        .x(function(d) { return xt(d.dt); })
+        .y(function(d) { return yt(d.price); })
+        .extent([[-margin.left, -margin.top], [width + margin.right, height + margin.bottom]]);
+
+      chartBody.selectAll("path")
+        .attr("d", priceSeries2);
+
+      focus.select("circle.y")
+        .attr('cx', function() {return t.applyX(x(x_date.dt)); })
+        .attr('cy', function() {return t.applyY(y(x_date.price)); });
+
+      voronoiGroup
+        .attr("transform", d3.event.transform)
+*/
     }
 
     const zoom = d3.zoom()
@@ -318,14 +355,14 @@ getYAxis(scale: string): any {
 
 
     const voronoi = d3.voronoi()
-      .x((d: PharosPoint) => x(d.key))
-      .y((d: PharosPoint) =>  y(d.value))
+      .x((d: PharosPoint) => x(d.x))
+      .y((d: PharosPoint) =>  y(d.y))
       .extent([[-this._chartOptions.margin.left, -this._chartOptions.margin.top],
         [this.width + this._chartOptions.margin.right, this.height + this._chartOptions.margin.bottom]]);
 
     const line = d3.line()
-      .x((d: PharosPoint) => x(+d.key))
-      .y((d: PharosPoint) => y(+d.value));
+      .x((d: PharosPoint) => x(+d.x))
+      .y((d: PharosPoint) => y(+d.y));
 
     const xaxis = this.svg.select('.xaxis')
       .call(d3.axisBottom(x)
@@ -350,8 +387,8 @@ getYAxis(scale: string): any {
       this.svg.select(".yaxis").transition(t).call(d3.axisLeft(y)
         .ticks(4));
       this.svg.selectAll("circle").transition(t)
-        .attr("cx", function(d) {return x(d.key); })
-        .attr("cy", function(d) { return y(d.value); });
+        .attr("cx", function(d) {return x(d.x); })
+        .attr("cy", function(d) { return y(d.y); });
     }*/
 
     const points = this.svg.select('.linePointHolder').selectAll('.linePoints')
@@ -360,8 +397,8 @@ getYAxis(scale: string): any {
       .append('circle')
       .attr('class', 'linePoints')
       .attr('r', 3)
-      .attr('cx', d =>  x(d.key))
-      .attr('cy', d =>  y(d.value))
+      .attr('cx', d =>  x(d.x))
+      .attr('cy', d =>  y(d.y))
       .style('fill', d => (d.color ==='gray' ? 'none' : d.color))
       .style('fill-opacity', 0.8)
       .style('pointer-events', 'all')
@@ -377,8 +414,9 @@ getYAxis(scale: string): any {
       .style('pointer-events', 'all')
       .on('mouseover', (data, i, circles) => {
         console.log("mouse");
-        // console.log(circles);
-        // console.log(this.svg.selectAll('.linePoints')[i].nodes());
+        console.log(circles);
+        console.log(i);
+        console.log(this.svg.selectAll('.linePoints')[i].nodes());
         // this.svg.selectAll('.linePoints').node()[i].classed('hovered', true);
         const d = data.data;
         this.tooltip
@@ -389,7 +427,7 @@ getYAxis(scale: string): any {
         if (d.label) {
           span = '<span>' + d.label + ': <br>' + d.name + '</span>';
         } else {
-          span = '<span>' + d.key + ': <br>' + d.value + '</span>';
+          span = '<span>' + d.x + ': <br>' + d.y + '</span>';
         }
         this.tooltip.html(span)
           .style('left', d3.event.pageX + 'px')
@@ -403,20 +441,8 @@ getYAxis(scale: string): any {
           .style('opacity', 0);
         d3.select(circles[i]).classed('hovered', false);
       })
+      .call(zoom)
       .exit();
-
-/*    this.svg.append('g')
-      .attr('class', 'brush')
-      .call(brush);*/
-
-
-    this.svg.append("rect")
-      .attr("width", this.width)
-      .attr("height", this.height)
-      .style("fill", "none")
-      .style("pointer-events", "all")
-      .attr('transform', 'translate(' + this._chartOptions.margin.left + ',' + this._chartOptions.margin.top + ')')
-      .call(zoom);
 
     if (this._chartOptions.line) {
   this.svg.select('.timeline')   // change the line

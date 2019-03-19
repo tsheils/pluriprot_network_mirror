@@ -31,12 +31,12 @@ class SCTLPoint implements PharosPoint {
   /**
    * point key
    */
-  key: number;
+  x: number;
 
   /**
    * point value
    */
-  value: number;
+  y: number;
 
   constructor(data: any){
     Object.entries((data)).forEach((prop) => this[prop[0]] = prop[1]);
@@ -98,8 +98,9 @@ export class DataParserService {
         name: d.Symbol,
       label: d.Symbol,
       hovered: false,
-      key: parseFloat(d.hESC_Ln_NSAF),
-      value: parseFloat(d.hNSC_Ln_NSAF),
+      x: parseFloat(d.hESC_Ln_NSAF),
+      y: parseFloat(d.hNSC_Ln_NSAF),
+        ratio: Number(d.NSAF_SpC_ratio).toFixed(3),
        pvalue: d.t_test_p,
         color: d.color
       })
