@@ -35,7 +35,7 @@ export class AppComponent {
 
   chartOptions = {
     line: false,
-    margin: {top: 20, right: 30, bottom: 20, left: 30},
+    margin: {top: 20, right: 30, bottom: 60, left: 60},
     xdomain: [-16, -4],
     ydomain: [-16, -4],
     xLabel: 'hESC_Ln_NSAF',

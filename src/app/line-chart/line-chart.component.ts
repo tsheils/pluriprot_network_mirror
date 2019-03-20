@@ -43,7 +43,7 @@ export class LineChartOptions {
   /**
    * The margins of the SVG
    */
-  margin: any = {top: 20, right: 30, bottom: 20, left: 30};
+  margin: any = {top: 30, right: 30, bottom: 30, left: 30};
 
   /**
    * boolean to switch between line chart and scatterplot

@@ -21,6 +21,15 @@
 
 }
 
+.axis line {
+  stroke-opacity: 0.3;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
 
 .axis-label {
   font-size: 14px;
