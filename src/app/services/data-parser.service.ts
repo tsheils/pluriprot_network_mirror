@@ -92,7 +92,7 @@ export class DataParserService {
   }
 
   loadScatter(): any {
-
+const dataMap:Map<string, PharosPoint[]> = new Map<string, PharosPoint[]>();
    return d3.dsv(",", '../assets/data/pluriprot-shiny.csv', function(d) {
       return new SCTLPoint({
         name: d.Symbol,
@@ -105,7 +105,17 @@ export class DataParserService {
         color: d.color
       })
     }).then(function(data) {
-      return data;
+      data.map(point => {
+        const points: PharosPoint[] = dataMap.get(point.color);
+        if (points) {
+          points.push(point);
+          dataMap.set(point.color, points);
+        } else {
+          dataMap.set(point.color, [point]);
+        }
+        }
+      )
+      return dataMap;
     });
 
 /*

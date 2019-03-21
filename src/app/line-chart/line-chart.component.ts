@@ -343,8 +343,6 @@ getYAxis(scale: string): any {
       .extent([[0, 0], [this.width, this.height]])
       .on("zoom", zoomed);
 
-
-    // const brush = d3.brush().on('end', brushended);
     let idleTimeout;
     const idleDelay = 350;
 
@@ -377,19 +375,6 @@ getYAxis(scale: string): any {
     const yaxis = this.svg.select('.yaxis')
       .call(d3.axisLeft(y)
         .ticks(4));
-
-/*    const zoom = () => {
-      const t = this.svg.transition().duration(750);
-      console.log("zooming");
-      console.log(this.svg.select(".xaxis"));
-      this.svg.select(".xaxis").transition(t).call(d3.axisBottom(x)
-        .ticks((this.width + 2) / (this.height + 2) * 20));
-      this.svg.select(".yaxis").transition(t).call(d3.axisLeft(y)
-        .ticks(4));
-      this.svg.selectAll("circle").transition(t)
-        .attr("cx", function(d) {return x(d.x); })
-        .attr("cy", function(d) { return y(d.y); });
-    }*/
 
     const points = this.svg.select('.linePointHolder').selectAll('.linePoints')
       .data(this.data)

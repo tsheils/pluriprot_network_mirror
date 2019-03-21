@@ -2,9 +2,11 @@ import {
   AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import {BehaviorSubject} from "rxjs/index";
+import {BehaviorSubject, Subject} from "rxjs/index";
 import {LineChartOptions, PharosPoint} from "../line-chart/line-chart.component";
 import * as d3 from 'd3';
+import {SelectionModel} from "@angular/cdk/collections";
+import {takeUntil} from "rxjs/internal/operators";
 
 @Component({
   selector: 'app-scatter-plot',
@@ -60,8 +62,6 @@ export class ScatterPlotComponent implements OnInit, OnDestroy {
    */
   private svg: any;
 
-  private focus: any;
-
   /**
    * html element that will hold tooltip data
    */
@@ -78,28 +78,60 @@ export class ScatterPlotComponent implements OnInit, OnDestroy {
   private height: number;
 
   /**
+   * selection model to track selected filters
+   * @type {SelectionModel<string>}
+   */
+  filterSelection = new SelectionModel<string>(true, ['gray', 'blue', 'green', 'red']);
+
+  /**
+   * unsubscribe subject
+   * @type {Subject<any>}
+   */
+  private ngUnsubscribe: Subject<any> = new Subject();
+
+  displayData: any = [];
+
+  private x;
+  private y;
+  private k = 1;
+
+  private voronoi;
+  private voronoiGroup;
+  private chartGroup;
+  private zoom;
+
+  /**
    * function to redraw/scale the graph on window resize
    */
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.drawChart();
-    this.updateChart();
+    this.updateData();
   }
 
   ngOnInit() {
     this._data.subscribe(x => {
       if (this.data) {
-        // this.drawChart();
-        this.updateChart();
+        this.filterSelection.selected.forEach(color => {
+          this.displayData.push(this.data.get(color));
+        });
+        this.drawChart();
+        this.setData();
       }
     });
-  }
 
-
-  ngOnDestroy(): void {
-    const element = this.chartContainer.nativeElement;
-    d3.select(element).selectAll('svg').remove();
-    d3.select('body').selectAll('.line-tooltip').remove();
+    /**
+     * this changes the facets that are mapped to the url path in the service
+     */
+    this.filterSelection.changed
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(change => {
+        this.displayData = [];
+        this.filterSelection.selected.forEach(color => {
+          this.displayData.push(this.data.get(color));
+        });
+        this.updateData();
+      });
   }
 
   getOptions() {
@@ -108,236 +140,282 @@ export class ScatterPlotComponent implements OnInit, OnDestroy {
   }
 
   drawChart(): void {
-
-  }
-
-  updateChart(): void {
-    let zoomed;
     this.getOptions();
     //////////// Create the container SVG and g /////////////
     const element = this.chartContainer.nativeElement;
     const margin = this._chartOptions.margin;
-    const width = element.offsetWidth - margin.left - margin.right;
-    const height = element.offsetHeight - margin.top - margin.bottom;
+    this.width = element.offsetWidth - margin.left - margin.right;
     this.height = element.offsetHeight - margin.top - margin.bottom;
+
+    this.x = d3.scaleLinear()
+      .range([0, this.width]);
+
+    if (this._chartOptions.xAxisScale === 'log') {
+      this.x = d3.scaleLog()
+        .range([0, this.width])
+    }
+
+    this.y = d3.scaleLinear()
+      .range([this.height, 0]);
+
+    if (this._chartOptions.yAxisScale === 'log') {
+      this.y = d3.scaleLog()
+        .range([this.height, 0]);
+    }
+
+    this.voronoi = d3.voronoi()
+      .x((d: PharosPoint) => this.x(d.x))
+      .y((d: PharosPoint) => this.y(d.y))
+      .extent([[-this._chartOptions.margin.left, -this._chartOptions.margin.top],
+        [this.width + this._chartOptions.margin.right, this.height + this._chartOptions.margin.bottom]]);
+
+    this.x.domain(
+      (d3.extent(d3.merge(this.displayData).map(d => d.x)))
+    ).nice();
+
+    this.y.domain(
+      (d3.extent(d3.merge(this.displayData).map(d => d.y)))
+    ).nice();
+
+
+    const xAxis = d3.axisBottom(this.x)
+      .ticks((this.width + 2) / (this.height + 2) * 5)
+      .tickSize(-this.height)
+      .tickPadding(10);
+
+    const yAxis = d3.axisRight(this.y)
+      .ticks(5)
+      .tickSize(this.width)
+      .tickPadding(-20 - this.width);
+
     // Remove whatever chart with the same id/class was present before
     d3.select(element).selectAll('svg').remove();
 
-    let x = d3.scaleLinear()
-      .range([0, width]);
+    this.svg = d3.select(element)
+      .append('svg:svg')
+      .attr('width', this.width + margin.left + margin.right)
+      .attr('height', this.height + margin.top + margin.bottom)
+      .append("svg:g")
+      .attr("id", "group")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    /*
-        if (this._chartOptions.xAxisScale === 'log') {
-        x =  d3.scaleLog()
-          .range([0,width])
-        }
-    */
+    this.svg.append("text")
+      .attr("transform",
+        "translate(" + (this.width / 2) + " ," + (this.height + margin.top + 20) + ")")
+      .attr('class', 'axis-label')
+      .text(this._chartOptions.xLabel);
 
-    let y = d3.scaleLinear()
-      .range([height, 0]);
+    this.svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left / 1.4)
+      .attr("x", 0 - (this.height / 2))
+      .attr('class', 'axis-label')
+      .text(this._chartOptions.yLabel);
 
-    /*    if (this._chartOptions.yAxisScale === 'log') {
-        y =  d3.scaleLog()
-          .range([height, 0]);
-        }*/
+    // Add the X Axis
+    const gX = this.svg.append('svg:g')
+      .attr('class', 'axis')
+      .attr("transform", "translate(0," + this.height + ")")
+      .call(xAxis);
 
-    const voronoi = d3.voronoi()
-      .x((d: PharosPoint) => x(d.x))
-      .y((d: PharosPoint) => y(d.y))
-      .extent([[-margin.left, -margin.top],
-        [width + margin.right, height + margin.bottom]]);
+    // Add the Y Axis
+    const gY = this.svg.append('svg:g')
+      .attr('class', 'axis')
+      .call(yAxis);
+
+    this.svg.append("g")
+      .attr("transform", "translate(0," + this.height + ")")
+      .call(d3.axisBottom(this.x).ticks(0));
+
+    this.svg.append("g")
+      .call(d3.axisLeft(this.y).ticks(0));
+
+    this.chartGroup = this.svg
+      .append("svg:g")
+      .attr("class", "chartbody")
+      .attr("clip-path", "url(#clip)")
+      .append("svg:g")
+      .attr("class", "points");
+
+    this.voronoiGroup = this.svg
+      .append("svg:g")
+      .attr("class", "voronoiParent")
+      .attr("clip-path", "url(#clip)")
+      .append("svg:g")
+      .attr("class", "voronoi")
+
+    this.svg.append("defs").append("clipPath")
+      .attr("id", "clip")
+      .append("rect")
+      .attr("width", this.width)
+      .attr("height", this.height)
+
 
     this.tooltip = d3.select('body').append('div')
       .attr('class', 'line-tooltip')
       .style('opacity', 0);
 
-    const svg = d3.select(element)
-      .append('svg:svg')
-      .attr('width', width + margin.left + margin.right)
-      .attr('height', height + margin.top + margin.bottom)
-      .append("svg:g")
-      .attr("id", "group")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    x.domain(
-      this._chartOptions.xdomain ? this._chartOptions.xdomain : this.data.map(d => d.x)
-    );
-
-    y.domain(
-      this._chartOptions.ydomain ? this._chartOptions.ydomain : this.data.map(d => d.y)
-    );
-
-
-    const xAxis = d3.axisBottom(x)
-      .ticks(20);
-
-    const yAxis = d3.axisLeft(y)
-      .ticks(20);
-
-    svg.append("text")
-      .attr("transform",
-        "translate(" + (width / 2) + " ," + (height + margin.top + 20) + ")")
-      .attr('class', 'axis-label')
-      .text(this._chartOptions.xLabel);
-
-    svg.append("text")
-    /*      .attr("transform",
-            "translate(" + 0 + " ," + (height / 2) + "), rotate(-90)")*/
-      .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left / 1.4)
-      .attr("x", 0 - (height / 2))
-      .attr('class', 'axis-label')
-      .text(this._chartOptions.yLabel)
-
-    // Add the X Axis
-    const gX = svg.append('g')
-      .attr('class', 'xaxis')
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
-
-    // Add the Y Axis
-    const gY = svg.append('g')
-      .attr('class', 'yaxis')
-      .call(yAxis);
-
-    svg.append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x).ticks(0));
-
-    svg.append("g")
-      .call(d3.axisLeft(y).ticks(0));
-
-
-    const chartBody = svg
-      .append("g")
-      .attr("class", "chartbody")
-      .attr("clip-path", "url(#clip)");
-
-    svg.select('.chartbody').selectAll('.linePoints')
-      .data(this.data)
-      .enter()
-      .append('circle')
-      .attr('class', 'linePoints')
-      .attr('r', 2)
-      .attr('id', d => d.name)
-      .attr('cy', d => y(d.y))
-      .attr('cx', d => {
-        return x(d.x)
-      })
-      .style('fill', d => d.color)
-      .style('fill-opacity', 0.8)
-      .style('pointer-events', 'all')
-      .exit();
-
-
-    /*    // Add the valueline path.
-        svg.append('path')
-          .attr('class', 'timeline')
-          .attr('transform', 'translate(' + (margin.left + margin.right) + ',0)' );*/
-
-
-    svg.append("defs").append("clipPath")
-      .attr("id", "clip")
-      .append("rect")
-      /* .attr('transform', 'translate(' + (margin.left + margin.left) + ','+
-         (margin.top + margin.bottom +')' ))
-   *///    .attr("width",width - margin.left - margin.right)
-      .attr("width", width)
-      //   .attr("height", height - margin.top - margin.bottom);
-      .attr("height", height);
-
-    const voronoiGroup = svg
-      .append("g")
-      .attr("class", "voronoiParent")
-      .append("g")
-      .attr("class", "voronoi")
-      .attr("clip-path", "url(#clip)");
-
-    voronoiGroup.selectAll("path")
-      .data(voronoi.polygons(this.data))
-      .enter()
-      .append('path')
-      .attr('class', 'voronoi-path')
-       .style('fill', 'none')
-       .style('pointer-events', 'all')
-      .attr('d', (d) => d ? 'M' + d.join('L') + 'Z' : null)
-      .on('mouseover', (data) => {
-        console.log("mmmmmmmm")
-        const d = data.data;
-        svg.select(`#${d.name}`).enter()
-          .attr('r', 8)
-          .style('opacity', 1);
-        this.tooltip
-          .transition()
-          .duration(100)
-          .style('opacity', .9);
-        const span = `<span><strong>Gene:</strong>${d.name}</span><br>
-                      <span><strong>Ratio:</strong> ${d.ratio}</span><br>
-                      <span *ngIf="d.pvalue"><strong>T-test P Value:</strong> ${d.pvalue}</span><br>
-                      <span><strong>hESC_Ln_NSAF:</strong>${d.x}</span><br>
-                      <span><strong>hNSC_Ln_NSAF</strong>${d.y}</span>`;
-        this.tooltip.html(span)
-          .style('left', d3.event.pageX + 'px')
-          .style('top', d3.event.pageY + 'px')
-          .style('width', 100);
-      })
-      .on('mouseout', (d) => {
-        this.tooltip
-          .transition()
-          .duration(200)
-          .style('opacity', 0);
-        svg.select(`#${d.data.name}`)
-          .attr('r', 2);
-      })
-      .exit();
-
-    zoomed = () => {
-      console.log("zooooooommmm");
+    const zoomed = () => {
       const t = d3.event.transform;
-      const xt = t.rescaleX(x);
-      const yt = t.rescaleY(y);
+      this.k = t.k;
+
+      const xt = t.rescaleX(this.x);
+      const yt = t.rescaleY(this.y);
       gX.call(xAxis.scale(xt));
       gY.call(yAxis.scale(yt));
 
-      console.log(svg.select('.chartbody').selectAll('.linePoints'));
-      svg.select('.chartbody').selectAll('.linePoints')
-        .data(this.data)
-        .enter()
-        .append('circle')
-        .attr('class', 'linePoints')
-        .attr('r', 2)
-        .attr('id', d => d.name)
-        .attr('cx', d => xt(d.x))
-        .attr('cy', d => yt(d.y))
-        .style('fill', d => d.color)
-        .style('fill-opacity', 0.8)
-        .style('pointer-events', 'all')
+      this.svg.select('.chartbody').selectAll('.linePoints')
+        .attr('r', (3 / this.k))
         .exit();
 
-      const voronoi2 = d3.voronoi()
-        .x((d: PharosPoint) => xt(d.x))
-        .y((d: PharosPoint) => yt(d.y))
-        .extent([[-margin.left, -margin.top],
-          [width + margin.right, height + margin.bottom]]);
-
-      svg.select('.chartbody')
+      this.voronoiGroup
         .attr("transform", d3.event.transform)
-      //    .attr('clip-path', 'url(#circle-clip)')
-
+      this.chartGroup
+        .attr("transform", d3.event.transform)
     };
 
-    const zoom = d3.zoom()
+
+    this.zoom = d3.zoom()
       .scaleExtent([0.75, 1000])
-      // .translateExtent([[-100000, -100000], [100000, 100000]])
+      .translateExtent([[-100000, -100000], [100000, 100000]])
       .on("zoom", zoomed);
 
-
-    console.log(svg.select('.voronoiParent'));
-
-    svg.select('.voronoiParent')
-      .call(zoom);
-
+    this.voronoiGroup.call(this.zoom);
 
   }
 
+  setData() {
+    // JOIN new data with old elements.
+    const circles = this.svg.select('.points').selectAll('.linePoints')
+      .data(d3.merge(this.displayData), d => d);
+    circles.enter()
+      .append('circle')
+      .attr('class', 'linePoints')
+      .attr('r', 2.5 / this.k)
+      .attr('id', d => d.name)
+      .attr('cy', d => this.y(d.y))
+      .attr('cx', d => this.x(d.x))
+      .style('fill', d => d.color)
+      .style('pointer-events', 'all')
+      .exit();
+
+    // Add the valueline path.
+    if (this._chartOptions.line) {
+      this.svg.append('path')
+        .attr('class', 'timeline')
+        .attr('transform', 'translate(' + (this._chartOptions.margin.left + this._chartOptions.margin.right) + ',0)');
+    }
+    this.setVoronoi();
+  }
+
+  updateData(): void {
+    const t = d3.transition()
+      .duration(500);
+
+    const circles = this.svg.select('.points').selectAll('.linePoints')
+      .data(d3.merge(this.displayData), d => d);
+
+    // EXIT old elements not present in new data.
+    circles
+      .exit()
+      .transition(t)
+      .style("fill-opacity", 1e-6)
+      .remove();
+
+    // don't update old elements because we want them to overlap
+    // ENTER new elements present in new data.
+    circles.enter()
+      .append('circle')
+      .attr('class', 'linePoints')
+      .attr('r', 2.5 / this.k)
+      .attr('id', d => d.name)
+      .attr('cy', d => this.y(d.y))
+      .attr('cx', d => this.x(d.x))
+      .style('fill', d => d.color)
+      .style('pointer-events', 'all')
+      .transition(t)
+      .style("fill-opacity", 1);
+
+    if (this._chartOptions.line) {
+      // Add the valueline path.
+      this.svg.append('path')
+        .attr('class', 'timeline')
+        .attr('transform', 'translate(' + (this._chartOptions.margin.left + this._chartOptions.margin.right) + ',0)');
+    }
+
+    this.setVoronoi();
+  }
+
+  setVoronoi(): void {
+    const voronoi = this.svg.select('.voronoi').selectAll(".voronoi-path")
+      .data(this.voronoi.polygons(d3.merge(this.displayData)), d => d);
+
+    // EXIT old elements not present in new data.
+    voronoi
+      .exit()
+      .remove();
+
+    // UPDATE old elements present in new data.
+    voronoi
+      .attr('d', (d) => d ? 'M' + d.join('L') + 'Z' : null);
+
+    // ENTER new elements present in new data.
+    voronoi
+      .enter()
+      .append('path')
+      .attr('class', 'voronoi-path')
+      // .style('pointer-events', 'all')
+      .attr('d', (d) => d ? 'M' + d.join('L') + 'Z' : null)
+      .on('mouseover', (d) => this.mouseOn(d.data))
+      .on('mouseout', (d) => this.mouseOut(d.data))
+      .exit()
+  }
+
+  mouseOn(data: any): void {
+    this.svg.select(`#${data.name}`)
+      .attr('r', 8 / this.k)
+      .exit();
+    this.tooltip
+      .transition()
+      .duration(100)
+      .style('opacity', .9);
+    const span = `<span><strong>Gene:</strong>${data.name}</span><br>
+                      <span><strong>Ratio:</strong> ${data.ratio}</span><br>
+                      <span *ngIf="data.pvalue"><strong>T-test P Value:</strong> ${data.pvalue}</span><br>
+                      <span><strong>hESC_Ln_NSAF:</strong>${data.x}</span><br>
+                      <span><strong>hNSC_Ln_NSAF</strong>${data.y}</span>`;
+    this.tooltip.html(span)
+      .style('left', d3.event.pageX + 'px')
+      .style('top', d3.event.pageY + 'px')
+      .style('width', 100);
+  }
+
+
+  mouseOut(data: any) {
+    this.tooltip
+      .transition()
+      .duration(200)
+      .style('opacity', 0);
+    this.svg.select(`#${data.name}`)
+      .attr('r', 2.5 / this.k)
+      .exit()
+  }
+
+  reset() {
+    this.k = 1;
+    this.voronoiGroup.transition()
+      .duration(750)
+      .call(this.zoom.transform, d3.zoomIdentity);
+  }
+
+  /**
+   * function to unubscribe on destroy
+   */
+  ngOnDestroy() {
+    const element = this.chartContainer.nativeElement;
+    d3.select(element).selectAll('this.svg').remove();
+    d3.select('body').selectAll('.line-tooltip').remove();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 }

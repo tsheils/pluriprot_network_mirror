@@ -1,1 +1,23 @@
 <div class="d3-chart" #scatterPlotTarget></div>
+
+<div>
+  <mat-checkbox (click)="$event.stopPropagation()"
+                (change)="$event ? filterSelection.toggle('gray') : null"
+                [checked]="filterSelection.isSelected('gray')"> Gray
+  </mat-checkbox>
+  <mat-checkbox (click)="$event.stopPropagation()"
+                (change)="$event ? filterSelection.toggle('blue') : null"
+                [checked]="filterSelection.isSelected('blue')"> Blue
+  </mat-checkbox>
+  <mat-checkbox (click)="$event.stopPropagation()"
+                (change)="$event ? filterSelection.toggle('green') : null"
+                [checked]="filterSelection.isSelected('green')"> Green
+  </mat-checkbox>
+  <mat-checkbox (click)="$event.stopPropagation()"
+                (change)="$event ? filterSelection.toggle('red') : null"
+                [checked]="filterSelection.isSelected('red')"> Red
+  </mat-checkbox>
+
+  <button mat-flat-button (click)="reset()" [color]="'primary'">Reset Zoom</button>
+</div>
+
