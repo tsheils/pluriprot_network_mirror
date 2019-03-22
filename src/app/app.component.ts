@@ -13,7 +13,7 @@ import {IconService} from "src/app/services/icon.service";
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.Native
 })
 export class AppComponent {
   /**

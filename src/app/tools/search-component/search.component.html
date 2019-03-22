@@ -10,8 +10,13 @@
          class ="input-field">
   <mat-label class="search-label">Protein search</mat-label>
   <mat-autocomplete #auto="matAutocomplete" (optionSelected) = "search()" [displayWith]="displayFn">
+<<<<<<< HEAD
 <!--    <mat-option *ngIf="isLoading" class="is-loading"><mat-spinner diameter="50" [color]="'primary'"></mat-spinner></mat-option>
     <ng-container *ngIf="!isLoading">-->
+=======
+    <mat-option *ngIf="isLoading" class="is-loading"><mat-spinner diameter="50"></mat-spinner></mat-option>
+    <ng-container *ngIf="!isLoading">
+>>>>>>> 203407fc605741f942d01fa2afc5855fe978a973
       <mat-option *ngFor="let option of options" [value]="option">
         <div>{{option.name}}</div>
       </mat-option>

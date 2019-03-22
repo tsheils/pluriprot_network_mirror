@@ -13,9 +13,15 @@
     <mat-expansion-panel [expanded]="true">
       <mat-expansion-panel-header (click) = "setActiveGraph('nscs')">
         <mat-panel-title>
+<<<<<<< HEAD
           <mat-radio-button value="nscs" class="sub-graph-toggle" [checked]="activeGraph==='nscs'">
             2.5x up in NSCs
           </mat-radio-button><br>
+=======
+            <mat-radio-button value="nscs" class="sub-graph-toggle" [checked]="activeGraph==='nscs'">
+              2.5x up in NSCs
+            </mat-radio-button><br>
+>>>>>>> 203407fc605741f942d01fa2afc5855fe978a973
         </mat-panel-title>
       </mat-expansion-panel-header>
       <ng-template matExpansionPanelContent>
@@ -67,6 +73,7 @@
                       class="full-width"
                       aria-label="Primary color range slider"></range-slider>
         <app-d3-color-legend [range]="[0, 100]" *ngIf="activeGraph === 'escs'"></app-d3-color-legend>
+<<<<<<< HEAD
         <br>
         <div class="switch-labels"><span class="mat-slide-toggle-label">Hide nodes</span>&nbsp;<mat-slide-toggle (change)="setFilterType($event)">Fade nodes</mat-slide-toggle></div>
         <br>
@@ -116,6 +123,53 @@
     </ng-template>
   </mat-expansion-panel>
   </mat-accordion>
+=======
+          <mat-radio-group [formControl]="subGraphTypeCtrl">
+            <br>
+            Subgraphs of Interest:<br>
+            <mat-radio-button value="PIK3R1" class="sub-graph-toggle">PIK3R1</mat-radio-button><br>
+            <mat-radio-button value="EGFR" class="sub-graph-toggle">EGFR</mat-radio-button><br>
+          </mat-radio-group>
+        </ng-template>
+    </mat-expansion-panel>
+    <h2>Phosphorylation networks</h2>
+      <mat-expansion-panel [hideToggle]="true">
+        <mat-expansion-panel-header (click) = "setActiveGraph('nsc-only')">
+          <mat-panel-title>
+            <mat-radio-button value="nsc-only" class="sub-graph-toggle" [checked]="activeGraph==='nsc-only'">
+              Phosphorylated in NSC only
+            </mat-radio-button><br>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ng-template matExpansionPanelContent>
+
+        </ng-template>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header (click) = "setActiveGraph('esc-only')" class="graph-menu-header">
+          <mat-panel-title>
+            <mat-radio-button value="esc-only" class="sub-graph-toggle" [checked]="activeGraph==='esc-only'">
+              Phosphorylated in ESC only
+            </mat-radio-button><br>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ng-template matExpansionPanelContent>
+          <mat-radio-group [formControl]="subGraphTypeCtrl">
+            <br>
+            Subgraphs of Interest:<br>
+           <mat-radio-button value="IKBKG" class="sub-graph-toggle">IKBKG</mat-radio-button><br>
+           <mat-radio-button value="JUN" class="sub-graph-toggle">JUN</mat-radio-button><br>
+          </mat-radio-group>
+        </ng-template>
+      </mat-expansion-panel>
+  </mat-accordion>
+  <h2>Options</h2>
+  <div class="switch-labels"><span class="mat-slide-toggle-label">Hide nodes</span>&nbsp;<mat-slide-toggle (change)="setFilterType($event)">Fade nodes</mat-slide-toggle></div>
+  <br>
+  <br>
+  <mat-checkbox (change)="noData($event)">Hide nodes without data</mat-checkbox>
+<br>
+>>>>>>> 203407fc605741f942d01fa2afc5855fe978a973
 </div>
 
 

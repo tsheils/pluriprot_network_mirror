@@ -1,6 +1,6 @@
 import {
   AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, Input,
-  OnInit
+  OnInit, ViewEncapsulation
 } from '@angular/core';
 import {Link} from "./graph-component/models/link";
 import {Node} from "./graph-component/models/node";
@@ -16,7 +16,9 @@ import * as d3 from 'd3';
   selector: 'app-force-directed-graph',
   templateUrl: './force-directed-graph.component.html',
   styleUrls: ['./force-directed-graph.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.Native
+
 })
 export class ForceDirectedGraphComponent implements OnInit, AfterViewInit {
   /**
@@ -79,6 +81,7 @@ export class ForceDirectedGraphComponent implements OnInit, AfterViewInit {
    * set up graph data subscription
    */
   ngOnInit() {
+    console.log(this);
     this.graphDataService.graphhistory$.subscribe(res => {
       this.nodes = res.nodes;
       this.links = res.links;

@@ -1,8 +1,29 @@
+<<<<<<< HEAD
+=======
+// Import theming functions
+@import '~@angular/material/theming';
+// Import your custom theme
+
+// Define the theme.
+$candy-app-primary: mat-palette($mat-indigo);
+$candy-app-accent:  mat-palette($mat-pink, A200, A100, A400);
+$candy-app-theme:   mat-light-theme($candy-app-primary, $candy-app-accent);
+
+// Include the theme styles for only specified components.
+@include mat-core-theme($candy-app-theme);
+@include mat-button-theme($candy-app-theme);
+@include mat-form-field-theme($candy-app-theme);
+@include mat-autocomplete-theme($candy-app-theme);
+@include mat-option-theme($candy-app-theme);
+@include mat-input-theme($candy-app-theme);
+@include mat-icon-theme($candy-app-theme);
+>>>>>>> 203407fc605741f942d01fa2afc5855fe978a973
 
 .typeahead-field {
   width: 90%;
 }
 
+/*
 span.search-highlight {
   font-weight: 500;
   text-decoration: underline;
@@ -16,3 +37,4 @@ span.search-highlight {
   display: flex;
   justify-content: center;
 }
+*/

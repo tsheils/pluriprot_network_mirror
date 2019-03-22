@@ -6,7 +6,9 @@ import * as d3 from 'd3';
 import {NodeService} from './node.service';
 import {LinkService} from './link.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class D3Service {
   /** This service will provide methods to enable user interaction with elements
    * while maintaining the d3 simulations physics
@@ -16,6 +18,7 @@ export class D3Service {
     private nodeService: NodeService,
     private linkService: LinkService,
   ) {
+    console.log(this);
   }
 
   /** A method to bind a pan and zoom behaviour to an svg element */
@@ -29,6 +32,7 @@ export class D3Service {
 
     zoomed = () => {
       const transform = d3.event.transform;
+      console.log(transform);
       container.attr("transform", d3.event.transform); // updated for d3 v4
     };
     zoom = d3.zoom().on("zoom", zoomed);

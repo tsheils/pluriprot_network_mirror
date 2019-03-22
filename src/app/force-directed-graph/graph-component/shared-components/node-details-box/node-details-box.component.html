@@ -3,8 +3,13 @@
   <div *ngIf="node">
     <div class="row">
     <span><h1>{{node?.name}}</h1></span>&nbsp;&nbsp;
+<<<<<<< HEAD
       <a mat-stroked-button [color] = "'primary'" href='https://pharos.nih.gov/idg/targets/{{node?.name}}' target="_blank" aria-label="see more target info">
          See more info<mat-icon svgIcon="open_in_new"></mat-icon>
+=======
+      <a href='https://pharos-beta.ncats.io/targets/{{node?.name}}' target="_blank">
+        <mat-icon [color]="'primary'" svgIcon="open_in_new"></mat-icon>
+>>>>>>> 203407fc605741f942d01fa2afc5855fe978a973
       </a>
     </div>
     <h3>hESC/hNSC ln fold change:</h3> {{getLabel(node?.hESC_NSC_Fold_Change)}}

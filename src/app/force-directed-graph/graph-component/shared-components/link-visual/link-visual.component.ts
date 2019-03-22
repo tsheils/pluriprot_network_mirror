@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, ViewEncapsulation} from '@angular/core';
 
 import {Link} from '../../models/link';
 
@@ -8,7 +8,8 @@ import {Link} from '../../models/link';
 @Component({
   selector: '[link]',
   templateUrl: './link-visual.component.html',
-  styleUrls: ['./link-visual.component.scss']
+  styleUrls: ['./link-visual.component.scss'],
+  encapsulation: ViewEncapsulation.Native
 })
 export class LinkVisualComponent implements OnInit {
   /**

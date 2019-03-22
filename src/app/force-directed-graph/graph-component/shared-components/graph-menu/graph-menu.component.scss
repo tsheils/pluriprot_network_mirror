@@ -1,3 +1,26 @@
+// Import theming functions
+@import '~@angular/material/theming';
+
+// Import your custom theme
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+// Define the theme.
+$candy-app-primary: mat-palette($mat-indigo);
+$candy-app-accent:  mat-palette($mat-pink, A200, A100, A400);
+$candy-app-theme:   mat-light-theme($candy-app-primary, $candy-app-accent);
+
+// Include the theme styles for only specified components.
+@include mat-core-theme($candy-app-theme);
+@include mat-slider-theme($candy-app-theme);
+@include mat-radio-theme($candy-app-theme);
+@include mat-icon-theme($candy-app-theme);
+@include mat-ripple-theme($candy-app-theme);
+@include mat-slide-toggle-theme($candy-app-theme);
+@include mat-checkbox-theme($candy-app-theme);
+
 
 .graph-menu {
   background-color: #ffffff;
@@ -7,6 +30,7 @@
     padding: 1vw;
   }
 
+<<<<<<< HEAD
   .full-width {
     width: 100%;
   }
@@ -14,6 +38,11 @@
   .switch-labels {
     display: inline-flex;
   }
+=======
+.switch-labels {
+  display: inline-flex;
+}
+>>>>>>> 203407fc605741f942d01fa2afc5855fe978a973
 
   .close-button {
     margin-right: 7px;
@@ -64,4 +93,12 @@
 
 .hidden {
   display: none !important;
+}
+
+.hidden {
+  display: none;
+}
+
+.graph-menu-header {
+  padding-left: 0;
 }
