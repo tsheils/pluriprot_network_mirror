@@ -38,23 +38,6 @@ import {HighlightPipe} from "./tools/search-component/highlight.pipe";
 import {GraphClickDirective} from "./force-directed-graph/graph-component/directives/graph-click.directive";
 import {createCustomElement} from "@angular/elements";
 
-import {
-  MatButtonModule, MatInputModule, MatIconModule,
-  MatListModule, MatSliderModule, MatProgressSpinnerModule, MatSidenavModule,
-  MatCheckboxModule, MatCardModule,
-  MatSelectModule, MatExpansionModule
-} from '@angular/material';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import {DragDropModule} from '@angular/cdk/drag-drop';
-import {MatRadioModule} from '@angular/material/radio';
-import {MatRippleModule} from '@angular/material/core';
-
-
-
-
-
-
 @NgModule({
   declarations: [
     AppComponent,
