@@ -5,6 +5,15 @@ import {HttpClientModule} from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
+//MATERIAL ///
+import {
+  MatButtonModule, MatAutocompleteModule, MatInputModule, MatIconModule, MatSliderModule, MatProgressSpinnerModule,
+  MatSidenavModule, MatSlideToggleModule, MatCheckboxModule, MatCardModule, MatExpansionModule
+} from '@angular/material';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatRippleModule} from '@angular/material/core';
+
+
 import { AppComponent } from './app.component';
 import { ForceDirectedGraphComponent } from './force-directed-graph/force-directed-graph.component';
 import {D3Service} from "./force-directed-graph/graph-component/services/event-tracking/d3.service";
@@ -45,6 +54,7 @@ import {MatRippleModule} from '@angular/material/core';
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -76,18 +86,15 @@ import {MatRippleModule} from '@angular/material/core';
     MatAutocompleteModule,
     MatInputModule,
     MatIconModule,
-    MatListModule,
     MatSliderModule,
     MatProgressSpinnerModule,
     MatSidenavModule,
+    MatSlideToggleModule,
     MatRadioModule,
     MatCheckboxModule,
     MatCardModule,
-    MatSelectModule,
     MatExpansionModule,
-    DragDropModule,
-    MatRippleModule,
-    MatSlideToggleModule
+    MatRippleModule
   ],
   providers: [
     D3Service,
@@ -96,16 +103,13 @@ import {MatRippleModule} from '@angular/material/core';
     GraphDataService,
     NodeMenuControllerService
   ],
- /* bootstrap: [AppComponent]
-})
-export class AppModule { }*/
 entryComponents: [AppComponent]
 })
 
 export class AppModule {
   constructor(private injector: Injector) {
     const el = createCustomElement(AppComponent, { injector });
-    customElements.define('ncats-pluriprot-network', el);
+    customElements.define('ncats-graph-network', el);
   }
 
   ngDoBootstrap() {}

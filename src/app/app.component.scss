@@ -35,8 +35,8 @@ $candy-app-theme:   mat-light-theme($candy-app-primary, $candy-app-accent);
   width: 20%;
   background-color: rgba(255, 255, 255, .6);
   border: #f1f1f1 1px solid;
-  position: fixed;
-  right: 7vw;
+  position: absolute;
+  left: 75vw;
   top: 5vh;
 }
 
@@ -67,6 +67,13 @@ $candy-app-theme:   mat-light-theme($candy-app-primary, $candy-app-accent);
   display: flex;
   background-color: transparent;
   z-index: 6666;
+}
+
+.scatter-graph {
+  min-width: 60vw;
+  min-height: 60vh;
+  margin-top:2vh;
+  margin-bottom:2vh;
 }
 
 @media only screen and (max-width: 960px) {

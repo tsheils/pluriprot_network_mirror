@@ -1,14 +1,11 @@
-import {Component, Input, ViewEncapsulation} from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {from, Observable, of} from "rxjs/index";
-import {zipAll} from "rxjs/internal/operators";
 import {Link} from "./force-directed-graph/graph-component/models/link";
 import {Node, Protein} from "./force-directed-graph/graph-component/models/node";
 import {NodeService} from "./force-directed-graph/graph-component/services/event-tracking/node.service";
 import {LinkService} from "./force-directed-graph/graph-component/services/event-tracking/link.service";
 import {GraphDataService} from "./force-directed-graph/graph-component/services/graph-data.service";
 import {DataParserService} from "./services/data-parser.service";
-import {environment} from "src/environments/environment.prod";
 import {D3Service} from "./force-directed-graph/graph-component/services/event-tracking/d3.service";
 import {IconService} from "src/app/services/icon.service";
 
@@ -127,4 +124,6 @@ export class AppComponent {
     });
     return links;
   }
+
+
 }

@@ -10,6 +10,8 @@ export class IconService {
               private domSanitizer: DomSanitizer) {
   }
 
+  // todo: use environment variable
+
   init() {
     this.matIconRegistry.addSvgIcon(
       "search",

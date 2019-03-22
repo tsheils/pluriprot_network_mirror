@@ -7,8 +7,6 @@ import {Protein} from "../force-directed-graph/graph-component/models/node";
 import {environment} from "../../environments/environment.prod";
 import {HttpClient} from "@angular/common/http";
 import {GraphDataService} from "../force-directed-graph/graph-component/services/graph-data.service";
-import {mergeAll} from "rxjs/internal/operators";
-import {Link} from "../force-directed-graph/graph-component/models/link";
 
 interface FileData {
   origin: string;
