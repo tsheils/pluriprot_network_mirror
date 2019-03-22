@@ -1,4 +1,4 @@
-<!--<div class = "fdg-container">
+<div class = "fdg-container">
 <mat-sidenav-container class="sctl-graph-container" [hasBackdrop]="false">
     <mat-sidenav #graphMenu [opened]="true" mode="over"
                  class="menu-drawer">
@@ -14,14 +14,12 @@
       <button mat-button (click)="graphMenu.toggle()" class="open-button">
         <mat-icon svgIcon="arrow_right"></mat-icon>open
       </button>
-        <div class = "info-panel" cdkDrag>
+        <div class = "info-panel">
     <app-node-details-box></app-node-details-box>
   </div>
   <app-force-directed-graph cdkDropList></app-force-directed-graph>
     </mat-sidenav-content>
 </mat-sidenav-container>
-</div>-->
-
-<div class ="scatter-graph">
-  <app-scatter-plot [data]="scatterData" [options]="chartOptions"></app-scatter-plot>
 </div>
+
+

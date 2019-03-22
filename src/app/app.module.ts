@@ -5,10 +5,18 @@ import {HttpClientModule} from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
+//MATERIAL ///
+import {
+  MatButtonModule, MatAutocompleteModule, MatInputModule, MatIconModule, MatSliderModule, MatProgressSpinnerModule,
+  MatSidenavModule, MatSlideToggleModule, MatCheckboxModule, MatCardModule, MatExpansionModule
+} from '@angular/material';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatRippleModule} from '@angular/material/core';
+
+
 import { AppComponent } from './app.component';
 import { ForceDirectedGraphComponent } from './force-directed-graph/force-directed-graph.component';
 import {D3Service} from "./force-directed-graph/graph-component/services/event-tracking/d3.service";
-import {MaterialModule} from "../assets/material/material.module";
 import {ClickableLinkDirective} from "./force-directed-graph/graph-component/directives/clickable-link.directive";
 import {ClickableNodeDirective} from "./force-directed-graph/graph-component/directives/clickable-node.directive";
 import {DraggableDirective} from "./force-directed-graph/graph-component/directives/draggable.directive";
@@ -28,8 +36,7 @@ import { D3ColorLegendComponent } from './tools/d3-color-legend/d3-color-legend.
 import {SearchComponent} from "./tools/search-component/search.component";
 import {HighlightPipe} from "./tools/search-component/highlight.pipe";
 import {GraphClickDirective} from "./force-directed-graph/graph-component/directives/graph-click.directive";
-import {LineChartComponent} from "./line-chart/line-chart.component";
-import { ScatterPlotComponent } from './scatter-plot/scatter-plot.component';
+
 
 @NgModule({
   declarations: [
@@ -49,9 +56,7 @@ import { ScatterPlotComponent } from './scatter-plot/scatter-plot.component';
     RangeSliderComponent,
     D3ColorLegendComponent,
     HighlightPipe,
-    SearchComponent,
-    LineChartComponent,
-    ScatterPlotComponent
+    SearchComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +65,19 @@ import { ScatterPlotComponent } from './scatter-plot/scatter-plot.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialModule
+    MatButtonModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    MatIconModule,
+    MatSliderModule,
+    MatProgressSpinnerModule,
+    MatSidenavModule,
+    MatSlideToggleModule,
+    MatRadioModule,
+    MatCheckboxModule,
+    MatCardModule,
+    MatExpansionModule,
+    MatRippleModule
   ],
   providers: [
     D3Service,

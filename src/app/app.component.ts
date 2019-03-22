@@ -1,17 +1,13 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {from, Observable, of} from "rxjs/index";
-import {zipAll} from "rxjs/internal/operators";
 import {Link} from "./force-directed-graph/graph-component/models/link";
 import {Node, Protein} from "./force-directed-graph/graph-component/models/node";
 import {NodeService} from "./force-directed-graph/graph-component/services/event-tracking/node.service";
 import {LinkService} from "./force-directed-graph/graph-component/services/event-tracking/link.service";
 import {GraphDataService} from "./force-directed-graph/graph-component/services/graph-data.service";
 import {DataParserService} from "./services/data-parser.service";
-import {environment} from "src/environments/environment.prod";
 import {D3Service} from "./force-directed-graph/graph-component/services/event-tracking/d3.service";
 import {IconService} from "src/app/services/icon.service";
-import {LineChartOptions} from "./line-chart/line-chart.component";
 
 @Component({
   selector: 'app-root',
@@ -30,17 +26,6 @@ export class AppComponent {
    * @type {Link[]}
    */
   public links: Link[] = [];
-
-  scatterData: any;
-
-  chartOptions = {
-    line: false,
-    margin: {top: 20, right: 30, bottom: 60, left: 60},
-    xdomain: [-16, -4],
-    ydomain: [-16, -4],
-    xLabel: 'hESC_Ln_NSAF',
-    yLabel: 'hNSC_Ln_NSAF'
-  };
 
   dataMap: Map<string, any> = new Map<string, any>();
 
@@ -62,9 +47,6 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    this.dataParserService.loadScatter().then(data => {
-      this.scatterData = data;
-    });
     this.dataParserService.LoadData().subscribe(res => {
       this.dataMap = this.dataParserService.getDataMap();
       this.graphDataService.setGraph(this.dataMap.get('nscs'))
@@ -141,4 +123,6 @@ export class AppComponent {
     });
     return links;
   }
+
+
 }

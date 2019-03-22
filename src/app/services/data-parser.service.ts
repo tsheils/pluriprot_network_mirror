@@ -7,41 +7,6 @@ import {Protein} from "../force-directed-graph/graph-component/models/node";
 import {environment} from "../../environments/environment.prod";
 import {HttpClient} from "@angular/common/http";
 import {GraphDataService} from "../force-directed-graph/graph-component/services/graph-data.service";
-import {mergeAll} from "rxjs/internal/operators";
-import {Link} from "../force-directed-graph/graph-component/models/link";
-import * as d3 from 'd3';
-import {PharosPoint} from "../line-chart/line-chart.component";
-
-class SCTLPoint implements PharosPoint {
-  /**
-   * optional point name
-   */
-  name?: string;
-
-  /**
-   * optional point label
-   */
-  label?: string;
-
-  /**
-   * optional variable to toggle hovering class
-   */
-  hovered?: boolean;
-
-  /**
-   * point key
-   */
-  x: number;
-
-  /**
-   * point value
-   */
-  y: number;
-
-  constructor(data: any){
-    Object.entries((data)).forEach((prop) => this[prop[0]] = prop[1]);
-  }
-}
 
 interface FileData {
   origin: string;
@@ -90,40 +55,6 @@ export class DataParserService {
       return this.dataMap;
     });*/
   }
-
-  loadScatter(): any {
-const dataMap:Map<string, PharosPoint[]> = new Map<string, PharosPoint[]>();
-   return d3.dsv(",", '../assets/data/pluriprot-shiny.csv', function(d) {
-      return new SCTLPoint({
-        name: d.Symbol,
-      label: d.Symbol,
-      hovered: false,
-      x: parseFloat(d.hESC_Ln_NSAF),
-      y: parseFloat(d.hNSC_Ln_NSAF),
-        ratio: Number(d.NSAF_SpC_ratio).toFixed(3),
-       pvalue: d.t_test_p,
-        color: d.color
-      })
-    }).then(function(data) {
-      data.map(point => {
-        const points: PharosPoint[] = dataMap.get(point.color);
-        if (points) {
-          points.push(point);
-          dataMap.set(point.color, points);
-        } else {
-          dataMap.set(point.color, [point]);
-        }
-        }
-      )
-      return dataMap;
-    });
-
-/*
-    this._fetchFile('../assets/data/pluriprot-shiny.csv').subscribe(res => {
-
-    })*/
-  }
-
 
   private _parseData(data: any) {
     const nodeObs = of(data.data.elements.nodes.map(node => {
