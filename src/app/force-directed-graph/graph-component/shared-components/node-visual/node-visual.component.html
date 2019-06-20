@@ -1,7 +1,7 @@
 <svg:g [attr.transform]="'translate(' + node.x + ',' + node.y + ')'" (click)="toggleMenu()" *ngIf="node"  class="node"
        xmlns:svg="http://www.w3.org/1999/XSL/Transform">
 
-  <svg:circle *ngIf= "node.Phosph_in_ESC_1_NSC_0_ === undefined"
+  <svg:circle *ngIf= "node.shape === 'circle'"
               [ngClass]="{clicked: nodeClicked}"
               class="node-child"
               cx="0"

@@ -293,117 +293,6 @@ export class D3Service {
     return new ForceDirectedGraph(nodes, links, options);
   }
 
-/*  zoomFit2 (node, nodeElement) {
-    console.log(node);
-    console.log(nodeElement);
-    console.log(nodeElement.node().parentElement);
-    let root = d3.select('#root');
-    let focus = root;
-    let container = d3.select('#fdg');
-    let view = root;
-    console.log(container);
-    console.log(root);
-    let containerbb = container.node().getBBox();
-
-    //this basically sets the initial view variable
-    zoomTo([root.node().getBBox().x, root.node().getBBox().y, .15]);
-
-    function zoomTo(v) {
-      console.log("view to")
-      console.log(v);
-      console.log("parent view");
-      console.log(view);
-      console.log(nodeElement.node().parentElement);
-      console.log(containerbb);
-      const k = containerbb.width / v[2];
-      view = v;
-      console.log(k);
-      console.log(nodeElement.node().parentElement.getBBox());
-      nodeElement.node().parentElement.attr("transform", d => {
-       console.log(d);
-       return `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`;
-    });
-      node.attr("r", d => d.r * k);
-    }
-
-    function zoom(d) {
-      console.log(" zoom");
-      const focus0 = focus;
-
-      focus = d;
-      console.log("D");
-      console.log(d);
-      console.log(view);
-      console.log([focus.x, focus.y, focus.r * 2]);
-      const transition = container.transition()
-        .duration(750)
-        .tween("zoom", d => {
-          const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2]);
-          return t => zoomTo(i(t));
-        });
-      console.log(transition);
-    }
-    console.log(node);
-    zoom(node);
-  }
-
-
-
-  zoomFit(node?) {
-    let svg = d3.select('#fdg');
-    let container = d3.select('#root').node();
-if(node){
-  console.log("selecting node");
-  container = node.node().parentElement;
-}
-
-    const zoom = d3
-      .zoom()
-      .on('zoom', function () {
-        console.log(d3.event);
-        d3.select('#root').attr("transform", d3.event.transform); // updated for d3 v4
-
-      });
-
-    const bounds = container.getBBox();
-    const parent = svg.node();
-    const fullWidth = parent.clientWidth || parent.parentNode.clientWidth,
-      fullHeight = parent.clientHeight;
-    console.log(parent);
-    let width = bounds.width,
-      height = bounds.height;
-    console.log(bounds.y)
-    console.log(bounds.x)
-    const midX: number = bounds.x + (width / 2),
-      midY: number = bounds.y + (height / 2);
-    if (width == 0 || height == 0) return; // nothing to fit
-    console.log(0.9 / Math.max(width / fullWidth, height/fullHeight));
-    const scale = Math.max(1 , Math.min(8, 0.9 / Math.max(width / fullWidth, height/fullHeight)));
-    const translate = [(parent.getBBox().width / 2 + midX) / 2, parent.getBBox().height / 2 - midY];
-    console.log(scale)
-    console.log(translate)
-
-    const contbbox = svg.node().getBBox();
-    const  bbox = container.getBBox();
-    console.log(contbbox);
-    console.log(bbox);
-    const vx = contbbox.x;		// container x co-ordinate
-    const vy = contbbox.y;		// container y co-ordinate
-    const vw = contbbox.width;	// container width
-    const vh = contbbox.height;	// container height
-    var bx = bbox.x;
-    var by = bbox.y;
-    var bw = bbox.width;
-    var bh = bbox.height;
-    var tx = -bx * scale + vx + vw / 2 - bw * scale / 2;
-    var ty = -by * scale + vy + vh / 2 - bh * scale / 2;
-
-console.log([tx, ty]);
-
-    svg
-    .call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale / 10) ); // updated for d3 v4
-
-  }*/
   _clearNodes(): void {
     d3.selectAll('.link')
       .classed('clicked', false)
@@ -471,11 +360,6 @@ console.log([tx, ty]);
       .filter(d => d.uuid === node.uuid)
       .classed('clicked-neighbor', true)
       .classed('not-related', false);
-
-   // this.zoomFit(parent);
-   // console.log(parent);
-   // console.log(node);
-   // this.zoomFit2(node, parent);
     };
 
 

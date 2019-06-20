@@ -44,7 +44,6 @@ export class AppComponent {
     private graphDataService: GraphDataService,
     private iconService: IconService
   ){
-    console.log("app constructor");
     this.iconService.init();
   }
 
