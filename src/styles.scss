@@ -2,10 +2,8 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @import '~@angular/material/theming';
+@import "ncats-theme";
 // Plus imports for other components in your app.
-
-// Google Fonts
-@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500);
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
@@ -15,19 +13,20 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$sctl-graph-primary: mat-palette($mat-indigo);
-$sctl-graph-accent: mat-palette($mat-pink, A200, A100, A400);
+$sctl-page-primary: mat-palette($ncats-app-primary);
+$sctl-page-accent: mat-palette($ncats-secondary);
 
 // The warn palette is optional (defaults to red).
-$sctl-graph-warn: mat-palette($mat-red);
+$sctl-page-warn: mat-palette($mat-red);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$sctl-graph-theme: mat-light-theme($sctl-graph-primary, $sctl-graph-accent, $sctl-graph-warn);
+$sctl-page-theme: mat-light-theme($sctl-page-primary, $sctl-page-accent, $sctl-page-warn);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include angular-material-theme($sctl-graph-theme);
+@include angular-material-theme($sctl-page-theme);
+
 
 /* You can add global styles to this file, and also import other style files */
 

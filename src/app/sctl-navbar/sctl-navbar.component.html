@@ -1,0 +1,49 @@
+<nav>
+<mat-toolbar class="ncats-toolbar">
+  <div fxFlex = "20"  fxHide.lt-md></div>
+  <img  src="./assets/images/ncats.svg" href="https://ncats.nih.gov" alt="NCATS logo" class="ncats-logo">
+  <div id="links" fxHide.lt-md>
+    <a mat-button itemtype="https://www.schema.org/SiteNavigationElement"
+       title="About" href="https://ipsc.ncats.nih.gov/about/">About</a>
+    <a mat-button itemtype="https://www.schema.org/SiteNavigationElement"
+       title="Projects" href="/projects/">Projects</a>
+    <a mat-button itemtype="https://www.schema.org/SiteNavigationElement"
+       title="Resources" href="https://ipsc.ncats.nih.gov/resources/">Resources</a>
+    <a mat-button itemtype="https://www.schema.org/SiteNavigationElement"
+       title="Publications" href="/publications/">Publications</a>
+    <a mat-button itemtype="https://www.schema.org/SiteNavigationElement"
+       title="News" href="https://ipsc.ncats.nih.gov/news/">News</a>
+
+  </div>
+  <span class="fill-remaining-space" ></span>
+  <form role="search" method="get" class="form-inline" action="https://ipsc.ncats.nih.gov/"  fxHide.lt-md>
+    <label class="sr-only">Search for:</label>
+    <input type="search" class="form-control" placeholder="Search..." value="" name="s" title="Search for:">
+    <input type="submit" class="d-none form-control" value="Search">
+  </form>
+  <div fxFlex = "20"></div>
+
+  <button mat-icon-button class="menu-button" [matMenuTriggerFor]="appMenu" fxHide fxShow.lt-md>
+    <mat-icon>menu</mat-icon>
+  </button>
+      <mat-menu #appMenu="matMenu" class="mobile-menu" yPosition="below">
+        <ng-template matMenuContent>
+        <a mat-menu-item itemtype="https://www.schema.org/SiteNavigationElement"
+           title="About" href="https://ipsc.ncats.nih.gov/about/">About</a>
+        <a mat-menu-item itemtype="https://www.schema.org/SiteNavigationElement"
+           title="Projects" href="/projects/">Projects</a>
+        <a mat-menu-item itemtype="https://www.schema.org/SiteNavigationElement"
+           title="Resources" href="https://ipsc.ncats.nih.gov/resources/">Resources</a>
+        <a mat-menu-item itemtype="https://www.schema.org/SiteNavigationElement"
+           title="Publications" href="/publications/">Publications</a>
+        <a mat-menu-item itemtype="https://www.schema.org/SiteNavigationElement"
+           title="News" href="https://ipsc.ncats.nih.gov/news/">News</a>
+          <form role="search" method="get" class="form-inline my-2 my-sm-2" action="https://ipsc.ncats.nih.gov/">
+            <label class="sr-only">Search for:</label>
+            <input type="search" class="form-control" placeholder="Search..." value="" name="s" title="Search for:">
+            <input type="submit" class="form-control d-none" value="Search">
+          </form>
+        </ng-template>
+      </mat-menu>
+</mat-toolbar>
+</nav>

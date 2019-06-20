@@ -49,7 +49,7 @@ export class ForceDirectedGraphComponent implements OnInit, AfterViewInit {
    * @type {{width: number; height: number}}
    * @private
    */
-  _options: {width, height} = {width: 1200, height: 1000};
+  _options: {width, height} = {width: 1000, height: 800};
 
   /**
    * rescales the graph on window resize
@@ -127,7 +127,7 @@ export class ForceDirectedGraphComponent implements OnInit, AfterViewInit {
         height: this.el.nativeElement.parentElement.offsetHeight
       };
     } else {
-      return this._options = {width: 1200, height: 1000};
+      return this._options = {width: 1000, height: 800};
     }
   }
 }

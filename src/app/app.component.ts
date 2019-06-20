@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Link} from "./force-directed-graph/graph-component/models/link";
 import {Node, Protein} from "./force-directed-graph/graph-component/models/node";
@@ -12,7 +12,8 @@ import {IconService} from "src/app/services/icon.service";
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
   /**
@@ -43,6 +44,7 @@ export class AppComponent {
     private graphDataService: GraphDataService,
     private iconService: IconService
   ){
+    console.log("app constructor");
     this.iconService.init();
   }
 

@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {Injector, NgModule} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {HttpClientModule} from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -8,7 +8,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 //MATERIAL ///
 import {
   MatButtonModule, MatAutocompleteModule, MatInputModule, MatIconModule, MatSliderModule, MatProgressSpinnerModule,
-  MatSidenavModule, MatSlideToggleModule, MatCheckboxModule, MatCardModule, MatExpansionModule
+  MatSidenavModule, MatSlideToggleModule, MatCheckboxModule, MatCardModule, MatExpansionModule, MatMenuModule,
+  MatToolbarModule
 } from '@angular/material';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatRippleModule} from '@angular/material/core';
@@ -36,6 +37,11 @@ import { D3ColorLegendComponent } from './tools/d3-color-legend/d3-color-legend.
 import {SearchComponent} from "./tools/search-component/search.component";
 import {HighlightPipe} from "./tools/search-component/highlight.pipe";
 import {GraphClickDirective} from "./force-directed-graph/graph-component/directives/graph-click.directive";
+import {createCustomElement} from "@angular/elements";
+import {FooterComponent} from "./footer/footer.component";
+import {HhsBannerComponent} from "./hhs-banner/hhs-banner.component";
+import {SctlNavbarComponent} from "./sctl-navbar/sctl-navbar.component";
+import {FlexLayoutModule} from "@angular/flex-layout";
 
 
 @NgModule({
@@ -56,7 +62,10 @@ import {GraphClickDirective} from "./force-directed-graph/graph-component/direct
     RangeSliderComponent,
     D3ColorLegendComponent,
     HighlightPipe,
-    SearchComponent
+    SearchComponent,
+    SctlNavbarComponent,
+    HhsBannerComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
@@ -65,6 +74,7 @@ import {GraphClickDirective} from "./force-directed-graph/graph-component/direct
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    FlexLayoutModule,
     MatButtonModule,
     MatAutocompleteModule,
     MatInputModule,
@@ -77,7 +87,9 @@ import {GraphClickDirective} from "./force-directed-graph/graph-component/direct
     MatCheckboxModule,
     MatCardModule,
     MatExpansionModule,
-    MatRippleModule
+    MatRippleModule,
+    MatMenuModule,
+    MatToolbarModule
   ],
   providers: [
     D3Service,

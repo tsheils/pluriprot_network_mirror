@@ -11,7 +11,7 @@
               [attr.r]="node.r">
   </svg:circle>
 
-  <svg:rect *ngIf="node.Phosph_in_ESC_1_NSC_0_ === 1"
+  <svg:rect *ngIf="node.shape === 'square'"
             class="node-child"
             [attr.width]= node.r*2
   [attr.height]= node.r*2
@@ -21,7 +21,7 @@
   >
   </svg:rect>
 
-  <svg:rect *ngIf="node.Phosph_in_ESC_1_NSC_0_ === 0"
+  <svg:rect *ngIf="node.shape === 'diamond'"
             class="node-child"
             [attr.width]= node.r*2
   [attr.height]= node.r*2

@@ -404,7 +404,6 @@ console.log([tx, ty]);
     .call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale / 10) ); // updated for d3 v4
 
   }*/
-
   _clearNodes(): void {
     d3.selectAll('.link')
       .classed('clicked', false)
@@ -483,7 +482,7 @@ console.log([tx, ty]);
   resetZoom() {
     const svg = d3.select('#fdg');
     const container = d3.select('#root');
-    const transform = d3.zoomIdentity.translate(svg.node().clientHeight / 2, svg.node().clientWidth / 2).scale(.15);
+    const transform = d3.zoomIdentity.translate(svg.node().clientWidth / 2, svg.node().clientHeight / 2).scale(.15);
 
 
 

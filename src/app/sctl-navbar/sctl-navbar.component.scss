@@ -1,0 +1,44 @@
+.ncats-toolbar {
+  background-color: #e3e3e3;
+  color: rgba(0,0,0,.5);
+  height: 70px;
+}
+
+.ncats-logo {
+  height: 40px;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  height: calc(1.5em + .75rem + 2px);
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+input.d-none.form-control {
+  display: none;
+}
+
+.fill-remaining-space {
+  flex: 1 1 auto;
+}

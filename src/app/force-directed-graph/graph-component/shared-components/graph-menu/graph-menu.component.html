@@ -34,6 +34,7 @@
                       [thumbLabel]= true
                       class="full-width"
                       aria-label="Primary color range slider"></range-slider>
+        <mat-slider class="hidden"></mat-slider>
         <app-d3-color-legend [range]="[-100, 0]" *ngIf="activeGraph === 'nscs'"></app-d3-color-legend>
         <br>
         <div class="switch-labels"><span class="mat-slide-toggle-label">Hide nodes</span>&nbsp;<mat-slide-toggle (change)="setFilterType($event)">Fade nodes</mat-slide-toggle></div>
@@ -110,8 +111,8 @@
   <h2>Legend</h2>
   <mat-expansion-panel [hideToggle]="true" [expanded]="true">
     <ng-template matExpansionPanelContent>
-      <div class="row-close"><div class="square"></div>: Protein only phosphorylated in ESCs</div><br>
-      <div class="row-close"><div class="diamond"></div>: Protein only phosphorylated in NSCs</div><br>
+      <div class="row-close"><div class="diamond"></div>: Protein only phosphorylated in ESCs</div><br>
+      <div class="row-close"><div class="square"></div>: Protein only phosphorylated in NSCs</div><br>
       <div class="row-close"><div class="circle"></div>: Protein not selectively phosphorylated</div><br>
     </ng-template>
   </mat-expansion-panel>
@@ -120,10 +121,3 @@
 
 
 
-<mat-slider
-  min="1"
-  max="5"
-  step="0.5"
-  value="1.5"
-  [thumbLabel]= true
-  class="hidden"></mat-slider>

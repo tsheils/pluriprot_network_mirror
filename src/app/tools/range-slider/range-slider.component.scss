@@ -7,7 +7,7 @@
   .mat-slider-track-fill,
   .mat-slider-thumb,
   .mat-slider-thumb-label {
-    background-color: #3f51b5;
+    background-color: #265668;
   }
 
   .mat-slider-thumb-label-text {
@@ -19,7 +19,7 @@
   $primary: map-get($theme, primary);
   $accent: map-get($theme, accent);
   $warn: map-get($theme, warn);
-  $background: #3f51b5;
+  $background: #265668;
   $foreground: map-get($theme, foreground);
 
   $mat-slider-off-color: mat-color($foreground, slider-off);
@@ -650,7 +650,7 @@ $mat-slider-focus-ring-size: 30px !default;
 }
 
 .pink {
-  background-color: #ff4081 !important;
+  background-color: #265668 !important;
 }
 
 .show {

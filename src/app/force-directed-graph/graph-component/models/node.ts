@@ -143,6 +143,7 @@ export class Protein extends Node {
   shape: string;
 
 //  name: string;
+
 /*  selected: boolean;
   shared_name:string;*/
   /**
@@ -152,7 +153,6 @@ export class Protein extends Node {
    */
   constructor(uuid: string, data: any) {
     super(uuid, data);
-    this.shape = this._setShape(data);
     this.degree = data.properties.Degree;
     this.labels = data.properties.cytoscape_alias_list;
     this.hESC_NSC_Fold_Change = data.properties.hESC_NSC_Fold_Change;
@@ -161,17 +161,18 @@ export class Protein extends Node {
     this.Phosph_in_ESC_1_NSC_0_ = data.properties.Phosph_in_ESC_1_NSC_0_;
     this.color = !this.hESC_NSC_Fold_Change || this.hESC_NSC_Fold_Change === -100 ?
       '#CCCCCC' : COLOR(-this.hESC_NSC_Fold_Change);
+    this.shape = this._setShape(data);
   }
 
   private _setShape(data: any){
-    if(data.properties.NSC === 1) {
-      return 'square';
-    }
-    if(data.properties.ESC === 1) {
+    if(data.properties.Phosph_in_ESC_1_NSC_0_ === 1 || data.properties.ESC === 1) {
       return 'diamond';
     }
-    return null;
-  }
 
+    if(data.properties.Phosph_in_ESC_1_NSC_0_ === 0 || data.properties.NSC === 1) {
+      return 'square';
+    }
+    return 'circle';
+  }
 
 }

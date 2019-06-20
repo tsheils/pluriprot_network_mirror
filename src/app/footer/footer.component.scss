@@ -1,0 +1,37 @@
+#site-footer {
+  background-image: url("../../assets/images/footerBG.png");
+  background-size: cover;
+  line-height: 1.5;
+}
+
+#site-footer, #site-footer a {
+  color: #fff;
+  font-weight: 100;
+}
+
+.widget-title {
+  font-size: 1.75rem;
+}
+
+#site-footer ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+ul {
+  margin-bottom: 1rem;
+}
+
+#site-footer a {
+  text-decoration: none;
+}
+
+#site-footer a:hover {
+  text-decoration: underline;
+}
+
+#site-footer #section-2 {
+  background: rgba(0,0,0,.5);
+  padding: 1rem;
+}
+

@@ -1,4 +1,11 @@
-<div class = "fdg-container">
+<app-hhs-banner></app-hhs-banner>
+<app-sctl-navbar></app-sctl-navbar>
+
+<div fxHide fxShow.lt-sm fxLayoutAlign="center center">
+  <h1> this widget is not compatible with mobile devices. Please switch to a desktop browser</h1>
+</div>
+
+<div class = "fdg-container" fxHide.lt-sm>
 <mat-sidenav-container class="sctl-graph-container" [hasBackdrop]="false">
     <mat-sidenav #graphMenu [opened]="true" mode="over"
                  class="menu-drawer">
@@ -21,5 +28,6 @@
     </mat-sidenav-content>
 </mat-sidenav-container>
 </div>
+<app-footer></app-footer>
 
 
